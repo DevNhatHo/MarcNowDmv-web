@@ -1,6 +1,6 @@
 # Local frontend roadmap
 
-This is a 12-ticket milestone, not a production deployment plan. [Ticket index](tickets/README.md) is the status source alongside current state. Complete one ticket at a time; no implementation was performed during planning.
+The original 12-ticket core milestone is followed by five required map tickets; neither milestone is a production deployment plan. [Ticket index](tickets/README.md) is the status source alongside current state. Complete one ticket at a time; no implementation was performed during planning.
 
 ## Dependency order
 
@@ -17,4 +17,10 @@ Actual dependencies: 002←001; 003←001; 004←002; 005←003+004; 006←005; 
 
 ## Deferred
 
-Map awaits core detail and a usable geometry contract; no map implementation ticket is included yet. Active-running summaries and missing display metadata are [backend proposals](BACKEND_GAPS.md), not frontend inventions. Authentication, accounts, notifications, analytics, historical intelligence, dark mode and AWS are outside this milestone. Completing WEB-012 does not authorize cloud deployment or further features.
+Map is now planned explicitly in WEB-MAP-1–5 after the core milestone; geometry and active-membership APIs gate the corresponding implementation tickets. Active-running summaries and missing display metadata are [backend proposals](BACKEND_GAPS.md), not frontend inventions. Authentication, accounts, notifications, analytics, historical intelligence, dark mode and AWS are outside this milestone. Completing WEB-012 does not authorize cloud deployment or further features.
+
+## Required map follow-on
+
+[Map plan](MAP_PLAN.md): WEB-012 → WEB-MAP-1 (technology/contracts) → WEB-MAP-2 (canonical routes) → WEB-MAP-3 (active/current and last-known markers) → WEB-MAP-4 (focus/follow) → WEB-MAP-5 (shared detail/navigation and integration review).
+
+WEB-MAP-2 additionally requires delivered BACKEND-UI-03 geometry; WEB-MAP-3 requires delivered BACKEND-UI-02 active-set semantics. Both are separately proposed backend tasks, not authorization to implement backend changes. WEB-MAP-1 may document those blockers without pretending APIs exist. WEB-MAP-5 completes the map extension; WEB-012 still completes the original four-screen core. Missing display metadata uses safe fallbacks. First route-map demo is WEB-MAP-2; live/last-known system demo is WEB-MAP-3; integrated selected-train experience is WEB-MAP-5.

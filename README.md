@@ -7,3 +7,5 @@ Start with [current state](docs/CURRENT_STATE.md), [architecture](docs/ARCHITECT
 The backend is logically `marc-now-dmv-backend`; its existing checkout is `/home/nhat/MarcNowDmv`. This separate frontend checkout is `/home/nhat/marc-now-dmv-web`. Neither repository was renamed. AWS is outside this milestone.
 
 MARC Now DMV is an independent service and is not affiliated with or endorsed by MDOT MTA.
+
+System map and focused train maps are now part of the follow-on roadmap: [map plan and library recommendation](docs/MAP_PLAN.md). The original core plan remains intact; no frontend or map implementation has begun.

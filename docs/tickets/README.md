@@ -18,3 +18,17 @@ Planning complete; no implementation ticket started or completed. Recommended ne
 | [WEB-012](WEB-012.md) | Local frontend/backend integration smoke test | WEB-011 | NOT_STARTED |
 
 Visual tickets require rendered review, not just passing tests. See [roadmap](../ROADMAP.md) and [current state](../CURRENT_STATE.md).
+
+## Required map follow-on
+
+The original core tickets remain unchanged in order. [Map plan](../MAP_PLAN.md) adds these follow-on tickets; all remain NOT_STARTED.
+
+| Ticket | Title | Dependencies | Status |
+|---|---|---|---|
+| [WEB-MAP-1](WEB-MAP-1.md) | Map technology and data contract | WEB-012 | NOT_STARTED |
+| [WEB-MAP-2](WEB-MAP-2.md) | Canonical MARC route rendering | WEB-MAP-1 + delivered BACKEND-UI-03 | NOT_STARTED |
+| [WEB-MAP-3](WEB-MAP-3.md) | Active train markers with position trust | WEB-MAP-2 + delivered BACKEND-UI-02 | NOT_STARTED |
+| [WEB-MAP-4](WEB-MAP-4.md) | Train focus and observation-based follow | WEB-MAP-3 | NOT_STARTED |
+| [WEB-MAP-5](WEB-MAP-5.md) | Map and train-detail integration | WEB-MAP-4 | NOT_STARTED |
+
+Backend proposal delivery is a gate, not permission to modify the backend. Assessment can document gaps; map implementation cannot claim missing contracts are satisfied.

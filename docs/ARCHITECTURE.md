@@ -46,3 +46,9 @@ Version/snapshot conflicts restart pagination at most once, discard incompatible
 Vitest and Testing Library are planned development-only dependencies for contract parsing, presentation, and fake-clock refresh behavior. Playwright is planned for mobile/desktop, keyboard, and deterministic network scenarios. No runtime testing dependencies or arbitrary coverage threshold. Live local smoke tests are separate from deterministic CI fixtures. Capture-derived fixtures retain provenance; synthetic states are clearly marked, never called live observations.
 
 See [API contract](API_CONTRACT.md), [design](DESIGN.md), and [runbook](RUNBOOK.md).
+
+## Map roadmap addendum
+
+System map and train focus are now required follow-on work after WEB-012. Use a shared lazy-loaded client-only Leaflet adapter, canonical backend shape geometry, existing centralized resource ownership and shared train-detail presentation. `/map` supports system mode and query-based train selection; detail can open the same focused map. No map code is installed in this update.
+
+Recommend a neutral background with backend geometry initially, avoiding an external basemap provider. Map freshness, bearing, progress and active-set rules are specified in [MAP_PLAN.md](MAP_PLAN.md), including library alternatives and source references. No fake continuous movement, browser movement calculation, frontend GTFS parsing or per-marker detail fan-out. Geometry and backend-defined active membership are explicit API dependencies. Extend the proxy allowlist/types only after actual backend contracts exist.

@@ -37,7 +37,7 @@ Scheduled stops contain sequence, stopId, scheduledArrival/Departure. Official u
 
 UNKNOWN movement can retain a historic stationarySeconds value. Do not display that as current stationary duration. Position freshness and movement are different: POSITION_STALE/POSITION_UNKNOWN are possible UI labels, **not backend movement enum values**. A stale retained coordinate is “Last reported location,” never proof of a stopped train. Do not claim proximity to a named station from raw coordinates. Delay trend uses independent official delay evidence; stale GPS alone must not erase a valid trend.
 
-Train-list rows contain no calculated movement, next stop, or trend. Do not request detail for every row to fabricate summaries. No public shape/polyline endpoint exists. Map is deferred.
+Train-list rows contain no calculated movement, next stop, or trend. Do not request detail for every row to fabricate summaries. No public shape/polyline endpoint exists. Map is planned after WEB-012 and gated on the proposed geometry endpoint; see [MAP_PLAN.md](MAP_PLAN.md).
 
 ## Alerts and source health
 

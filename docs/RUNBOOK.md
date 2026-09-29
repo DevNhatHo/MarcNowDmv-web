@@ -35,3 +35,7 @@ Inspect 360×800 mobile and 1280×900 desktop; also test keyboard-only navigatio
 ## Git
 
 One completed implementation ticket per final commit. Check status first and include only its changes. This newly initialized repository has no remote configured. Do not invent an origin URL or create a remote repository without a request. If later configured, push to the existing upstream without force; preserve local commits on failure.
+
+## Future map checks
+
+WEB-MAP-1 records chosen stable Leaflet version/license and provider decision; default plan has no external tile service or API key. Do not configure paid tiles implicitly. WEB-MAP-2 adds actual geometry endpoints to the proxy only after backend contract delivery. Extend existing smoke tests in WEB-MAP-5 to cover system→focus→detail→system, current versus last-known markers, missing positions, stale follow pause and bounded requests. Use actual local backend responses plus clearly synthetic fresh-state fixtures; no runtime or visual map check was executed during planning.

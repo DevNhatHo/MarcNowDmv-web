@@ -1,0 +1,51 @@
+# WEB-MAP-4 — Train focus and observation-based follow
+
+Status: NOT_STARTED
+
+## Goal
+
+Make a selected train and the trustworthiness of its location immediately clear.
+
+## Why
+
+The map is required roadmap work and must preserve the existing commuter hierarchy and data-trust rules.
+
+## Dependencies
+
+[WEB-MAP-3](WEB-MAP-3.md).
+
+## Scope
+
+Add URL-backed selection, selected marker/shape emphasis, muted unrelated trains, shared selected-train summary, reported direction, next stop, backend progress/distance and opt-in follow. Preserve system camera and offer exit focus; manual pan pauses follow.
+
+## Out of Scope
+
+Separate train-detail business model, guessed direction/progress, continuous movement, geometry inference and detail-route embedding (WEB-MAP-5).
+
+## Expected Files
+
+components/map/focus state and controls, app/map/page.tsx, shared detail presentation, focus browser tests.
+
+## Implementation Notes
+
+Fetch only selected detail through existing resource ownership. Unknown/ambiguous route progress remains unknown; skipped candidate stays labeled. Stale position uses historical bearing and stops follow. Missing position centers route/system with explanation.
+
+## Acceptance Criteria
+
+Selection deep links and Back work; selected train/shape dominate; follow only responds to new fresh observations; stale data/manual pan stops recentering; exit restores system context; no duplicate status semantics.
+
+## Tests Required
+
+Run all checks; test selection switching, cancelled requests, invalid ID, missing position/shape, stale follow pause, user-pan pause, repeated/out-of-order observations, skipped stop and unknown progress.
+
+## Manual Verification
+
+Inspect focus on mobile/desktop, keyboard selection/exit, reduced motion, long identity and all missing/stale/error states. Verify no popup reopening is needed to read train status.
+
+## Design Verification
+
+Inspect rendered 360×800 mobile and 1280×900 desktop, actual data where available, loading/empty/error states, independent official/calculated labels and current versus last-known marker semantics. Use [DESIGN.md](../DESIGN.md) and [MAP_PLAN.md](../MAP_PLAN.md); capture screenshots when possible. Tests alone cannot satisfy this gate.
+
+## Definition of Done
+
+Acceptance criteria and required checks pass with recorded evidence. Update ticket/index/current state and relevant docs, review diff and preserve unrelated work. One completed-ticket commit with WEB-MAP-4 subject. Missing required backend contracts block implementation completion; record the blocker and leave incomplete rather than making a completion commit.

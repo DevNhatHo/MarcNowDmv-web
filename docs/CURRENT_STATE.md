@@ -4,7 +4,7 @@ Updated: 2026-09-29.
 
 ## Milestone and work status
 
-Local frontend planning/bootstrap documentation is complete. The Next.js app does not exist yet. Current implementation ticket: none. Completed implementation tickets: none. All WEB-001–WEB-012 are NOT_STARTED. Recommended next: [WEB-001 — Bootstrap Next.js/TypeScript project](tickets/WEB-001.md), only in a subsequent authorized implementation session. Stop after planning in this session.
+Local frontend planning/bootstrap documentation is complete. The Next.js app does not exist yet. Current implementation ticket: none. Completed implementation tickets: none. All WEB-001–WEB-012 and WEB-MAP-1–WEB-MAP-5 are NOT_STARTED. Recommended next: [WEB-001 — Bootstrap Next.js/TypeScript project](tickets/WEB-001.md), only in a subsequent authorized implementation session. Stop after planning in this session.
 
 Repository: `/home/nhat/marc-now-dmv-web`, newly initialized main branch, separate from existing backend `/home/nhat/MarcNowDmv`. No remote configured; no push target exists. No backend files were modified. Existing unrelated backend `.idea/` directory was preserved.
 
@@ -20,10 +20,16 @@ See [verified contract](API_CONTRACT.md) and [backend proposals](BACKEND_GAPS.md
 
 ## Checks and visual status
 
-Planning validation: JSON captures parse; all 12 tickets contain required sections and resolvable, acyclic dependencies; local Markdown links and whitespace checks pass. No package.json or implementation files were created. Documentation diff reviewed before planning commit.
+Planning validation: JSON captures parse; all 17 tickets contain required sections and resolvable, acyclic dependencies; local Markdown links and whitespace checks pass. No package.json or implementation files were created. Documentation diff reviewed before planning commit.
 
 Frontend tests/lint/typecheck/build: NOT RUN — app and scripts do not exist. Backend Go tests/vet/build: NOT RUN this planning session — backend unmodified. Actual API requests above were executed. Visual/mobile/desktop/accessibility verification: NOT RUN — no rendered frontend exists. Every future visual ticket includes the rendered verification gate and screenshot recording where possible. Proposed token colors are not yet contrast-certified.
 
 ## Next session
 
 Read AGENTS.md, architecture, design, API contract and WEB-001. Inspect status first. Mark WEB-001 IN_PROGRESS, install the current stable stack while preserving these docs, establish executable checks and render the starter page at both target widths. Do not skip to later screens or treat planning as completed implementation.
+
+## Map planning update
+
+Added required system-map and train-focus roadmap without restarting the completed core plan. Five follow-on tickets begin after WEB-012; WEB-001 remains the next implementation ticket. Recommendation: client-only Leaflet with canonical backend geometry and no external basemap initially; provider alternatives, licensing references, freshness and navigation rules are in [MAP_PLAN.md](MAP_PLAN.md).
+
+Current backend route registration was re-inspected: no public shape-geometry endpoint. Existing list does not define active system membership. BACKEND-UI-03 gates route rendering; BACKEND-UI-02 gates active markers; display metadata remains a documented fallback gap. No new HTTP capture, frontend implementation, dependency installation, backend modification or AWS work occurred in this update. Planning links, 17 ticket structures/dependencies and whitespace were checked; frontend/rendered/runtime checks remain NOT RUN because no app exists.

@@ -38,7 +38,7 @@ Stop times                                      [expand]
 Data status                                     [expand]
 ```
 
-Direction and train number appear only if a future backend contract supports them. Never extract them heuristically from tripId. Do not duplicate the same official delay in several cards. Raw ingestion IDs, technical reasons and thresholds belong only in diagnostics. Coordinates are an honest interim location fallback; no invented “near Odenton” label. Map is deferred.
+Direction and train number appear only if a future backend contract supports them. Never extract them heuristically from tripId. Do not duplicate the same official delay in several cards. Raw ingestion IDs, technical reasons and thresholds belong only in diagnostics. Coordinates are an honest interim location fallback; no invented “near Odenton” label. Map follows the core milestone through WEB-MAP-1–5; see [map plan](MAP_PLAN.md).
 
 ## Status language
 
@@ -83,3 +83,7 @@ Every visual ticket must inspect rendered mobile (360×800) and desktop (1280×9
 Before DONE, answer: What dominates? Can it be understood in five seconds? Can anything be removed? Is anything duplicated? Could whitespace replace a card? Is severity appropriate? Are unknown/stale distinct from healthy? Is official distinct from calculated? Does mobile work naturally? Does it make sense without color? Are diagnostics too prominent? Does it feel calm? Simplify before completion.
 
 The footer must read exactly: MARC Now DMV is an independent service and is not affiliated with or endorsed by MDOT MTA.
+
+## Map extension
+
+Add Map navigation when WEB-MAP-2 delivers a usable route view; retain the existing Pulse/Trains/Alerts core. System mode answers “Where are the trains right now?” Focus mode emphasizes the selected train and its canonical shape, with persistent shared detail below the map on mobile. Current solid markers and historical outlined markers have explicit text labels; unknown position has a text-list fallback. Follow pauses on manual pan or stale observations. No continuous movement, excessive POIs/controls, giant popups or color-only trust states. See [MAP_PLAN.md](MAP_PLAN.md) for data gates and required map-specific visual scenarios.
