@@ -1,0 +1,286 @@
+{
+  "method": "GET",
+  "path": "/api/v1/alerts?limit=200",
+  "status": 200,
+  "headers": {
+    "Cache-Control": "no-store",
+    "Content-Type": "application/json; charset=utf-8"
+  },
+  "body": {
+    "evaluatedAt": "2026-09-29T12:05:28.919633152Z",
+    "snapshot": "3",
+    "scheduleVersion": "1",
+    "sourceTimestamp": "2026-09-29T00:25:45Z",
+    "sourceHealth": [
+      {
+        "source": "MARC_STATIC_GTFS",
+        "state": "HEALTHY",
+        "signals": [],
+        "sourceTimestamp": null,
+        "receivedAt": "2026-09-29T00:25:47.31457Z",
+        "lastFetch": "2026-09-29T00:25:47.31457Z",
+        "lastSuccess": "2026-09-29T00:25:51.24578Z",
+        "failureStreak": 0,
+        "httpStatus": 200,
+        "entityCount": null,
+        "invalidCount": 0,
+        "feedVersion": null,
+        "compatibility": null
+      },
+      {
+        "source": "MARC_TRIP_UPDATES",
+        "state": "UNAVAILABLE",
+        "signals": [
+          "polling_unavailable",
+          "source_unavailable"
+        ],
+        "sourceTimestamp": "2026-09-29T00:25:45Z",
+        "receivedAt": "2026-09-29T00:25:54.227174Z",
+        "lastFetch": "2026-09-29T00:25:54.228677Z",
+        "lastSuccess": "2026-09-29T00:25:54.228677Z",
+        "failureStreak": 0,
+        "httpStatus": 200,
+        "entityCount": 5,
+        "invalidCount": 0,
+        "feedVersion": "2.0",
+        "compatibility": "RECOGNIZED"
+      },
+      {
+        "source": "MARC_VEHICLE_POSITIONS",
+        "state": "UNAVAILABLE",
+        "signals": [
+          "polling_unavailable",
+          "source_unavailable"
+        ],
+        "sourceTimestamp": "2026-09-29T00:25:45Z",
+        "receivedAt": "2026-09-29T00:25:54.392017Z",
+        "lastFetch": "2026-09-29T00:25:54.392435Z",
+        "lastSuccess": "2026-09-29T00:25:54.392435Z",
+        "failureStreak": 0,
+        "httpStatus": 200,
+        "entityCount": 5,
+        "invalidCount": 0,
+        "feedVersion": "2.0",
+        "compatibility": "RECOGNIZED"
+      },
+      {
+        "source": "MTA_SERVICE_ALERTS",
+        "state": "UNAVAILABLE",
+        "signals": [
+          "unrecognized_feed_version",
+          "polling_unavailable",
+          "source_unavailable"
+        ],
+        "sourceTimestamp": "2026-09-29T00:25:45Z",
+        "receivedAt": "2026-09-29T00:25:54.544719Z",
+        "lastFetch": "2026-09-29T00:25:54.545592Z",
+        "lastSuccess": "2026-09-29T00:25:54.545592Z",
+        "failureStreak": 0,
+        "httpStatus": 200,
+        "entityCount": 10,
+        "invalidCount": 0,
+        "feedVersion": "3.0",
+        "compatibility": "ACCEPTED_WITH_WARNING"
+      }
+    ],
+    "data": [
+      {
+        "id": "28490",
+        "observationId": "4",
+        "provenance": "OFFICIAL_REALTIME",
+        "cause": 2,
+        "effect": 7,
+        "headerText": {
+          "translation": [
+            {
+              "text": "MARC Odenton Station update - Parking closure for Phase 1 of garage construction",
+              "language": null
+            }
+          ]
+        },
+        "descriptionText": {
+          "translation": [
+            {
+              "text": "MARC Train has been notified by the Odenton MARC station parking garage construction team that the start of construction has been delayed.  We anticipate that construction will begin later this week and will provide additional updates when they are received.\r\n \r\nWhen work begins, the first phase will result in closure of approximately 120 spaces in Lot B, in the part of the lot closest to the southbound platform.  Signage has been posted on sandwich boards in the affected parking areas announcing the closure.  Please do not park in any areas that are cordoned off or marked No Parking.  Towing will be enforced for parking violations.  There is ample parking available in the overflow lot on the north side of Route 175.  To access this lot, cross Route 175 on Town Center Boulevard, turn right on Hale Street, then proceed straight into the MARC overflow lot.  You may also put Hale Street & Lokus Road, Odenton, MD into your GPS device to get directions.\r\n\r\nThank you for riding MARC Train.\r\n",
+              "language": null
+            }
+          ]
+        },
+        "url": {
+          "translation": [
+            {
+              "text": "https://mta.maryland.gov/service-alerts/28490",
+              "language": null
+            }
+          ]
+        },
+        "informedEntity": [
+          {
+            "agencyId": null,
+            "routeId": null,
+            "routeType": null,
+            "stopId": "11985",
+            "directionId": null,
+            "trip": null
+          },
+          {
+            "agencyId": null,
+            "routeId": null,
+            "routeType": null,
+            "stopId": "11992",
+            "directionId": null,
+            "trip": null
+          }
+        ],
+        "activePeriods": [
+          {
+            "start": "2026-09-14T19:31:22Z",
+            "end": "2026-11-07T03:41:22Z"
+          }
+        ]
+      },
+      {
+        "id": "28490r",
+        "observationId": "5",
+        "provenance": "OFFICIAL_REALTIME",
+        "cause": 2,
+        "effect": 6,
+        "headerText": {
+          "translation": [
+            {
+              "text": "MARC Odenton Station update - Parking closure for Phase 1 of garage construction",
+              "language": null
+            }
+          ]
+        },
+        "descriptionText": {
+          "translation": [
+            {
+              "text": "MARC Train has been notified by the Odenton MARC station parking garage construction team that the start of construction has been delayed.  We anticipate that construction will begin later this week and will provide additional updates when they are received.\r\n \r\nWhen work begins, the first phase will result in closure of approximately 120 spaces in Lot B, in the part of the lot closest to the southbound platform.  Signage has been posted on sandwich boards in the affected parking areas announcing the closure.  Please do not park in any areas that are cordoned off or marked No Parking.  Towing will be enforced for parking violations.  There is ample parking available in the overflow lot on the north side of Route 175.  To access this lot, cross Route 175 on Town Center Boulevard, turn right on Hale Street, then proceed straight into the MARC overflow lot.  You may also put Hale Street & Lokus Road, Odenton, MD into your GPS device to get directions.\r\n\r\nThank you for riding MARC Train.\r\n",
+              "language": null
+            }
+          ]
+        },
+        "url": {
+          "translation": [
+            {
+              "text": "https://mta.maryland.gov/service-alerts/28490",
+              "language": null
+            }
+          ]
+        },
+        "informedEntity": [
+          {
+            "agencyId": null,
+            "routeId": "11705",
+            "routeType": null,
+            "stopId": null,
+            "directionId": null,
+            "trip": null
+          }
+        ],
+        "activePeriods": [
+          {
+            "start": "2026-09-14T19:31:22Z",
+            "end": "2026-11-07T03:41:22Z"
+          }
+        ]
+      },
+      {
+        "id": "28507",
+        "observationId": "6",
+        "provenance": "OFFICIAL_REALTIME",
+        "cause": 2,
+        "effect": 7,
+        "headerText": {
+          "translation": [
+            {
+              "text": "MARC Brunswick Line: Schedule Change September 28 - including through train to Baltimore",
+              "language": null
+            }
+          ]
+        },
+        "descriptionText": {
+          "translation": [
+            {
+              "text": "There will be a MARC Brunswick Line schedule on Monday, September 28.  This change is being implemented to launch a new direct MARC service that connects the Brunswick and Camden Lines. The service will allow riders to travel directly between Brunswick Line stations and Baltimore's Camden Station without transferring at Washington Union Station. The service will directly connect Brunswick, Point of Rocks, Barnesville, Germantown, Metropolitan Grove, Gaithersburg, Rockville, Kensington, Silver Spring, College Park, Laurel, and Baltimore Camden Station,\r\nexpanding regional travel opportunities for MARC riders.\r\n\r\nPlease visit www.mta.maryland.gov/Brunswick-Camden to download a copy of the new timetable and read full information about the changes.  Full timetables are available at Union Station and inside Brunswick Line station waiting rooms.\r\n\r\nThank you for riding MARC Train.",
+              "language": null
+            }
+          ]
+        },
+        "url": {
+          "translation": [
+            {
+              "text": "https://mta.maryland.gov/service-alerts/28507",
+              "language": null
+            }
+          ]
+        },
+        "informedEntity": [
+          {
+            "agencyId": null,
+            "routeId": "11704",
+            "routeType": null,
+            "stopId": null,
+            "directionId": null,
+            "trip": null
+          }
+        ],
+        "activePeriods": [
+          {
+            "start": "2026-09-25T12:35:53Z",
+            "end": "2026-10-30T20:05:53Z"
+          }
+        ]
+      },
+      {
+        "id": "28508",
+        "observationId": "7",
+        "provenance": "OFFICIAL_REALTIME",
+        "cause": 2,
+        "effect": 7,
+        "headerText": {
+          "translation": [
+            {
+              "text": "MARC Camden Line: Schedule change September 28",
+              "language": null
+            }
+          ]
+        },
+        "descriptionText": {
+          "translation": [
+            {
+              "text": "There will be a MARC Camden Line schedule change on Monday, September 28.  The changes affect morning service from Washington to Baltimore Camden Station and afternoon service from Camden Station to Washington.  \r\n\r\nThere are **NO** changes to morning service from Camden Station to Washington nor are there any changes to afternoon service from Washington to Camden Station.\r\n\r\nPlease visit www.mta.maryland.gov/Brunswick-Camden to download a copy of the new timetable and read full information about the changes.  Full timetables are available at Union Station today and will be inside Camden Line station waiting rooms by tomorrow.\r\n\r\nThank you for riding MARC Train.",
+              "language": null
+            }
+          ]
+        },
+        "url": {
+          "translation": [
+            {
+              "text": "https://mta.maryland.gov/service-alerts/28508",
+              "language": null
+            }
+          ]
+        },
+        "informedEntity": [
+          {
+            "agencyId": null,
+            "routeId": "11706",
+            "routeType": null,
+            "stopId": null,
+            "directionId": null,
+            "trip": null
+          }
+        ],
+        "activePeriods": [
+          {
+            "start": "2026-09-25T12:36:22Z",
+            "end": "2026-10-30T20:15:22Z"
+          }
+        ]
+      }
+    ],
+    "nextAfter": null
+  }
+}

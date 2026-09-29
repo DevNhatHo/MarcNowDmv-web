@@ -1,0 +1,211 @@
+{
+  "method": "GET",
+  "path": "/api/v1/trains?limit=3",
+  "status": 200,
+  "headers": {
+    "Cache-Control": "no-store",
+    "Content-Type": "application/json; charset=utf-8"
+  },
+  "body": {
+    "evaluatedAt": "2026-09-29T12:05:28.571628947Z",
+    "scheduleVersion": {
+      "id": "1",
+      "checksum": "e0d7d70270938ebfe2adcbe2fe779fbaf17c41a7c1a27a00fc72ba898e288ebc",
+      "timezone": "America/New_York",
+      "activatedAt": "2026-09-29T00:25:51.234457Z"
+    },
+    "serviceDate": "20260929",
+    "sourceHealth": [
+      {
+        "source": "MARC_STATIC_GTFS",
+        "state": "HEALTHY",
+        "signals": [],
+        "sourceTimestamp": null,
+        "receivedAt": "2026-09-29T00:25:47.31457Z",
+        "lastFetch": "2026-09-29T00:25:47.31457Z",
+        "lastSuccess": "2026-09-29T00:25:51.24578Z",
+        "failureStreak": 0,
+        "httpStatus": 200,
+        "entityCount": null,
+        "invalidCount": 0,
+        "feedVersion": null,
+        "compatibility": null
+      },
+      {
+        "source": "MARC_TRIP_UPDATES",
+        "state": "UNAVAILABLE",
+        "signals": [
+          "polling_unavailable",
+          "source_unavailable"
+        ],
+        "sourceTimestamp": "2026-09-29T00:25:45Z",
+        "receivedAt": "2026-09-29T00:25:54.227174Z",
+        "lastFetch": "2026-09-29T00:25:54.228677Z",
+        "lastSuccess": "2026-09-29T00:25:54.228677Z",
+        "failureStreak": 0,
+        "httpStatus": 200,
+        "entityCount": 5,
+        "invalidCount": 0,
+        "feedVersion": "2.0",
+        "compatibility": "RECOGNIZED"
+      },
+      {
+        "source": "MARC_VEHICLE_POSITIONS",
+        "state": "UNAVAILABLE",
+        "signals": [
+          "polling_unavailable",
+          "source_unavailable"
+        ],
+        "sourceTimestamp": "2026-09-29T00:25:45Z",
+        "receivedAt": "2026-09-29T00:25:54.392017Z",
+        "lastFetch": "2026-09-29T00:25:54.392435Z",
+        "lastSuccess": "2026-09-29T00:25:54.392435Z",
+        "failureStreak": 0,
+        "httpStatus": 200,
+        "entityCount": 5,
+        "invalidCount": 0,
+        "feedVersion": "2.0",
+        "compatibility": "RECOGNIZED"
+      },
+      {
+        "source": "MTA_SERVICE_ALERTS",
+        "state": "UNAVAILABLE",
+        "signals": [
+          "unrecognized_feed_version",
+          "polling_unavailable",
+          "source_unavailable"
+        ],
+        "sourceTimestamp": "2026-09-29T00:25:45Z",
+        "receivedAt": "2026-09-29T00:25:54.544719Z",
+        "lastFetch": "2026-09-29T00:25:54.545592Z",
+        "lastSuccess": "2026-09-29T00:25:54.545592Z",
+        "failureStreak": 0,
+        "httpStatus": 200,
+        "entityCount": 10,
+        "invalidCount": 0,
+        "feedVersion": "3.0",
+        "compatibility": "ACCEPTED_WITH_WARNING"
+      }
+    ],
+    "data": [
+      {
+        "id": "MDE1OWFjZTItZjI1Yy0wNTM5LTE2MWItMWE1ODQyYzNhNjAzfDIwMjYwOTI5",
+        "scheduleVersion": "1",
+        "tripId": "Train830",
+        "routeId": "11704",
+        "serviceDate": "20260929",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-29T10:00:00Z",
+          "end": "2026-09-29T11:59:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "MDUwYjQ0OTYtMmVlZS02MjZkLTlmNmEtMjlmZDNiZWIzNDQzfDIwMjYwOTI5",
+        "scheduleVersion": "1",
+        "tripId": "Train505",
+        "routeId": "11705",
+        "serviceDate": "20260929",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-29T08:25:00Z",
+          "end": "2026-09-29T10:10:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "MDY0MmY1ZjMtMzMzMS1iNWRmLWU1ZDctMTc5OWJlMTVmNzJlfDIwMjYwOTI5",
+        "scheduleVersion": "1",
+        "tripId": "Train850",
+        "routeId": "11706",
+        "serviceDate": "20260929",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-29T20:13:00Z",
+          "end": "2026-09-29T21:25:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      }
+    ],
+    "nextAfter": "MDY0MmY1ZjMtMzMzMS1iNWRmLWU1ZDctMTc5OWJlMTVmNzJlfDIwMjYwOTI5"
+  }
+}

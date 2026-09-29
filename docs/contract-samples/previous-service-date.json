@@ -1,0 +1,3838 @@
+{
+  "method": "GET",
+  "path": "/api/v1/trains?serviceDate=20260928&limit=200",
+  "status": 200,
+  "headers": {
+    "Cache-Control": "no-store",
+    "Content-Type": "application/json; charset=utf-8"
+  },
+  "body": {
+    "evaluatedAt": "2026-09-29T12:05:28.664370596Z",
+    "scheduleVersion": {
+      "id": "1",
+      "checksum": "e0d7d70270938ebfe2adcbe2fe779fbaf17c41a7c1a27a00fc72ba898e288ebc",
+      "timezone": "America/New_York",
+      "activatedAt": "2026-09-29T00:25:51.234457Z"
+    },
+    "serviceDate": "20260928",
+    "sourceHealth": [
+      {
+        "source": "MARC_STATIC_GTFS",
+        "state": "HEALTHY",
+        "signals": [],
+        "sourceTimestamp": null,
+        "receivedAt": "2026-09-29T00:25:47.31457Z",
+        "lastFetch": "2026-09-29T00:25:47.31457Z",
+        "lastSuccess": "2026-09-29T00:25:51.24578Z",
+        "failureStreak": 0,
+        "httpStatus": 200,
+        "entityCount": null,
+        "invalidCount": 0,
+        "feedVersion": null,
+        "compatibility": null
+      },
+      {
+        "source": "MARC_TRIP_UPDATES",
+        "state": "UNAVAILABLE",
+        "signals": [
+          "polling_unavailable",
+          "source_unavailable"
+        ],
+        "sourceTimestamp": "2026-09-29T00:25:45Z",
+        "receivedAt": "2026-09-29T00:25:54.227174Z",
+        "lastFetch": "2026-09-29T00:25:54.228677Z",
+        "lastSuccess": "2026-09-29T00:25:54.228677Z",
+        "failureStreak": 0,
+        "httpStatus": 200,
+        "entityCount": 5,
+        "invalidCount": 0,
+        "feedVersion": "2.0",
+        "compatibility": "RECOGNIZED"
+      },
+      {
+        "source": "MARC_VEHICLE_POSITIONS",
+        "state": "UNAVAILABLE",
+        "signals": [
+          "polling_unavailable",
+          "source_unavailable"
+        ],
+        "sourceTimestamp": "2026-09-29T00:25:45Z",
+        "receivedAt": "2026-09-29T00:25:54.392017Z",
+        "lastFetch": "2026-09-29T00:25:54.392435Z",
+        "lastSuccess": "2026-09-29T00:25:54.392435Z",
+        "failureStreak": 0,
+        "httpStatus": 200,
+        "entityCount": 5,
+        "invalidCount": 0,
+        "feedVersion": "2.0",
+        "compatibility": "RECOGNIZED"
+      },
+      {
+        "source": "MTA_SERVICE_ALERTS",
+        "state": "UNAVAILABLE",
+        "signals": [
+          "unrecognized_feed_version",
+          "polling_unavailable",
+          "source_unavailable"
+        ],
+        "sourceTimestamp": "2026-09-29T00:25:45Z",
+        "receivedAt": "2026-09-29T00:25:54.544719Z",
+        "lastFetch": "2026-09-29T00:25:54.545592Z",
+        "lastSuccess": "2026-09-29T00:25:54.545592Z",
+        "failureStreak": 0,
+        "httpStatus": 200,
+        "entityCount": 10,
+        "invalidCount": 0,
+        "feedVersion": "3.0",
+        "compatibility": "ACCEPTED_WITH_WARNING"
+      }
+    ],
+    "data": [
+      {
+        "id": "MDA3ZjE3NDgtYzU0Ny1lMzUzLTIwNWUtYTY1OWQ0YmNmNzM0fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train891",
+        "routeId": "11704",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T19:45:00Z",
+          "end": "2026-09-28T21:29:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "MDIwNjNjM2YtMjAyMS1kY2YwLTlmNzctMjdlOTZmMWJmZmU1fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train548",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-29T01:10:00Z",
+          "end": "2026-09-29T02:58:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "MDNjMjdiZDAtMDIyMS1mMmUzLTFiODQtNzJkNDY2YjE4NTk0fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train433",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T17:35:00Z",
+          "end": "2026-09-28T18:31:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "MDVlMWVlYjItNGI5My05YWVjLTVhY2MtYjE5MzIxM2Y3NDA2fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train435",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T18:45:00Z",
+          "end": "2026-09-28T19:41:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "MGU4ZjZjY2UtYmQ5YS1jMmU3LTU1MjQtODQ4NzBlMzZjODE1fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train407",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T09:35:00Z",
+          "end": "2026-09-28T10:36:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "MGY5NzYyZWYtZDcxYy1mNWIzLWFhOTAtZGZjMmQ2N2I4ODI0fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train416",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T14:10:00Z",
+          "end": "2026-09-28T15:13:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "MTIwOWEzZTUtYjM3YS1lNmQxLWYxMDctNzVjMGQ5ZTVkMDgwfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train412",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T13:00:00Z",
+          "end": "2026-09-28T13:56:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "MTNiMWY0NjYtN2FlMS1mZTg2LTA5NTctNDNlOWUzZjU2MDVifDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train874",
+        "routeId": "11704",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T09:40:00Z",
+          "end": "2026-09-28T12:00:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "MTU4YWQ5ZTEtNzI3ZS1mNmZmLTYyZWMtMDVmYmYyMjA1NDM0fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train847",
+        "routeId": "11706",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T10:30:00Z",
+          "end": "2026-09-28T11:44:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "MTczMWNjMzQtMjU2ZS0zNDAyLTdkN2ItZGJjZWE0YjgzMzk1fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train880",
+        "routeId": "11704",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T11:45:00Z",
+          "end": "2026-09-28T13:21:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "MTg0NGExZDEtYWFhMi1lYjJlLWE5NmYtMDJlYzQxY2FhM2NjfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train875",
+        "routeId": "11704",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T20:25:00Z",
+          "end": "2026-09-28T22:39:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "MjE1NTRkNzktMjcyNi1jYzEwLTAwNDMtMzlmYTQzNzVlMTg1fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train841",
+        "routeId": "11706",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T09:00:00Z",
+          "end": "2026-09-28T10:05:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "MjU3NDg1ODctNjUxMC1hZjNjLTRkOTEtMTI4NGYwYzE1NmFmfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train429",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T15:35:00Z",
+          "end": "2026-09-28T16:35:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "MmNmNGE5ZTItYzIxYy0yYTQwLTM1MWItNmE3ZDk0M2I1OGY2fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train831",
+        "routeId": "11704",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T21:00:00Z",
+          "end": "2026-09-28T23:05:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "MmZlNWFiOTItNzY4Yi1iODk2LTZmNTgtYWM0MWE2Njg4NjEyfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train845",
+        "routeId": "11706",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T10:10:00Z",
+          "end": "2026-09-28T11:18:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "MzM2YmJhYWItNTQxMC1lYTAzLWNlNjctY2NjNmNjMDRmZjU4fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train856",
+        "routeId": "11706",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T21:58:00Z",
+          "end": "2026-09-28T23:13:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "Mzk0OTUxMWQtZDY2MC01YmRjLTViMTMtMDAyMWZjM2UzYjkwfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train414",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T13:45:00Z",
+          "end": "2026-09-28T14:43:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "M2MwYTEyYjUtYTFhYS02ZWEyLTA5NmQtMjRkMWVjZDZkNWFkfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train872",
+        "routeId": "11704",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T09:00:00Z",
+          "end": "2026-09-28T11:09:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NDBhNTIzYzktMGM4NC1kNDc0LTk5MTMtZTQwOTg5NDZmOWNhfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train850",
+        "routeId": "11706",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T20:13:00Z",
+          "end": "2026-09-28T21:25:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NDBjZjQxY2UtOGY4OS03NDdhLTRiODUtZDRhZjU3NTA5NDkwfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train853",
+        "routeId": "11706",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T19:40:00Z",
+          "end": "2026-09-28T20:50:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NGMzNDI4YTMtMGY3Zi03NDA0LTA3NzUtNDNjZDAwODE2YjAwfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train536",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T21:18:00Z",
+          "end": "2026-09-28T23:02:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NGM4NmY5NWItZDk5NS0wZjMxLTM5NTQtZmJiNTNkZThiOTlmfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train857",
+        "routeId": "11706",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T21:20:00Z",
+          "end": "2026-09-28T22:28:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NGVkYWZjNzEtOGVkMy0yN2YxLWYwMTEtNWJmMjkwN2VkY2VifDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train502",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T10:12:00Z",
+          "end": "2026-09-28T12:18:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NGYyMzY4OWQtMDgyYy0zZjEzLWNmODUtOWVkNWZmODM3YmM5fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train642",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T22:00:00Z",
+          "end": "2026-09-28T23:31:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NTRmMjg4NmYtOTYwMi0xYzNhLTg1YTgtYWYyZjk2ZDdmOWIzfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train403",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T08:50:00Z",
+          "end": "2026-09-28T09:53:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NTcwODY2NTEtMDg2YS0zNGQzLWI5OWUtMWJkNjQ1YTY4N2FlfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train517",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T10:30:00Z",
+          "end": "2026-09-28T12:19:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NWMxNzQ2MmMtZmQwNy01ZmI2LWI4ZjYtZTg0Njg1ZmViYmY3fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train438",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T21:27:00Z",
+          "end": "2026-09-28T22:25:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NjAxYjc1N2UtOGVmNi1lMWIyLWVlYTgtNzIzY2UzMGQyMTBlfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train894",
+        "routeId": "11704",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T11:10:00Z",
+          "end": "2026-09-28T12:52:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NjQyODI4NDQtMTExMy1hZWEwLTEwYWYtNTU3YjZhODdlNWEwfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train852",
+        "routeId": "11706",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T20:43:00Z",
+          "end": "2026-09-28T22:00:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NjQ1YjNmMTctM2VhYy05NDU1LWEyOTItNzI5MTcyNmM0YTBlfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train641",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T19:35:00Z",
+          "end": "2026-09-28T21:01:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NjVkODZiZGItNmQ2ZC1lM2NkLTE4ZDItZDhiYjU0MDAyNmI3fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train532",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T20:10:00Z",
+          "end": "2026-09-28T21:53:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NjVlMzYwODAtMGU4Mi00NjY4LTE3YWQtODY3NzhmMDM1MWNjfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train849",
+        "routeId": "11706",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T11:10:00Z",
+          "end": "2026-09-28T12:21:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NjcxNjI3ZGUtMjdkNi1lZjcwLTgxNGItMDVjYzc2MWQ2ZGFjfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train854",
+        "routeId": "11706",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T21:22:00Z",
+          "end": "2026-09-28T22:41:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NjdlZjhjZTAtNTliMS1hOTMwLTA0MzUtZGZmNzlmNGQwYWU0fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train613",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T09:20:00Z",
+          "end": "2026-09-28T09:36:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "Njg0NzIzZDgtZmRhNS00NDdlLTU0YWItY2JmOTljNTJkZGY2fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train421",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T12:30:00Z",
+          "end": "2026-09-28T13:32:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NjljNGU3MzktMDA5MC05ZDJlLWQxOTItZWZiOWEzNmRjN2U2fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train855",
+        "routeId": "11706",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T20:45:00Z",
+          "end": "2026-09-28T21:33:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NmVjYjhiNDAtNzE0Mi1jM2Y4LWM1NGYtN2I1MGI3NmQ5YWEwfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train893",
+        "routeId": "11704",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T20:55:00Z",
+          "end": "2026-09-28T22:38:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NzEzNDY1YzMtNjdhZS0zMTJhLTc1MWMtMTEyZjY3NTk1MzhifDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train890",
+        "routeId": "11704",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T09:00:00Z",
+          "end": "2026-09-28T10:40:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NzE3MjFhMzUtNjg2ZC0zYzVmLTE4MzItYmYyZDljZmI2MDY2fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train423",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T13:00:00Z",
+          "end": "2026-09-28T14:03:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NzE5NWQ2NWItN2U1Zi00NzQ3LTMxOTItYzkxZmUzYjMzMDU1fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train426",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T19:00:00Z",
+          "end": "2026-09-28T20:00:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NzMyMWIxNmYtYmM4ZC1lYjFjLTZkYjAtOWY3YzYzOGE0NDRjfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train419",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T11:50:00Z",
+          "end": "2026-09-28T12:53:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NzUwZDk0NDItNDEwOS1hNWU0LTc2NzctMWUyZTJkMTllMTk3fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train634",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T20:45:00Z",
+          "end": "2026-09-28T21:58:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NzUwZmNmYjYtZGQwZS1jNWVlLTcxZTEtNWNkYWVhYTU4ZDE4fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train860",
+        "routeId": "11706",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T23:45:00Z",
+          "end": "2026-09-29T00:55:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": "4",
+          "sourceTimestamp": "2026-09-29T00:25:45Z",
+          "receivedAt": "2026-09-29T00:25:54.227174Z",
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": "4",
+          "sourceTimestamp": "2026-09-29T00:25:27Z",
+          "receivedAt": "2026-09-29T00:25:54.392017Z",
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": 39.14573287963867,
+          "longitude": -76.7813491821289,
+          "speedMetersPerSecond": 29.68344497680664,
+          "bearingDegrees": 29,
+          "vehicleId": "000029"
+        }
+      },
+      {
+        "id": "NzVmOTA1YmYtNDczNi1iMWE1LTkxNWUtYWYzYjJhOTdmZDFlfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train408",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T11:00:00Z",
+          "end": "2026-09-28T11:44:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "NzgyMWE4ZjgtZWM5Mi1iYTY4LTBjODAtNTEyOTBhZTg4ODhifDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train446",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T23:15:00Z",
+          "end": "2026-09-29T00:21:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "N2QxZTIyMDEtNzA3MS04MGY1LTUzY2YtMDM4N2E3NDZiMjMxfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train846",
+        "routeId": "11706",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T12:00:00Z",
+          "end": "2026-09-28T13:08:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "N2RkZDY2NGUtNTBmNi1mODY4LTU5YjQtMmFhNjc4YzU0M2U4fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train844",
+        "routeId": "11706",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T11:15:00Z",
+          "end": "2026-09-28T12:23:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "N2ZlN2I5NjctNmViMy05NGRiLTE3NzctNWU4NTc4MDY5YmQ3fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train848",
+        "routeId": "11706",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T19:30:00Z",
+          "end": "2026-09-28T20:20:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "OGFhNDk2MjAtZjNlZS00YjdjLTU1MzktMjM1YzMxNDVlZTcwfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train427",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T14:25:00Z",
+          "end": "2026-09-28T15:25:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "OGFhY2RjOWEtNjlmZS05OWVjLTU3MmUtNjJkNjdiOGZmOGVjfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train430",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T20:30:00Z",
+          "end": "2026-09-28T21:29:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "OGRlNTgzMTMtZDA2MS0zMzQ5LTQxMDktOTY1NTY1NjhhMWYxfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train851",
+        "routeId": "11706",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T12:05:00Z",
+          "end": "2026-09-28T13:12:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "OTdlMjc1M2UtYTc0Ni1hNzNkLTQ1MTktYjdmOTcxZjg5NjJkfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train840",
+        "routeId": "11706",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T10:32:00Z",
+          "end": "2026-09-28T11:43:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "OTgyNzI5NjAtMWEwZC1mMDdmLTMwZWYtMTI3ZDgxOWUyZTg1fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train520",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T16:15:00Z",
+          "end": "2026-09-28T18:12:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "OTg5ZWZhZDItOTUwZi01MGM3LTY5MzgtOTYzZDE1ODVkODU3fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train895",
+        "routeId": "11704",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T22:40:00Z",
+          "end": "2026-09-29T00:21:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "OTk2YmJhMDUtODRkNS1hMmRlLTgwMzYtMjIwNDkwMjMxYjM5fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train879",
+        "routeId": "11704",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T21:20:00Z",
+          "end": "2026-09-28T23:32:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "OWJlNmU2MWEtOTZhMS03N2FiLTNkNmUtNzkzZjQwOTU3NGE1fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train537",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T18:35:00Z",
+          "end": "2026-09-28T20:12:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "OWNjYTE3ZTItNjFlMC04ODA2LWYxOGYtMGY4YzQxZDkyZmI3fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train610",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T11:50:00Z",
+          "end": "2026-09-28T13:26:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "YTFiZTExZmQtZmMwMS02NjI4LTA5ZTItZjdmOTVjNjM5MTRifDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train843",
+        "routeId": "11706",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T09:30:00Z",
+          "end": "2026-09-28T10:29:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "YTgwMTk5MWItYWVjZS05MTk5LWNmMTctZTY5MWU1ZGE5YmFkfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train525",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T12:45:00Z",
+          "end": "2026-09-28T14:28:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "YTg2MDk0YjEtMTZkYS1lYzY3LTlhZWUtN2NlYjMwZTI1ZTI0fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train410",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T11:15:00Z",
+          "end": "2026-09-28T12:17:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "YWI1YzQzYjgtNTgzOC1jMGI4LTU3YTQtMWY3YmI1ZDhlN2Q2fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train579",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T22:20:00Z",
+          "end": "2026-09-28T23:08:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "YWRkNjhhYTMtMDAwNi1mM2RiLWVhN2ItYWI1OTVhNjc1MzZlfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train455",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-29T00:45:00Z",
+          "end": "2026-09-29T01:45:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "YjRiMjVmOTYtNDAwNC00MWYzLTg1ZmYtNjg3OWI4YWQ2OTRhfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train830",
+        "routeId": "11704",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T10:00:00Z",
+          "end": "2026-09-28T11:59:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "YjUwM2Y3MTMtNWQ2ZC0xZjgzLTQyZmEtMzI4OGQxNmU2NGIyfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train878",
+        "routeId": "11704",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T10:15:00Z",
+          "end": "2026-09-28T12:25:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "YjY2OGZjYmMtZTc5MC1jOWNiLTRkMjQtN2IxYTQ4Y2IyNmJjfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train449",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T22:40:00Z",
+          "end": "2026-09-28T23:33:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "YjhhODRlZDYtNmJiMC0xOGMwLTNhZDYtMGFkZTJkMzkyOTdhfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train505",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T08:25:00Z",
+          "end": "2026-09-28T10:10:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "YjlhMTUxZGUtODFlMS02MzFiLWFmZmMtOWU3MjYxYjk4NGM2fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train859",
+        "routeId": "11706",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T22:15:00Z",
+          "end": "2026-09-28T23:23:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "YmFhYTE0MWYtNTViMC0xN2FlLWMwNmEtMDE3YzBjNmI0YWYzfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train451",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T23:35:00Z",
+          "end": "2026-09-29T00:25:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": "1",
+          "sourceTimestamp": "2026-09-29T00:25:45Z",
+          "receivedAt": "2026-09-29T00:25:54.227174Z",
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": "1",
+          "sourceTimestamp": "2026-09-29T00:25:30Z",
+          "receivedAt": "2026-09-29T00:25:54.392017Z",
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": 38.91490936279297,
+          "longitude": -76.98866271972656,
+          "speedMetersPerSecond": 10.417499542236328,
+          "bearingDegrees": 247,
+          "vehicleId": "000020"
+        }
+      },
+      {
+        "id": "YmM4YTI2YzMtMGE1OS01NWQ2LWI3MTQtODEzYzI1Njk2OGFlfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train554",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T09:15:00Z",
+          "end": "2026-09-28T09:58:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "YmRlM2Y4Y2UtMjAwMS0zZTQwLTI1NzYtNGQ0ZTBjMTlhOWIzfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train415",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T11:00:00Z",
+          "end": "2026-09-28T12:02:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "YmY0YTQ2NTgtNmJmMy0wNmMzLTBlNmMtYTQ4YjFlNTYyZmYwfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train858",
+        "routeId": "11706",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T22:55:00Z",
+          "end": "2026-09-29T00:03:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "YzU1NzQxYWQtYzdkNC04M2NmLWQ0YjQtNzM4MTIyODhkYWQ3fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train511",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T09:05:00Z",
+          "end": "2026-09-28T10:48:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "Yzc4MTA2OTItZmU1My1kN2IzLTVhZTYtNzc2ZjRmYjk5YTdkfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train431",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T16:35:00Z",
+          "end": "2026-09-28T17:35:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "Y2E3MWRiODktZjU2NS05NDM1LTg4OGEtOTdjYTA4NjFjOGQ2fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train443",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T20:52:00Z",
+          "end": "2026-09-28T21:51:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "Y2Q1ZGQxYmMtYzIyNS01MjkxLWQyN2ItYzMyMDRlMmU5MTRjfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train418",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T15:15:00Z",
+          "end": "2026-09-28T16:17:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "ZDAyYzVlYmQtZDdjZS0wNTJjLWYxMDAtY2JlNmU4NGIwMGEzfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train445",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T21:30:00Z",
+          "end": "2026-09-28T22:35:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "ZDA4MjU2YTktZTAwMC1lZWYzLTdiMGUtNzZhOWY5ZWUzNzkzfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train439",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T19:45:00Z",
+          "end": "2026-09-28T20:45:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "ZDEyMDRjMjUtZmM5YS04ZTUxLTE4YjktNTEwZTU2NDQzN2EzfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train440",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T21:35:00Z",
+          "end": "2026-09-28T22:42:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "ZDNlYmY3YzItNjhmMC01ZjYyLTZlMWYtZDIyNTVlZmJkZjNifDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train413",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T10:40:00Z",
+          "end": "2026-09-28T11:43:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "ZDRjMDZmYzItOTUzNy1jOWZlLTkyN2EtYzNmZTJkMDlmZTAxfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train404",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T10:40:00Z",
+          "end": "2026-09-28T11:36:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "ZDVkNWY5YzEtZmJhZC1lOWEyLTNiZGUtMWRmYmZmY2Q0OGY3fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train870",
+        "routeId": "11704",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T08:50:00Z",
+          "end": "2026-09-28T10:23:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "ZDk5NzQ1Y2MtMzExYS1mMDNmLTMxOTctMGI4OWE2ODBiNDRhfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train883",
+        "routeId": "11704",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T23:25:00Z",
+          "end": "2026-09-29T00:47:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": "5",
+          "sourceTimestamp": "2026-09-29T00:25:45Z",
+          "receivedAt": "2026-09-29T00:25:54.227174Z",
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": "5",
+          "sourceTimestamp": "2026-09-29T00:25:30Z",
+          "receivedAt": "2026-09-29T00:25:54.392017Z",
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": 39.30125045776367,
+          "longitude": -77.55622100830078,
+          "speedMetersPerSecond": 19.13218879699707,
+          "bearingDegrees": 8,
+          "vehicleId": "000084"
+        }
+      },
+      {
+        "id": "ZGM4MWIxNTctNjYwNi05ZjdmLWRkMTUtMmE1NjNjYzk5NzU4fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train409",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T10:20:00Z",
+          "end": "2026-09-28T11:28:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "ZTE5OTM0MTAtMjM1ZC1mZTE4LTJhNzItNzE0ZjU4Mzc3YTc4fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train422",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T17:05:00Z",
+          "end": "2026-09-28T18:03:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "ZTU1YzQ1NDQtNDFmMi0xYzM2LWQ3OGMtMGZiNzY1MjgyMmJifDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train424",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T18:15:00Z",
+          "end": "2026-09-28T19:17:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "ZTYxMThhNjMtNTJmZC0xNTFhLTFhMDQtNDEzMjhhNThjMDVifDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train544",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T22:27:00Z",
+          "end": "2026-09-29T00:21:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": "3",
+          "sourceTimestamp": "2026-09-29T00:25:45Z",
+          "receivedAt": "2026-09-29T00:25:54.227174Z",
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": "3",
+          "sourceTimestamp": "2026-09-29T00:25:35Z",
+          "receivedAt": "2026-09-29T00:25:54.392017Z",
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": 39.55781936645508,
+          "longitude": -76.0745620727539,
+          "speedMetersPerSecond": 11.75505542755127,
+          "bearingDegrees": 69,
+          "vehicleId": "000033"
+        }
+      },
+      {
+        "id": "ZTg3NTI0ZTgtYjdlZi00N2Q5LTVmMWQtYmRjNGU5ZWQyZTRifDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train454",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-29T02:05:00Z",
+          "end": "2026-09-29T03:05:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "ZWIwOTY0OGEtZTViMy04ZmQyLThiZDktYTBiNGI4M2Y5ZDg5fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train892",
+        "routeId": "11704",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T10:22:00Z",
+          "end": "2026-09-28T12:15:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "ZWIzMGZmMGYtYjMzNC1hNzgwLTZkM2ItZjkyOTkwYTg3ODlifDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train428",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T19:40:00Z",
+          "end": "2026-09-28T20:40:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "ZWQwOTgzNTQtZjU0Ny01NWViLWY5NGEtMGNhMmQ2ZWIyYzVhfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train401",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T08:30:00Z",
+          "end": "2026-09-28T09:30:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "ZjczODA4NDUtMWFmNy1kYTMyLTcyOWUtOTRkMTBlMmQ5MDVjfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train873",
+        "routeId": "11704",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T19:30:00Z",
+          "end": "2026-09-28T20:51:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "ZjdmNDY2MmUtOWM0YS0yNzQ5LTMwMjctODhkMTQwYWM1ZjA0fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train448",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-29T00:05:00Z",
+          "end": "2026-09-29T01:07:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": "2",
+          "sourceTimestamp": "2026-09-29T00:25:45Z",
+          "receivedAt": "2026-09-29T00:25:54.227174Z",
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": "2",
+          "sourceTimestamp": "2026-09-29T00:25:29Z",
+          "receivedAt": "2026-09-29T00:25:54.392017Z",
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": 38.948795318603516,
+          "longitude": -76.8713607788086,
+          "speedMetersPerSecond": 0.4938666522502899,
+          "bearingDegrees": 44,
+          "vehicleId": "004912"
+        }
+      },
+      {
+        "id": "Zjk2M2NiN2QtMjRkNC03MmRjLTRlNGItN2M5YmQ1YzhmMmY3fDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train612",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T12:20:00Z",
+          "end": "2026-09-28T13:46:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "ZmM3MTI4ZWEtYzQyMi02NzA0LTdhMTQtNjFiOTZhMThkNzZhfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train447",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T22:00:00Z",
+          "end": "2026-09-28T22:50:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "ZmQ1YWZkZGQtYWFmOS0xNGY3LWE0MDQtODRkOTliYjY4ZWJkfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train881",
+        "routeId": "11704",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T22:20:00Z",
+          "end": "2026-09-29T00:25:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      },
+      {
+        "id": "ZmVmNTAyZWMtOTQyNC1lYTU0LWU4YzktNTZhMjA3ZjIzZTUwfDIwMjYwOTI4",
+        "scheduleVersion": "1",
+        "tripId": "Train400",
+        "routeId": "11705",
+        "serviceDate": "20260928",
+        "status": "UNKNOWN",
+        "scheduled": {
+          "provenance": "SCHEDULED",
+          "start": "2026-09-28T09:40:00Z",
+          "end": "2026-09-28T10:43:00Z"
+        },
+        "official": {
+          "source": "MARC_TRIP_UPDATES",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "status": "UNKNOWN",
+          "delaySeconds": null,
+          "scheduleRelationship": null
+        },
+        "position": {
+          "source": "MARC_VEHICLE_POSITIONS",
+          "observationId": null,
+          "sourceTimestamp": null,
+          "receivedAt": null,
+          "freshness": "UNAVAILABLE",
+          "conflict": false,
+          "provenance": "OFFICIAL_REALTIME",
+          "latitude": null,
+          "longitude": null,
+          "speedMetersPerSecond": null,
+          "bearingDegrees": null,
+          "vehicleId": null
+        }
+      }
+    ],
+    "nextAfter": null
+  }
+}

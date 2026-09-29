@@ -1,0 +1,101 @@
+{
+  "method": "GET",
+  "path": "/api/v1/stops?limit=5",
+  "status": 200,
+  "headers": {
+    "Cache-Control": "no-store",
+    "Content-Type": "application/json; charset=utf-8"
+  },
+  "body": {
+    "scheduleVersion": {
+      "id": "1",
+      "checksum": "e0d7d70270938ebfe2adcbe2fe779fbaf17c41a7c1a27a00fc72ba898e288ebc",
+      "timezone": "America/New_York",
+      "activatedAt": "2026-09-29T00:25:51.234457Z"
+    },
+    "provenance": "SCHEDULED",
+    "data": [
+      {
+        "id": "11940",
+        "code": "11940",
+        "name": "MARTINSBURG W VA MARC",
+        "description": null,
+        "latitude": 39.458534,
+        "longitude": -77.960739,
+        "zoneId": null,
+        "url": null,
+        "locationType": 0,
+        "parentId": null,
+        "timezone": null,
+        "wheelchairBoarding": 0,
+        "levelId": null,
+        "platformCode": null
+      },
+      {
+        "id": "11941",
+        "code": "11941",
+        "name": "DUFFIELDS W VA MARC eb",
+        "description": null,
+        "latitude": 39.362055,
+        "longitude": -77.828072,
+        "zoneId": null,
+        "url": null,
+        "locationType": 0,
+        "parentId": null,
+        "timezone": null,
+        "wheelchairBoarding": 0,
+        "levelId": null,
+        "platformCode": null
+      },
+      {
+        "id": "11942",
+        "code": "11942",
+        "name": "HARPERS FERRY W VA MARC eb",
+        "description": null,
+        "latitude": 39.324633,
+        "longitude": -77.731283,
+        "zoneId": null,
+        "url": null,
+        "locationType": 0,
+        "parentId": null,
+        "timezone": null,
+        "wheelchairBoarding": 0,
+        "levelId": null,
+        "platformCode": null
+      },
+      {
+        "id": "11943",
+        "code": "11943",
+        "name": "BRUNSWICK MD MARC eb",
+        "description": null,
+        "latitude": 39.312002,
+        "longitude": -77.627908,
+        "zoneId": null,
+        "url": null,
+        "locationType": 0,
+        "parentId": null,
+        "timezone": null,
+        "wheelchairBoarding": 0,
+        "levelId": null,
+        "platformCode": null
+      },
+      {
+        "id": "11944",
+        "code": "11944",
+        "name": "FREDERICK MARC eb",
+        "description": null,
+        "latitude": 39.411687,
+        "longitude": -77.40515,
+        "zoneId": null,
+        "url": null,
+        "locationType": 0,
+        "parentId": null,
+        "timezone": null,
+        "wheelchairBoarding": 0,
+        "levelId": null,
+        "platformCode": null
+      }
+    ],
+    "nextAfter": "11944"
+  }
+}

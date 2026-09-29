@@ -1,0 +1,57 @@
+{
+  "method": "GET",
+  "path": "/api/v1/routes",
+  "status": 200,
+  "headers": {
+    "Cache-Control": "no-store",
+    "Content-Type": "application/json; charset=utf-8"
+  },
+  "body": {
+    "scheduleVersion": {
+      "id": "1",
+      "checksum": "e0d7d70270938ebfe2adcbe2fe779fbaf17c41a7c1a27a00fc72ba898e288ebc",
+      "timezone": "America/New_York",
+      "activatedAt": "2026-09-29T00:25:51.234457Z"
+    },
+    "provenance": "SCHEDULED",
+    "data": [
+      {
+        "id": "11704",
+        "agencyId": "30034",
+        "shortName": "MARC",
+        "longName": "BRUNSWICK - WASHINGTON",
+        "description": null,
+        "routeType": 2,
+        "url": null,
+        "color": "FF8000",
+        "textColor": "FFFFFF",
+        "sortOrder": null
+      },
+      {
+        "id": "11705",
+        "agencyId": "30034",
+        "shortName": "MARC",
+        "longName": "PENN - WASHINGTON",
+        "description": null,
+        "routeType": 2,
+        "url": null,
+        "color": "FF8000",
+        "textColor": "FFFFFF",
+        "sortOrder": null
+      },
+      {
+        "id": "11706",
+        "agencyId": "30034",
+        "shortName": "MARC",
+        "longName": "CAMDEN - WASHINGTON",
+        "description": null,
+        "routeType": 2,
+        "url": null,
+        "color": "FF8000",
+        "textColor": "FFFFFF",
+        "sortOrder": null
+      }
+    ],
+    "nextAfter": null
+  }
+}
