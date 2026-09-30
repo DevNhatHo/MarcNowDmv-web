@@ -47,6 +47,29 @@ Alert text fields are nullable translation objects (`translation: [{text, langua
 
 Source-health states include HEALTHY, DEGRADED, STALE and UNAVAILABLE. A GTFS-RT 3.0 feed accepted with warning is usable but DEGRADED; stale retained alerts must show last-received time. Feed health is secondary to the commuter content and does not replace per-evidence freshness. Display no-alert success only with usable, sufficiently current evidence; otherwise explain unavailable or outdated alert information.
 
+## Field types corrected during WEB-003 (backend untouched)
+
+WEB-003 read the handler DTOs in `internal/httpapi/trains.go` and `catalog.go` rather than
+relying on this document's prose, and found field types the planning captures could not
+show because the sampled values happened to be present or integral. The implemented wire
+types use the DTO definitions; the captures remain consistent with both readings.
+
+| Field | Actual type | Why the capture did not show it |
+|---|---|---|
+| `official.scheduleRelationship`, `officialStopUpdates[].scheduleRelationship` | nullable **number** (GTFS-RT numeric enum), not a string | null in every sampled row |
+| `officialStopUpdates[].stopId`, `.resolvedSequence` | **nullable** | the sampled updates all resolved |
+| `nextStop`, `nextUpdate` (envelope cursors) | nullable **number** | null in every sample |
+| `routes[].shortName`, `.longName`, `stops[].name`, `.wheelchairBoarding` | **nullable** | populated in the sampled catalog |
+| `sourceHealth[].signals` | array that may arrive **null**, from a nil Go slice | non-nil in every sample |
+| `informedEntity[].trip.scheduleRelationship` | serialized raw JSON; shape is not contracted | null in every sample |
+
+Cursor requirements were also verified in the query parsers, not the prose:
+`/api/v1/trains` with `after` requires **both** `serviceDate` and `version`, and rejects a
+cursor whose embedded service date differs from `serviceDate`. `/api/v1/alerts` with
+`after` requires **both** `snapshot` and `version`. Train **detail accepts no `version`
+parameter** at all, only `limit`, `afterStop` and `afterUpdate`. The client refuses these
+combinations locally so a request certain to be rejected is never sent.
+
 ## Documentation discrepancies (backend untouched)
 
 - Backend API prose uses `stopAfter`/`updateAfter`; handler uses `afterStop`/`afterUpdate` (stop cursor verified by HTTP).

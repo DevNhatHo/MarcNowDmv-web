@@ -10,11 +10,18 @@ Use the [official installation guide](https://nextjs.org/docs/app/getting-starte
 
 Server Components own the document and stable application shell. Small Client Components own interactive filters and resource subscriptions. Initial API reads can be client-side for this local milestone; server rendering realtime data is not required. Route URLs preserve line/service-date filters and opaque train identity. Do not create competing server/client fetch owners.
 
+WEB-003 implemented this boundary. `lib/types/*` holds the wire contract, `lib/api/contract.ts`
+the guard primitives, `lib/api/parse.ts` one parser per response, `lib/api/errors.ts` the closed
+set of typed failures, `lib/api/client.ts` the single request function, `lib/api/{trains,alerts,catalogs,health}.ts`
+the resource modules, `lib/api/pagination.ts` bounded continuation and `lib/api/paths.ts` the
+allowlist shared with the proxy. Structure is validated strictly while enum vocabulary is never
+rejected, so an unrecognized backend state degrades to unknown instead of breaking a screen.
+
 A centralized typed client owns request construction, cancellation, errors, and contract parsing. Resource modules handle trains, alerts, and catalogs. Presentation helpers format values only; they never infer operational state. Known enum values have explicit labels, unknown values have neutral fallback labels. Validate response structure and nullable fields at the boundary; keep IDs as strings. Avoid a large schema dependency unless justified.
 
 ## Local proxy
 
-Browser → same-origin `/api/backend/...` → server-only `API_BASE_URL` (default local Go origin). The planned Route Handler allows only GET/HEAD and explicit health/catalog/train/alert paths. Preserve query strings, upstream status codes and JSON; reject arbitrary target URLs, unsupported paths/methods, and redirects to other origins. Apply a 10-second timeout, propagate cancellation where possible, and return a safe 502/504 on transport failure. Set `Cache-Control: no-store` and use uncached upstream fetches. Do not log bodies or secrets. No business logic or altered backend contract in this proxy.
+Browser → same-origin `/api/backend/...` → server-only `API_BASE_URL` (default local Go origin). The implemented Route Handler allows only GET/HEAD and explicit health/catalog/train/alert paths. Preserve query strings, upstream status codes and JSON; reject arbitrary target URLs, unsupported paths/methods, and redirects to other origins. Apply a 10-second timeout, propagate cancellation where possible, and return a safe 502/504 on transport failure. Set `Cache-Control: no-store` and use uncached upstream fetches. Do not log bodies or secrets. No business logic or altered backend contract in this proxy.
 
 The live backend response to an Origin request did not contain CORS allow headers. This proxy avoids requiring a backend change. `.env.example` deliberately uses a relative public base and server-only backend origin. Never expose database configuration to the browser.
 

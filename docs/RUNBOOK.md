@@ -12,16 +12,34 @@ Backend: existing `/home/nhat/MarcNowDmv` (logical name `marc-now-dmv-backend`),
 1. Use Node 24 LTS and npm 11 (verified Node 24.13.0, npm 11.6.2). The framework minimum is Node 20.9; the repository's development dependencies may require a newer version, so use the verified Node 24 environment.
 2. Run `npm ci` from the frontend repository. The lockfile pins all dependencies.
 3. Run `npm run dev`, then open http://localhost:3000. Port 3000 is explicit; if busy, stop your earlier frontend server rather than silently switching ports.
-4. Run `npm test` (non-watch Vitest), `npm run lint` (ESLint CLI, zero warnings), `npm run typecheck` (Next route type generation, then strict TypeScript), and `npm run build` (production build). Avoid running build concurrently with the development server.
+4. Run `npm test` (non-watch Vitest, collecting `tests/**/*.test.ts` and `.test.tsx`), `npm run lint` (ESLint CLI, zero warnings), `npm run typecheck` (Next route type generation, then strict TypeScript), and `npm run build` (production build). Avoid running build concurrently with the development server.
 5. For production preview, stop development, run `npm run build`, then `npm start`; open the same local URL. Stop your foreground server with Ctrl-C.
 
 The starter tests assert the main landmark/heading and honest unavailable-live-information copy. Browser review evidence belongs in `docs/reviews/WEB-001/`. A permanent Playwright suite is deferred to WEB-004; WEB-001 uses temporary Playwright tooling with installed Chrome for its required rendered review. No future empty API/component packages are scaffolded.
 
-## Future backend integration (WEB-003 onward)
+## Backend integration (implemented by WEB-003)
 
-Copy `.env.example` to `.env.local` when implementing the proxy. Keep `API_BASE_URL=http://localhost:8080` server-side and `NEXT_PUBLIC_API_BASE_URL=/api/backend` relative. Restart Next after environment changes; never commit `.env.local` or credentials. These settings are documented but are not consumed by the starter.
+Copy `.env.example` to `.env.local` before using the proxy. Keep `API_BASE_URL=http://localhost:8080` server-side and `NEXT_PUBLIC_API_BASE_URL=/api/backend` relative. Restart Next after environment changes; never commit `.env.local` or credentials. `API_BASE_URL` is read by the proxy route handler and defaults to
+`http://localhost:8080` when unset; `NEXT_PUBLIC_API_BASE_URL` is the relative base the
+typed client requests and defaults to `/api/backend`. Neither the backend origin nor any
+database setting reaches the browser bundle.
+
+The proxy serves `GET`/`HEAD` on `/api/backend/<upstream path>`, forwarding only `/health`,
+`/api/v1/routes`, `/api/v1/stops`, `/api/v1/trains`, `/api/v1/trains/{id}` and
+`/api/v1/alerts`. Anything else returns 404 without contacting the backend, any other method
+returns 405, a timeout returns 504 `upstream_timeout`, an unreachable backend returns 502
+`upstream_unavailable` and a cancelled request returns 499. Upstream status and JSON are
+otherwise unchanged.
 
 Start the existing backend following its own docs/RUNBOOK.md with its DATABASE_URL and HTTP_ADDR. This frontend does not own migrations/ingestion; never drop or reseed user databases for a smoke test. Check backend `/health`, then the frontend train routes once implemented. Health does not prove fresh feeds: inspect sourceHealth and timestamps. The retained planning database was `marc_208_live`.
+
+To repeat the WEB-003 live smoke check: start the backend against a retained database
+(`DATABASE_URL=...marc_208_live HTTP_ADDR=127.0.0.1:8080 go run ./cmd/api` from the backend
+repository), run `npm start` here, then compare `curl http://127.0.0.1:8080/<path>` with
+`curl http://localhost:3000/api/backend/<path>`. Only `evaluatedAt` may differ, because it
+is the read clock. Never ingest feeds or change schema for a smoke test, and stop both
+servers afterwards. A live check is deliberately not part of `npm test`, which must stay
+deterministic; write any live probe as a temporary test file and delete it after the run.
 
 Each completed ticket records actual commands/results and visual limitations. Tests use deterministic data; live backend smoke remains separate. No Go checks are required for this frontend-only ticket; backend changes require separately authorized work and backend checks.
 
