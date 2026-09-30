@@ -2,7 +2,7 @@
 
 ## Current state
 
-The repository now has a minimal Next.js App Router starter. Only `/` is implemented; API integration, train screens and map remain future tickets. No backend or environment variables are needed for the starter.
+`/trains` and `/trains/[id]` read the local backend through the same-origin proxy and need it running with `.env.local` in place. `/` and `/alerts` are still placeholders owned by WEB-009 and WEB-008, and the map remains future work.
 
 Frontend: `/home/nhat/marc-now-dmv-web`, URL `http://localhost:3000`.
 Backend: existing `/home/nhat/MarcNowDmv` (logical name `marc-now-dmv-backend`), future URL `http://localhost:8080`. Do not rename or modify it for frontend work.

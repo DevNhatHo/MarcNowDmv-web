@@ -1,0 +1,62 @@
+/* Shared loading, empty and error presentation. */
+
+.skeleton {
+  display: grid;
+  gap: var(--space-2);
+}
+
+/* Quiet blocks that reflect the final row geometry rather than a spinner. */
+.bar {
+  block-size: var(--space-12);
+  border: var(--border-thin) solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface);
+}
+
+.notice {
+  padding: var(--space-4);
+  border: var(--border-thin) solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface);
+}
+
+.noticeTitle {
+  font-weight: var(--weight-strong);
+}
+
+.noticeBody {
+  margin-block-start: var(--space-2);
+  color: var(--color-text-secondary);
+}
+
+.critical .noticeTitle {
+  color: var(--color-critical);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-block-start: var(--space-4);
+}
+
+.button {
+  min-block-size: var(--target-min);
+  padding-inline: var(--space-4);
+  border: var(--border-thin) solid var(--color-border);
+  border-radius: var(--radius-small);
+  background: var(--color-surface);
+  color: var(--color-information);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+}
+
+.button:hover {
+  text-decoration: underline;
+}
+
+.button[disabled] {
+  color: var(--color-text-secondary);
+  cursor: default;
+  text-decoration: none;
+}

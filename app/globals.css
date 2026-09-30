@@ -98,6 +98,18 @@ a {
   text-underline-offset: var(--space-1);
 }
 
+/* Available to assistive technology, absent from the visual layout. */
+.visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 @media (min-width: 48rem) {
   :root {
     --gutter: var(--space-6);

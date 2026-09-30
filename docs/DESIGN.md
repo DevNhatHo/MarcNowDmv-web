@@ -53,6 +53,10 @@ Direction and train number appear only if a future backend contract supports the
 | UNKNOWN or unexpected enum | Neutral “Realtime status unavailable” or context-specific unavailable label; never green/healthy. |
 | Usable degraded alerts | Retain alert content with “Alert source degraded”; not fully offline. |
 | Refresh failure | “Couldn’t refresh. Showing information received [time]. Try again.” |
+| Official stop reported skipped | “Reported skipped” beside that scheduled call, neutral or warning treatment; never advance the next stop yourself. |
+| Unrecognized `scheduleRelationship` number | Neutral unavailable label; never guess a meaning from the number. |
+
+`scheduleRelationship` is a nullable **numeric** GTFS-RT enum at both trip and stop level, not a string. WEB-005 owns mapping those numbers to the labels above; only documented values get a label, and anything else is unavailable rather than guessed.
 
 Do not treat movement as severity of official service, or infer cause from stationary evidence. Scheduled times, official estimates and MARC Now calculations always have visible provenance. All status distinctions must survive grayscale and screen readers.
 
@@ -96,6 +100,17 @@ Navigation labels and the brand override the global `overflow-wrap: anywhere` wi
 `overflow-wrap: normal`: the global rule exists so a long opaque train identifier cannot
 overflow, but it split short labels mid-word at 200% zoom. Long-token wrapping still applies
 to content. Evidence is in [the WEB-004 review](reviews/WEB-004/README.md).
+
+## WEB-005 list and detail implementation
+
+The list is ordered by scheduled departure, not by the backend's run-identity pagination
+order; the partial notice states that a later page may insert rows above existing ones.
+Line and stop names are joined from the catalogs only when schedule versions match, and fall
+back to identifiers otherwise. The top-level status is the only current claim; a disagreeing
+retained `official.status` is shown as what the operator last published and marked no longer
+current. Evidence with no timestamp reads "No report received" as a whole phrase, never a
+prefix concatenated onto an absence. Evidence and review limitations are in
+[the WEB-005 review](reviews/WEB-005/README.md).
 
 ## Map extension
 

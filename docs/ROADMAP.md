@@ -4,7 +4,7 @@ The original 12-ticket core milestone is followed by five required map tickets; 
 
 ## Dependency order
 
-Recommended linear order: WEB-001 → WEB-002 → WEB-003 → WEB-004 → WEB-005 → WEB-006 → WEB-007 → WEB-008 → WEB-009 → WEB-010 → WEB-011 → WEB-012.
+Recommended linear order: WEB-001 → WEB-002 → WEB-003 → WEB-004 → WEB-005 (list and detail, absorbing the former WEB-006) → WEB-007 → WEB-008 → WEB-009 → WEB-010 → WEB-011 → WEB-012.
 
 Actual dependencies: 002←001; 003←001; 004←002; 005←003+004; 006←005; 007←006; 008←003+004; 009←005+008; 010←007+008+009; 011←010; 012←011. The linear sequence is convenient; it is not a requirement to introduce parallel agents.
 

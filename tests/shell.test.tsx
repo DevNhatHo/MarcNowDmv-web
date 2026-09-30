@@ -4,7 +4,6 @@ import AppShell, { independenceNotice } from "../components/AppShell";
 import { isCurrent } from "../components/SiteNavigation";
 import AlertsPage from "../app/alerts/page";
 import PulsePage from "../app/page";
-import TrainsPage from "../app/trains/page";
 
 const pathname = vi.hoisted(() => ({ value: "/" }));
 vi.mock("next/navigation", () => ({ usePathname: () => pathname.value }));
@@ -98,9 +97,9 @@ describe("current destination", () => {
 });
 
 describe("route placeholders", () => {
+  // /trains is a real screen from WEB-005; only Pulse and Alerts remain placeholders.
   it.each([
     ["Pulse", PulsePage, "MARC Pulse", "How is MARC running right now?"],
-    ["Trains", TrainsPage, "Trains", "Which train do I care about?"],
     ["Alerts", AlertsPage, "Alerts", "Is there anything important I need to know?"],
   ])("says plainly that %s is not built yet", (_name, Page, title, question) => {
     render(<Page />);
@@ -110,10 +109,6 @@ describe("route placeholders", () => {
   });
 
   it("explains that an empty screen is not an operational claim", () => {
-    render(<TrainsPage />);
-    expect(
-      screen.getByText(/means the screen is unfinished, not that no trains are scheduled/),
-    ).toBeVisible();
     render(<AlertsPage />);
     expect(
       screen.getByText(/not evidence that there are no disruptions/),

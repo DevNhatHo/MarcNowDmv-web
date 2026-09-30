@@ -1,10 +1,10 @@
 # Frontend current state
 
-Updated: 2026-09-29 (America/New_York).
+Updated: 2026-09-30 (America/New_York).
 
 ## Milestone and work status
 
-[WEB-001](tickets/WEB-001.md) through [WEB-004](tickets/WEB-004.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. `/`, `/trains` and `/alerts` exist inside a responsive shell, but each is an honest placeholder; no screen consumes the API client yet, so live data is still not presented anywhere. Current ticket: none. Recommended next: [WEB-005 — service-date train list](tickets/WEB-005.md). WEB-005–012 and WEB-MAP-1–5 remain NOT_STARTED. This session stopped after WEB-004.
+[WEB-001](tickets/WEB-001.md) through [WEB-005](tickets/WEB-005.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. `/trains` and `/trains/[id]` are real screens reading the local backend through the typed client; `/` and `/alerts` remain honest placeholders owned by WEB-009 and WEB-008. Current ticket: none. Recommended next: [WEB-007 — movement and delay-state presentation](tickets/WEB-007.md). WEB-007–012 and WEB-MAP-1–5 remain NOT_STARTED. **WEB-006 was merged into WEB-005** on 2026-09-29: the list's detail links and the detail route cannot ship in separate tickets without leaving every row pointing at a route that does not exist, so one ticket now delivers both surfaces and reviews both. WEB-007 depends on WEB-005 accordingly.
 
 Repository: `/home/nhat/marc-now-dmv-web`, main branch tracking `origin/main` at `git@github.com:DevNhatHo/MarcNowDmv-web.git`, configured on the user's instruction after WEB-003 and pushed through `c6b3006`. Earlier ticket records state that no remote existed, which was true when they were written. Backend `/home/nhat/MarcNowDmv` was unchanged; unrelated `.idea/` remains untouched. The backend, the full shell, the map and AWS remain outside WEB-001–003; API integration is now implemented as a boundary only, with no screen consuming it.
 
@@ -108,6 +108,43 @@ Limitations: loading, error and real-data states are not applicable, because the
 performs no fetch. The real browser check of the WEB-003 client is still owed and belongs
 to WEB-005, the first screen that calls it. Chrome only; no full accessibility audit.
 
+## WEB-005 screens as implemented
+
+`/trains` lists the whole scheduled service date with line and date filters held in the URL,
+explicit refresh and bounded load-more; `/trains/[id]` shows one train's identity, dominant
+official status, location, scheduled stops with separately labelled official estimates, and
+a closed Data status disclosure. Presentation helpers live in `lib/presentation/`;
+`components/useResource.ts` gives one in-flight request per resource with explicit refresh
+only, since WEB-010 owns polling.
+
+Rows are ordered by scheduled departure: the backend paginates by run identity, so live rows
+arrived 19:45, 15:40, 06:12, 17:20. Sorting is presentation over published times and infers
+nothing, and the partial notice says a later page may insert rows above existing ones.
+Catalog names for lines and stops are joined only when schedule versions match.
+
+Checks executed for WEB-005: `npm test` (7 files, **107 tests**), `npm run lint` (zero
+warnings), `npm run typecheck`, `npm run build` and `npx playwright test` (12 tests, 6 per
+viewport). Manual verification ran against the real backend reading retained
+`marc_208_live`, no ingestion, no schema change: load-more completed the service date at
+**96 trains ordered 04:50 → 20:05**, the back link restored the filters, an empty date and an
+unknown identifier both rendered honest copy, and every live row read "Realtime status
+unavailable · No report received" with nothing reading "On time". 0 px overflow and 44 px
+targets at both viewports. Twelve screenshots and the design checklist are in
+[the review record](reviews/WEB-005/README.md).
+
+**The WEB-003 browser check is discharged**: both screens drove the typed client from a real
+browser through the same-origin proxy with no CORS error and no unexpected console error.
+
+Three defects were found by looking while every automated check passed: rows read "Reported
+not reported"; the list arrived in backend rather than chronological order; and detail showed
+the raw route id where the list showed the line name. All fixed.
+
+Limitations: the retained database holds no fresh realtime evidence, so no live ON_TIME,
+delayed, cancelled or fresh-position row was observed; those branches rest on tests over
+captured and clearly synthetic fixtures. Detail loads up to 200 stops and updates and says
+when more exist, but does not yet page `afterStop`/`afterUpdate`; no retained MARC trip
+approaches that bound.
+
 ## Next session
 
-Read AGENTS.md, architecture/design/API contract and WEB-005. Inspect status, verify the WEB-003 and WEB-004 dependencies are complete, mark WEB-005 IN_PROGRESS and implement only the service-date train list. Use the WEB-003 client rather than fetching directly, reuse the WEB-004 shell and the WEB-002 tokens, and keep the list bounded: it must not request detail per row. WEB-005 is a visual ticket, so rendered mobile and desktop review of the loading, empty, error and real-data states is required and automated tests alone cannot complete it; it is also where the owed real browser check of the same-origin client belongs. Preserve the existing backend; no map work is authorized.
+Read AGENTS.md, architecture/design/API contract and WEB-007. Inspect status, verify the WEB-005 dependency is complete, mark WEB-007 IN_PROGRESS and add only the calculated movement, next-stop and delay-trend presentation to the existing detail hierarchy. `calculated` is an envelope sibling of `data`; each subobject is read independently, an UNKNOWN movement may still carry a historic `stationarySeconds` that must never be shown as a current duration, and the delay trend stays independent of GPS freshness. The retained database yields only UNKNOWN calculations, so the fresh MOVING, STATIONARY and trend branches need clearly labelled synthetic fixtures and their screenshots must say they are synthetic. WEB-007 is a visual ticket; automated tests alone cannot complete it. Preserve the existing backend; no map work is authorized.
