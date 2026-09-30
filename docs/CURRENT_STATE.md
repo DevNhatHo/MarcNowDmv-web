@@ -4,7 +4,7 @@ Updated: 2026-09-29 (America/New_York).
 
 ## Milestone and work status
 
-[WEB-001](tickets/WEB-001.md) through [WEB-003](tickets/WEB-003.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. Only `/` exists as a page; no screen consumes the client yet, so live data is still not presented anywhere. Current ticket: none. Recommended next: [WEB-004 — responsive application shell](tickets/WEB-004.md). WEB-004–012 and WEB-MAP-1–5 remain NOT_STARTED. This session stopped after WEB-003.
+[WEB-001](tickets/WEB-001.md) through [WEB-004](tickets/WEB-004.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. `/`, `/trains` and `/alerts` exist inside a responsive shell, but each is an honest placeholder; no screen consumes the API client yet, so live data is still not presented anywhere. Current ticket: none. Recommended next: [WEB-005 — service-date train list](tickets/WEB-005.md). WEB-005–012 and WEB-MAP-1–5 remain NOT_STARTED. This session stopped after WEB-004.
 
 Repository: `/home/nhat/marc-now-dmv-web`, main branch tracking `origin/main` at `git@github.com:DevNhatHo/MarcNowDmv-web.git`, configured on the user's instruction after WEB-003 and pushed through `c6b3006`. Earlier ticket records state that no remote existed, which was true when they were written. Backend `/home/nhat/MarcNowDmv` was unchanged; unrelated `.idea/` remains untouched. The backend, the full shell, the map and AWS remain outside WEB-001–003; API integration is now implemented as a boundary only, with no screen consuming it.
 
@@ -75,6 +75,39 @@ instead, and a real browser check belongs with the first screen that consumes th
 Design verification is not applicable. `npm test` now also collects `tests/**/*.test.ts`;
 the command is unchanged. Go checks were NOT RUN: the backend is untouched.
 
+## WEB-004 shell as implemented
+
+`components/AppShell` provides the skip link, header, one main landmark and the verbatim
+independence footer; `SiteNavigation` is the only Client Component, because only it needs
+the current path. `RoutePlaceholder` carries the honest not-built-yet messaging on `/`,
+`/trains` and `/alerts`. The current destination is marked by colour, weight and a
+persistent underline together plus `aria-current`, so it survives grayscale. Placeholders
+contain no figures at all, and each states that an empty screen is not an operational
+claim.
+
+Playwright now drives the installed system Chrome through the `chrome` channel at 360×800
+and 1280×900; no browser binary is downloaded. `npm run e2e` builds and starts the
+production server itself.
+
+Checks executed for WEB-004: `npm test` (5 files, **74 tests**), `npm run lint` (zero
+warnings), `npm run typecheck`, `npm run build` (`/`, `/trains`, `/alerts` static;
+`/api/backend/[...path]` dynamic) and `npx playwright test` (**12 tests, 6 per viewport**).
+Measured from the live DOM at both viewports: 0 px horizontal overflow, 44 px navigation
+targets, one `h1` per page, 960 px capped desktop content, a 3 px skip-link focus ring and
+`--motion-duration` of 0s under reduced motion. Fourteen screenshots and the full design
+checklist are in [the review record](reviews/WEB-004/README.md).
+
+Two defects were found and fixed. Next's `title.template` applies to **child** segments
+only, so the root page rendered a bare `Pulse` while the others rendered the full template;
+it now sets its title absolutely. Separately, navigation labels broke **mid-word** at 200%
+zoom on a 360 px viewport because WEB-002's global `overflow-wrap: anywhere` is wrong for a
+short label — every automated check passed while this was broken, and only the rendered
+review caught it.
+
+Limitations: loading, error and real-data states are not applicable, because the shell
+performs no fetch. The real browser check of the WEB-003 client is still owed and belongs
+to WEB-005, the first screen that calls it. Chrome only; no full accessibility audit.
+
 ## Next session
 
-Read AGENTS.md, architecture/design/API contract and WEB-004. Inspect status, verify the WEB-002 dependency is complete, mark WEB-004 IN_PROGRESS and implement only the responsive application shell. Reuse the WEB-002 tokens and the WEB-003 boundary rather than fetching directly or restyling. WEB-004 is a visual ticket, so rendered mobile and desktop review is required and automated tests alone cannot complete it; it is also where a real browser check of the same-origin client belongs. Preserve the existing backend; no map work is authorized.
+Read AGENTS.md, architecture/design/API contract and WEB-005. Inspect status, verify the WEB-003 and WEB-004 dependencies are complete, mark WEB-005 IN_PROGRESS and implement only the service-date train list. Use the WEB-003 client rather than fetching directly, reuse the WEB-004 shell and the WEB-002 tokens, and keep the list bounded: it must not request detail per row. WEB-005 is a visual ticket, so rendered mobile and desktop review of the loading, empty, error and real-data states is required and automated tests alone cannot complete it; it is also where the owed real browser check of the same-origin client belongs. Preserve the existing backend; no map work is authorized.

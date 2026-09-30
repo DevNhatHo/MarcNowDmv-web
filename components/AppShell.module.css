@@ -1,0 +1,134 @@
+/*
+ * Shell layout only. Every value comes from the WEB-002 role tokens so the shell cannot
+ * drift from the rest of the product, and nothing here uses colour as the sole carrier of
+ * meaning.
+ */
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100dvh;
+}
+
+/* Visible only while focused, so keyboard users reach main content first. */
+.skipLink {
+  position: absolute;
+  inset-inline-start: var(--space-2);
+  inset-block-start: var(--space-2);
+  z-index: 1;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-small);
+  background: var(--color-surface);
+  color: var(--color-information);
+  font-weight: var(--weight-medium);
+  transform: translateY(calc(-100% - var(--space-4)));
+}
+
+.skipLink:focus-visible {
+  transform: none;
+}
+
+.header {
+  border-block-end: var(--border-thin) solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.headerInner,
+.main,
+.footerInner {
+  margin-inline: auto;
+  inline-size: 100%;
+  max-inline-size: var(--width-content);
+  padding-inline: var(--gutter);
+}
+
+.headerInner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-6);
+  padding-block: var(--space-3);
+}
+
+.brand {
+  overflow-wrap: normal;
+  color: var(--color-text);
+  font-size: var(--text-section);
+  font-weight: var(--weight-strong);
+  text-decoration: none;
+}
+
+.brand:hover {
+  text-decoration: underline;
+}
+
+.nav {
+  margin-inline-start: auto;
+}
+
+.navList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The tap target is the full minimum height; the label itself stays compact. */
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--target-min);
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  /*
+   * The global rule breaks anywhere so a long opaque identifier cannot overflow. A short
+   * navigation label must never be split mid-word, which is what that rule did at 200%
+   * zoom on a 360px viewport; the list wraps between items instead.
+   */
+  overflow-wrap: normal;
+}
+
+.navLink:hover {
+  text-decoration: underline;
+}
+
+/*
+ * The current destination is marked by weight, colour and a persistent underline together,
+ * so it survives grayscale and does not depend on the accent alone.
+ */
+.navLink[data-current="true"] {
+  color: var(--color-text);
+  font-weight: var(--weight-strong);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: var(--space-1);
+}
+
+.main {
+  flex: 1;
+  padding-block: var(--space-8) var(--space-12);
+}
+
+.footer {
+  border-block-start: var(--border-thin) solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.independence {
+  margin-inline: auto;
+  inline-size: 100%;
+  max-inline-size: var(--width-content);
+  padding-inline: var(--gutter);
+  padding-block: var(--space-6);
+  color: var(--color-text-secondary);
+  font-size: var(--text-small);
+}
+
+@media (min-width: 48rem) {
+  .headerInner {
+    padding-block: var(--space-4);
+  }
+}

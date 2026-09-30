@@ -1,24 +1,19 @@
-import styles from "./page.module.css";
+import type { Metadata } from "next";
+import RoutePlaceholder from "../components/RoutePlaceholder";
 
-export default function Home() {
+// The root layout's title template applies to child segments only, and this page shares
+// the root segment, so its title is written in full rather than inherited.
+export const metadata: Metadata = {
+  title: { absolute: "MARC Pulse · MARC Now DMV" },
+};
+
+export default function PulsePage() {
   return (
-    <main className={styles.page}>
-      <div className={styles.introduction}>
-        <p className={styles.eyebrow}>Your MARC commute</p>
-        <h1 className={styles.title}>MARC Now DMV</h1>
-        <p className={styles.intro}>A clearer view of your train.</p>
-      </div>
-      <p className={styles.notice}>
-        Train information is coming soon. Live service information is not
-        available here yet.
-      </p>
-      <details className={styles.about}>
-        <summary>About this preview</summary>
-        <p>
-          MARC Now DMV is an independent service and is not affiliated with or
-          endorsed by MDOT MTA.
-        </p>
-      </details>
-    </main>
+    <RoutePlaceholder
+      question="How is MARC running right now?"
+      title="MARC Pulse"
+      explanation="This overview is not built yet, so nothing here reports how MARC is running. No live service information is shown anywhere in this app at the moment."
+      arriving="It will summarise each line's reported status and current MARC advisories, and say plainly when that information is unavailable rather than implying that service is fine."
+    />
   );
 }

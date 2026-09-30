@@ -14,8 +14,15 @@ Backend: existing `/home/nhat/MarcNowDmv` (logical name `marc-now-dmv-backend`),
 3. Run `npm run dev`, then open http://localhost:3000. Port 3000 is explicit; if busy, stop your earlier frontend server rather than silently switching ports.
 4. Run `npm test` (non-watch Vitest, collecting `tests/**/*.test.ts` and `.test.tsx`), `npm run lint` (ESLint CLI, zero warnings), `npm run typecheck` (Next route type generation, then strict TypeScript), and `npm run build` (production build). Avoid running build concurrently with the development server.
 5. For production preview, stop development, run `npm run build`, then `npm start`; open the same local URL. Stop your foreground server with Ctrl-C.
+6. Run `npm run e2e` (Playwright) for the rendered browser checks. It builds and starts the
+   production server itself and drives the **installed system Chrome** through the `chrome`
+   channel, so no browser binary is downloaded; a machine without Chrome must install it
+   rather than fetch Playwright's bundled browsers. Specs live in `tests/e2e/*.spec.ts` and
+   run at both required viewports, 360×800 and 1280×900. Vitest never collects them, and
+   Playwright never collects Vitest's `*.test.ts(x)` files. Stop any server you started by
+   hand first, or the runner will reuse it.
 
-The starter tests assert the main landmark/heading and honest unavailable-live-information copy. Browser review evidence belongs in `docs/reviews/WEB-001/`. A permanent Playwright suite is deferred to WEB-004; WEB-001 uses temporary Playwright tooling with installed Chrome for its required rendered review. No future empty API/component packages are scaffolded.
+Unit tests assert the shell's landmarks, navigation, current-destination marking and the verbatim independence footer, plus the API boundary's contract parsing. Browser review evidence belongs in `docs/reviews/<ticket>/`. WEB-004 established the permanent Playwright suite; WEB-001 had used temporary tooling for its rendered review.
 
 ## Backend integration (implemented by WEB-003)
 

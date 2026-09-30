@@ -1,0 +1,42 @@
+/* Placeholder layout. Deliberately plain: a placeholder must not resemble real content. */
+
+.placeholder {
+  max-inline-size: var(--width-reading);
+}
+
+.question {
+  margin-block-end: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+}
+
+.title {
+  font-size: var(--text-title);
+}
+
+.status {
+  margin-block-start: var(--space-6);
+  padding: var(--space-4);
+  border: var(--border-thin) solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface);
+}
+
+.statusLabel {
+  color: var(--color-unknown);
+  font-size: var(--text-small);
+  font-weight: var(--weight-strong);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.explanation {
+  margin-block-start: var(--space-2);
+}
+
+.arriving {
+  margin-block-start: var(--space-4);
+  color: var(--color-text-secondary);
+  font-size: var(--text-small);
+}

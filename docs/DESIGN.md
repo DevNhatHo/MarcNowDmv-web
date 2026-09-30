@@ -84,6 +84,19 @@ Before DONE, answer: What dominates? Can it be understood in five seconds? Can a
 
 The footer must read exactly: MARC Now DMV is an independent service and is not affiliated with or endorsed by MDOT MTA.
 
+## WEB-004 shell implementation
+
+The shell implements the skip link, header with Pulse/Trains/Alerts navigation, one main
+landmark, the constrained content region and the verbatim independence footer. The brand is
+a link rather than a heading, so every page keeps a single `h1` naming what it answers. The
+current destination uses colour, weight and a persistent underline together with
+`aria-current`, never colour alone. Navigation targets measure 44 px.
+
+Navigation labels and the brand override the global `overflow-wrap: anywhere` with
+`overflow-wrap: normal`: the global rule exists so a long opaque train identifier cannot
+overflow, but it split short labels mid-word at 200% zoom. Long-token wrapping still applies
+to content. Evidence is in [the WEB-004 review](reviews/WEB-004/README.md).
+
 ## Map extension
 
 Add Map navigation when WEB-MAP-2 delivers a usable route view; retain the existing Pulse/Trains/Alerts core. System mode answers “Where are the trains right now?” Focus mode emphasizes the selected train and its canonical shape, with persistent shared detail below the map on mobile. Current solid markers and historical outlined markers have explicit text labels; unknown position has a text-list fallback. Follow pauses on manual pan or stale observations. No continuous movement, excessive POIs/controls, giant popups or color-only trust states. See [MAP_PLAN.md](MAP_PLAN.md) for data gates and required map-specific visual scenarios.
