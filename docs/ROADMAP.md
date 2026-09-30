@@ -1,6 +1,6 @@
 # Local frontend roadmap
 
-The original 12-ticket core milestone is followed by five required map tickets; neither milestone is a production deployment plan. [Ticket index](tickets/README.md) is the status source alongside current state. Complete one ticket at a time. Planning is complete; WEB-001 is DONE, and WEB-002 is next.
+The original 12-ticket core milestone is followed by five required map tickets; neither milestone is a production deployment plan. [Ticket index](tickets/README.md) is the status source alongside current state. Complete one ticket at a time. Planning is complete; WEB-001 and WEB-002 are DONE, and WEB-003 is next.
 
 ## Dependency order
 

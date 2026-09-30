@@ -1,0 +1,130 @@
+{
+  "viewports": [
+    {
+      "name": "mobile",
+      "width": 360,
+      "height": 800,
+      "status": 200,
+      "focus": {
+        "focused": true,
+        "visible": true,
+        "outline": "3px",
+        "height": 48
+      },
+      "enterExpands": true,
+      "spaceCollapses": true,
+      "reducedMotion": "0s",
+      "transition": {
+        "duration": "1e-05s",
+        "scroll": "auto"
+      },
+      "cssZoom200NoOverflow": true,
+      "longTextNoOverflow": true,
+      "errors": []
+    },
+    {
+      "name": "desktop",
+      "width": 1280,
+      "height": 900,
+      "status": 200,
+      "focus": {
+        "focused": true,
+        "visible": true,
+        "outline": "3px",
+        "height": 48
+      },
+      "enterExpands": true,
+      "spaceCollapses": true,
+      "reducedMotion": "0s",
+      "transition": {
+        "duration": "1e-05s",
+        "scroll": "auto"
+      },
+      "cssZoom200NoOverflow": true,
+      "longTextNoOverflow": true,
+      "errors": []
+    }
+  ],
+  "contrast": [
+    {
+      "foreground": "text",
+      "background": "canvas",
+      "ratio": 15.29
+    },
+    {
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 16.26
+    },
+    {
+      "foreground": "text-secondary",
+      "background": "canvas",
+      "ratio": 6.07
+    },
+    {
+      "foreground": "text-secondary",
+      "background": "surface",
+      "ratio": 6.46
+    },
+    {
+      "foreground": "positive",
+      "background": "canvas",
+      "ratio": 6.85
+    },
+    {
+      "foreground": "positive",
+      "background": "surface",
+      "ratio": 7.28
+    },
+    {
+      "foreground": "information",
+      "background": "canvas",
+      "ratio": 7.38
+    },
+    {
+      "foreground": "information",
+      "background": "surface",
+      "ratio": 7.85
+    },
+    {
+      "foreground": "warning",
+      "background": "canvas",
+      "ratio": 6.08
+    },
+    {
+      "foreground": "warning",
+      "background": "surface",
+      "ratio": 6.46
+    },
+    {
+      "foreground": "critical",
+      "background": "canvas",
+      "ratio": 6.86
+    },
+    {
+      "foreground": "critical",
+      "background": "surface",
+      "ratio": 7.3
+    },
+    {
+      "foreground": "unknown",
+      "background": "canvas",
+      "ratio": 6.07
+    },
+    {
+      "foreground": "unknown",
+      "background": "surface",
+      "ratio": 6.46
+    },
+    {
+      "foreground": "focus",
+      "background": "canvas",
+      "ratio": 7.38
+    },
+    {
+      "foreground": "focus",
+      "background": "surface",
+      "ratio": 7.85
+    }
+  ]
+}

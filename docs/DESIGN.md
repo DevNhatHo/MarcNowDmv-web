@@ -56,9 +56,9 @@ Direction and train number appear only if a future backend contract supports the
 
 Do not treat movement as severity of official service, or infer cause from stationary evidence. Scheduled times, official estimates and MARC Now calculations always have visible provenance. All status distinctions must survive grayscale and screen readers.
 
-## Minimal token plan
+## Minimal design tokens (implemented in WEB-002)
 
-| Category | Initial proposal (verify in rendered implementation) |
+| Category | Implemented foundation |
 |---|---|
 | Spacing | 4, 8, 12, 16, 24, 32, 48px. Mobile gutter 16px; desktop 24px. |
 | Type | System sans; 14px metadata minimum, 16px body, 20px section, 28px title, up to 40px dominant status. Weights 400/500/600; body line-height 1.5; tabular numerals for times/delays. |
@@ -68,7 +68,7 @@ Do not treat movement as severity of official service, or infer cause from stati
 | Width | Main content max 960px; detail reading column around 720px. |
 | Motion | No decorative motion; short disclosure/loading transitions only; disable nonessential transitions under reduced motion. |
 
-Names should describe roles, not individual components. Verify actual text and focus contrast against every background during WEB-002; this plan is not a contrast certification. No downloaded font, icon set or component library is needed initially.
+Tokens live in app/globals.css; starter layout styles live in app/page.module.css. Names describe roles, not individual components. Text/semantic/focus tokens were measured on both canvas and surface in WEB-002; see the review below. No downloaded font, icon set or component library is installed. Future component combinations must be checked separately.
 
 ## Empty, loading and error states
 
@@ -87,3 +87,13 @@ The footer must read exactly: MARC Now DMV is an independent service and is not 
 ## Map extension
 
 Add Map navigation when WEB-MAP-2 delivers a usable route view; retain the existing Pulse/Trains/Alerts core. System mode answers “Where are the trains right now?” Focus mode emphasizes the selected train and its canonical shape, with persistent shared detail below the map on mobile. Current solid markers and historical outlined markers have explicit text labels; unknown position has a text-list fallback. Follow pauses on manual pan or stale observations. No continuous movement, excessive POIs/controls, giant popups or color-only trust states. See [MAP_PLAN.md](MAP_PLAN.md) for data gates and required map-specific visual scenarios.
+
+## WEB-002 implementation and review
+
+CSS custom properties define the small spacing/type/weight/line-height palette, neutral/semantic colors, borders/radii, responsive gutters/widths, 44px target minimum and focus/motion defaults. Page CSS uses those roles. The starter remains honest about unavailable live service and has one native “About this preview” disclosure to demonstrate surface/border/focus tokens. It does not implement the future application shell or operational status components.
+
+Production Chrome review at 360×800 and 1280×900: no overflow, disclosure height 48px, visible 3px keyboard focus, Enter expands/Space collapses, reduced-motion duration token resolves to zero, and a temporary transition probe is reduced to 0.01ms. Reviewed screenshots include 200% CSS-zoom reflow and explicitly synthetic grayscale/long-identifier scenarios. These stress fixtures are not application content or live observations.
+
+Measured contrast against canvas / surface: primary text 15.29 / 16.26, secondary/unknown 6.07 / 6.46, positive 6.85 / 7.28, information/focus 7.38 / 7.85, warning 6.08 / 6.46, critical 6.86 / 7.30. All tested text pairs exceed 4.5:1; the focus ring exceeds 3:1. The subtle border is decorative grouping, not the sole indication of an interactive control. Controls must retain text/affordances and visible focus; do not use that pale border alone to convey a required state.
+
+Native disclosure text and triangle convey interaction without relying on color. Unknown/stale wording stays distinct from healthy in the grayscale review. No shadow, status-color surfaces or decorative animation was added. This is not a full screen-reader/browser accessibility certification. [Evidence and review limitations](reviews/WEB-002/README.md).

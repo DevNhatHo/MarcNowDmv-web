@@ -52,3 +52,7 @@ See [API contract](API_CONTRACT.md), [design](DESIGN.md), and [runbook](RUNBOOK.
 System map and train focus are now required follow-on work after WEB-012. Use a shared lazy-loaded client-only Leaflet adapter, canonical backend shape geometry, existing centralized resource ownership and shared train-detail presentation. `/map` supports system mode and query-based train selection; detail can open the same focused map. No map code is installed in this update.
 
 Recommend a neutral background with backend geometry initially, avoiding an external basemap provider. Map freshness, bearing, progress and active-set rules are specified in [MAP_PLAN.md](MAP_PLAN.md), including library alternatives and source references. No fake continuous movement, browser movement calculation, frontend GTFS parsing or per-marker detail fan-out. Geometry and backend-defined active membership are explicit API dependencies. Extend the proxy allowlist/types only after actual backend contracts exist.
+
+## Visual foundation
+
+WEB-002 defines role-based CSS custom properties in app/globals.css for spacing, typography, neutral/status colors, borders/radii, widths/gutters, focus and reduced motion. Starter-specific composition is in app/page.module.css. Future screens should reuse the tokens; semantic colors always require text labels, and unknown/stale must not be presented as healthy. Contrast evidence and supported backgrounds are recorded in docs/DESIGN.md.

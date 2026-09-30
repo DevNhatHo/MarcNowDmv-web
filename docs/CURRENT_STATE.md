@@ -4,9 +4,9 @@ Updated: 2026-09-29 (America/New_York).
 
 ## Milestone and work status
 
-Local frontend core milestone has begun. [WEB-001](tickets/WEB-001.md) is DONE: Next.js 16.3.7 / React 19.3.0 App Router starter, strict TypeScript, pinned npm lockfile and repeatable checks. Only `/` exists; it honestly says live service information is not yet available. Current ticket: none. Completed: WEB-001. Recommended next: [WEB-002 — Design tokens and visual foundation](tickets/WEB-002.md). WEB-002–012 and WEB-MAP-1–5 remain NOT_STARTED. This session stopped after WEB-001.
+[WEB-001](tickets/WEB-001.md) and [WEB-002](tickets/WEB-002.md) are DONE. The Next.js starter now has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure. Only `/` exists; live data remains unavailable. Current ticket: none. Recommended next: [WEB-003 — Typed API client and local proxy](tickets/WEB-003.md). WEB-003–012 and WEB-MAP-1–5 remain NOT_STARTED. This session stopped after WEB-002.
 
-Repository: `/home/nhat/marc-now-dmv-web`, main branch. No remote configured; no push target exists. Backend `/home/nhat/MarcNowDmv` was unchanged; unrelated `.idea/` remains untouched. Backend, API integration, full shell, map and AWS were outside WEB-001.
+Repository: `/home/nhat/marc-now-dmv-web`, main branch. No remote configured; no push target exists. Backend `/home/nhat/MarcNowDmv` was unchanged; unrelated `.idea/` remains untouched. Backend, API integration, full shell, map and AWS were outside WEB-001/002.
 
 ## Backend dependency and actual observations
 
@@ -20,9 +20,9 @@ See [verified contract](API_CONTRACT.md) and [backend proposals](BACKEND_GAPS.md
 
 ## Checks and visual status
 
-Executed successfully for final WEB-001 code: clean `npm ci`; `npm test` (2 tests); `npm run lint` (zero warnings); `npm run typecheck`; `npm run build`. Dev and production preview each served HTTP 200 on localhost:3000. npm install/ci reported zero vulnerabilities. Node 24.13.0/npm 11.6.2 verified; project requires Node >=24. Runtime checks did not require Go/backend access.
+Executed successfully for WEB-002: `npm test` (2 tests), `npm run lint` (zero warnings), `npm run typecheck`, `npm run build`. Production app returned HTTP 200 at localhost:3000. No dependencies were changed. Node 24.13.0/npm 11.6.2 remains the verified setup from WEB-001; no npm install/audit was repeated in WEB-002.
 
-Rendered and visually inspected mobile 360×800 and desktop 1280×900 using installed Chrome via temporary Playwright tooling; no horizontal overflow, correct title/language/main heading, no uncaught page errors. Screenshots and limitations: [WEB-001 review](reviews/WEB-001/README.md). Loading/error/empty/real-data states are not applicable to this static starter. Design tokens, full accessibility audit and future screen reviews remain outstanding in their tickets.
+Rendered and visually inspected 360×800 mobile and 1280×900 desktop, including keyboard focus/disclosure, 200% CSS-zoom reflow and explicitly synthetic grayscale/long-identifier cases. No horizontal overflow or uncaught page errors. Target 48px, focus outline 3px; Enter/Space and reduced-motion probes passed. Minimum text contrast 6.07:1 on intended backgrounds. [WEB-002 screenshots, measurements and limitations](reviews/WEB-002/README.md). Data lifecycle states are not applicable yet; no full accessibility audit is claimed.
 
 Initial lint/type/build failures were corrected. ESLint 10 was incompatible with Next's bundled plugins; compatible 9.39.5 is pinned but emits an upstream deprecation notice. Revisit when plugin compatibility permits an upgrade. Next's automatic agent-file generation is disabled to preserve repository instructions. Go tests/vet/build were NOT RUN: backend unchanged.
 
@@ -32,4 +32,4 @@ System map/focus follow WEB-012 through WEB-MAP-1–5. Client-only Leaflet and c
 
 ## Next session
 
-Read AGENTS.md, architecture/design/API contract and WEB-002. Check git status, mark WEB-002 IN_PROGRESS, and implement only the token/visual foundation scope. Preserve the starter and existing docs. Use `npm ci`, `npm run dev`, and the established checks; capture rendered mobile/desktop evidence for visual changes. Do not skip ahead to API integration or map work.
+Read AGENTS.md, architecture/design/API contract and WEB-003. Inspect status, verify WEB-001 dependency is complete, mark WEB-003 IN_PROGRESS and implement only the typed API/proxy boundary. Preserve the visual foundation and existing backend. Run established checks and verify actual local contract behavior; no map or product screens belong to WEB-003.

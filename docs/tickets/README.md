@@ -1,11 +1,11 @@
 # Frontend ticket index
 
-WEB-001 is DONE. Recommended next: [WEB-002](WEB-002.md). Resume IN_PROGRESS work before choosing a new ticket. All work remains local.
+WEB-001 and WEB-002 are DONE. Recommended next: [WEB-003](WEB-003.md). Resume IN_PROGRESS work before choosing a new ticket. All work remains local.
 
 | Ticket | Title | Dependencies | Status |
 |---|---|---|---|
 | [WEB-001](WEB-001.md) | Bootstrap Next.js/TypeScript project | None | DONE |
-| [WEB-002](WEB-002.md) | Establish minimal design tokens and visual foundation | WEB-001 | NOT_STARTED |
+| [WEB-002](WEB-002.md) | Establish minimal design tokens and visual foundation | WEB-001 | DONE |
 | [WEB-003](WEB-003.md) | Typed API client and local backend proxy | WEB-001 | NOT_STARTED |
 | [WEB-004](WEB-004.md) | Responsive application shell | WEB-002 | NOT_STARTED |
 | [WEB-005](WEB-005.md) | Service-date train list | WEB-003, WEB-004 | NOT_STARTED |
