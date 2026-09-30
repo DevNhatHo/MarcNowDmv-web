@@ -6,7 +6,7 @@ Updated: 2026-09-29 (America/New_York).
 
 [WEB-001](tickets/WEB-001.md) through [WEB-003](tickets/WEB-003.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. Only `/` exists as a page; no screen consumes the client yet, so live data is still not presented anywhere. Current ticket: none. Recommended next: [WEB-004 — responsive application shell](tickets/WEB-004.md). WEB-004–012 and WEB-MAP-1–5 remain NOT_STARTED. This session stopped after WEB-003.
 
-Repository: `/home/nhat/marc-now-dmv-web`, main branch. No remote configured; no push target exists. Backend `/home/nhat/MarcNowDmv` was unchanged; unrelated `.idea/` remains untouched. The backend, the full shell, the map and AWS remain outside WEB-001–003; API integration is now implemented as a boundary only, with no screen consuming it.
+Repository: `/home/nhat/marc-now-dmv-web`, main branch tracking `origin/main` at `git@github.com:DevNhatHo/MarcNowDmv-web.git`, configured on the user's instruction after WEB-003 and pushed through `c6b3006`. Earlier ticket records state that no remote existed, which was true when they were written. Backend `/home/nhat/MarcNowDmv` was unchanged; unrelated `.idea/` remains untouched. The backend, the full shell, the map and AWS remain outside WEB-001–003; API integration is now implemented as a boundary only, with no screen consuming it.
 
 ## Backend dependency and actual observations
 

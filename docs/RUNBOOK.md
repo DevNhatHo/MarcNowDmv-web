@@ -55,7 +55,7 @@ Inspect 360×800 mobile and 1280×900 desktop; also test keyboard-only navigatio
 
 ## Git
 
-One completed implementation ticket per final commit. Check status first and include only its changes. This newly initialized repository has no remote configured. Do not invent an origin URL or create a remote repository without a request. If later configured, push to the existing upstream without force; preserve local commits on failure.
+One completed implementation ticket per final commit. Check status first and include only its changes. `origin` is `git@github.com:DevNhatHo/MarcNowDmv-web.git`, configured on the user's instruction after WEB-003, and `main` tracks `origin/main`. Push to that existing upstream without force; preserve local commits on failure. Do not add another remote without a request.
 
 ## Future map checks
 
