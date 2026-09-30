@@ -25,6 +25,8 @@ import {
   timeZoneLabel,
 } from "../lib/presentation/time";
 import { ActionButton, LoadingRows, Notice, describeFailure } from "./Feedback";
+import { DelayTrend, MovementStatus, NextStopStatus } from "./Calculated";
+import { trendScopeLabel } from "../lib/presentation/movement";
 import { useResource } from "./useResource";
 import styles from "./TrainDetailScreen.module.css";
 
@@ -199,7 +201,12 @@ function DetailBody({
       ) : null}
 
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Location</h2>
+        <h2 className={styles.sectionTitle}>Movement and location</h2>
+        {detail.calculated ? (
+          <div className={styles.value}>
+            <MovementStatus calculated={detail.calculated} />
+          </div>
+        ) : null}
         <p className={`${styles.value} ${toneClass[place.tone]}`}>{place.text}</p>
         {position.latitude !== null && position.longitude !== null ? (
           <p className={`${styles.meta} ${styles.coordinates}`}>
@@ -212,6 +219,33 @@ function DetailBody({
           </p>
         )}
       </section>
+
+      {detail.calculated ? (
+        <>
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>Next stop</h2>
+            <div className={styles.value}>
+              <NextStopStatus calculated={detail.calculated} stopNames={stopNames} />
+            </div>
+          </section>
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>Delay trend</h2>
+            <div className={styles.value}>
+              <DelayTrend
+                calculated={detail.calculated}
+                officialDelaySeconds={official.delaySeconds}
+              />
+            </div>
+          </section>
+        </>
+      ) : (
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Movement</h2>
+          <p className={styles.value}>
+            Movement data isn&rsquo;t available for this train yet.
+          </p>
+        </section>
+      )}
 
       <ScheduledCalls
         detail={detail}
@@ -237,6 +271,38 @@ function DetailBody({
         <p className={styles.meta}>
           Schedule version {train.scheduleVersion} · evaluated {detail.evaluatedAt}
         </p>
+        {detail.calculated ? (
+          <ul className={styles.health}>
+            <li>
+              MARC Now movement {detail.calculated.observedMovement.state}
+              {reasonText(detail.calculated.observedMovement.reasons)} · stationary
+              threshold {detail.calculated.observedMovement.minStationarySeconds}s within{" "}
+              {detail.calculated.observedMovement.radiusMeters}m ·{" "}
+              {detail.calculated.observedMovement.rejectedCount} observation(s) rejected
+            </li>
+            <li>
+              MARC Now route progress {detail.calculated.routeProgress.state}
+              {reasonText(detail.calculated.routeProgress.reasons)} · corridor{" "}
+              {detail.calculated.routeProgress.corridorMeters}m · source shape distance
+              units {detail.calculated.routeProgress.sourceDistanceUnits}
+            </li>
+            <li>
+              MARC Now next stop {detail.calculated.nextStop.state}
+              {reasonText(detail.calculated.nextStop.reasons)}
+            </li>
+            <li>
+              MARC Now delay trend {detail.calculated.officialDelayTrend.state}
+              {reasonText(detail.calculated.officialDelayTrend.reasons)} ·{" "}
+              {trendScopeLabel(detail.calculated.officialDelayTrend)} ·{" "}
+              {detail.calculated.officialDelayTrend.windowSeconds}s window, tolerance{" "}
+              {detail.calculated.officialDelayTrend.toleranceSeconds}s ·{" "}
+              {detail.calculated.officialDelayTrend.excludedCount} excluded
+            </li>
+            <li>
+              Calculations evaluated {detail.calculated.evaluatedAt}
+            </li>
+          </ul>
+        ) : null}
       </details>
 
       <p className={styles.meta}>
@@ -252,6 +318,11 @@ function DetailBody({
       </p>
     </>
   );
+}
+
+/** Reasons are raw backend vocabulary, so they appear only inside diagnostics. */
+function reasonText(reasons: string[]): string {
+  return reasons.length === 0 ? "" : ` (${reasons.join(", ")})`;
 }
 
 /**

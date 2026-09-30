@@ -112,6 +112,22 @@ current. Evidence with no timestamp reads "No report received" as a whole phrase
 prefix concatenated onto an absence. Evidence and review limitations are in
 [the WEB-005 review](reviews/WEB-005/README.md).
 
+## WEB-007 calculated presentation implementation
+
+Detail follows the wireframe order: official status, MARC Now observed movement with the
+reported location, MARC Now next stop, MARC Now trend of official delays, stop times, then
+diagnostics. Every calculated value is introduced by "MARC Now ·" and the official block
+keeps "Official MTA"; a calculated value never overrides the status above it.
+
+A stationary duration renders only while the state is STATIONARY, because an UNKNOWN
+movement can still carry the dwell it once observed. The delay trend is evaluated from
+official Trip Updates and survives a stale position. No replacement stop is invented for a
+skipped candidate or a passed final stop, and a distance is worded only when the backend
+reports metres. The trend's basis delay is named only when it differs from the delay already
+shown, so the same figure is never stated in two cards. Raw reasons and thresholds appear
+only inside the closed Data status disclosure. Evidence and limitations are in
+[the WEB-007 review](reviews/WEB-007/README.md).
+
 ## Map extension
 
 Add Map navigation when WEB-MAP-2 delivers a usable route view; retain the existing Pulse/Trains/Alerts core. System mode answers “Where are the trains right now?” Focus mode emphasizes the selected train and its canonical shape, with persistent shared detail below the map on mobile. Current solid markers and historical outlined markers have explicit text labels; unknown position has a text-list fallback. Follow pauses on manual pan or stale observations. No continuous movement, excessive POIs/controls, giant popups or color-only trust states. See [MAP_PLAN.md](MAP_PLAN.md) for data gates and required map-specific visual scenarios.

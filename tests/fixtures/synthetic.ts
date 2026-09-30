@@ -202,3 +202,69 @@ export function syntheticTrainPage(
   body.nextAfter = nextAfter;
   return body;
 }
+
+/**
+ * SYNTHETIC: a calculated group in a chosen combination of states.
+ *
+ * The retained database produces only UNKNOWN calculations, so every fresh branch below is
+ * invented for a test. None of it is an observation, and no screenshot of it may be
+ * described as live service.
+ */
+export function syntheticCalculatedDetail(overrides: {
+  movement?: Record<string, unknown>;
+  nextStop?: Record<string, unknown>;
+  trend?: Record<string, unknown>;
+  progress?: Record<string, unknown>;
+}): Record<string, unknown> {
+  const body = syntheticActiveDetail();
+  const calculated = body.calculated as Record<string, unknown>;
+  calculated.observedMovement = {
+    ...(calculated.observedMovement as Record<string, unknown>),
+    ...(overrides.movement ?? {}),
+  };
+  calculated.nextStop = {
+    ...(calculated.nextStop as Record<string, unknown>),
+    ...(overrides.nextStop ?? {}),
+  };
+  calculated.officialDelayTrend = {
+    ...(calculated.officialDelayTrend as Record<string, unknown>),
+    ...(overrides.trend ?? {}),
+  };
+  calculated.routeProgress = {
+    ...(calculated.routeProgress as Record<string, unknown>),
+    ...(overrides.progress ?? {}),
+  };
+  return body;
+}
+
+/**
+ * SYNTHETIC: tracking has been lost, but the dwell once observed is still carried on the
+ * UNKNOWN movement. Presenting that value as a current duration is the specific mistake
+ * this fixture exists to catch.
+ */
+export function syntheticLostTrackingWithHistoricDwell(): Record<string, unknown> {
+  return syntheticCalculatedDetail({
+    movement: {
+      state: "UNKNOWN",
+      reasons: ["source_stale"],
+      stationarySeconds: 900,
+      observedStart: "2026-09-29T11:40:00Z",
+      observedEnd: "2026-09-29T11:55:00Z",
+    },
+  });
+}
+
+/**
+ * SYNTHETIC: the GPS position is unusable while the operator's own delay evidence still
+ * supports a trend. The two must be reported independently.
+ */
+export function syntheticStaleGpsWithLiveTrend(): Record<string, unknown> {
+  const body = syntheticCalculatedDetail({
+    movement: { state: "UNKNOWN", reasons: ["source_stale"], stationarySeconds: null },
+    nextStop: { state: "UNKNOWN", reasons: ["progress_unknown"], stopId: null, stopSequence: null, alongRouteDistanceMeters: null, officiallySkipped: null },
+    trend: { state: "IMPROVING", changeSeconds: -180, officialDelaySeconds: 240 },
+  });
+  const position = (body.data as Record<string, unknown>).position as Record<string, unknown>;
+  position.freshness = "STALE";
+  return body;
+}

@@ -4,7 +4,7 @@ Updated: 2026-09-30 (America/New_York).
 
 ## Milestone and work status
 
-[WEB-001](tickets/WEB-001.md) through [WEB-005](tickets/WEB-005.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. `/trains` and `/trains/[id]` are real screens reading the local backend through the typed client; `/` and `/alerts` remain honest placeholders owned by WEB-009 and WEB-008. Current ticket: none. Recommended next: [WEB-007 — movement and delay-state presentation](tickets/WEB-007.md). WEB-007–012 and WEB-MAP-1–5 remain NOT_STARTED. **WEB-006 was merged into WEB-005** on 2026-09-29: the list's detail links and the detail route cannot ship in separate tickets without leaving every row pointing at a route that does not exist, so one ticket now delivers both surfaces and reviews both. WEB-007 depends on WEB-005 accordingly.
+[WEB-001](tickets/WEB-001.md) through [WEB-005](tickets/WEB-005.md) and [WEB-007](tickets/WEB-007.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. `/trains` and `/trains/[id]` are real screens reading the local backend through the typed client; `/` and `/alerts` remain honest placeholders owned by WEB-009 and WEB-008. Current ticket: none. Recommended next: [WEB-008 — MARC alerts experience](tickets/WEB-008.md). WEB-008–012 and WEB-MAP-1–5 remain NOT_STARTED. **WEB-006 was merged into WEB-005** on 2026-09-29: the list's detail links and the detail route cannot ship in separate tickets without leaving every row pointing at a route that does not exist, so one ticket now delivers both surfaces and reviews both. WEB-007 depends on WEB-005 accordingly.
 
 Repository: `/home/nhat/marc-now-dmv-web`, main branch tracking `origin/main` at `git@github.com:DevNhatHo/MarcNowDmv-web.git`, configured on the user's instruction after WEB-003 and pushed through `c6b3006`. Earlier ticket records state that no remote existed, which was true when they were written. Backend `/home/nhat/MarcNowDmv` was unchanged; unrelated `.idea/` remains untouched. The backend, the full shell, the map and AWS remain outside WEB-001–003; API integration is now implemented as a boundary only, with no screen consuming it.
 
@@ -145,6 +145,38 @@ captured and clearly synthetic fixtures. Detail loads up to 200 stops and update
 when more exist, but does not yet page `afterStop`/`afterUpdate`; no retained MARC trip
 approaches that bound.
 
+## WEB-007 calculated presentation as implemented
+
+Train detail now follows the design wireframe: official status, then MARC Now observed
+movement beside the reported location, then MARC Now next stop, then MARC Now trend of
+official delays, then stop times and diagnostics. `lib/presentation/movement.ts` owns the
+vocabulary and `components/Calculated.tsx` the three blocks.
+
+Two rules are enforced in one place each. A dwell renders **only** while the state is
+STATIONARY, because an UNKNOWN movement can still carry the `stationarySeconds` it once
+observed. And each calculated object is read independently, so a stale position reports
+movement unavailable while the delay trend, built from official Trip Updates, is still
+reported. Both are visible in the review captures. No replacement stop is ever invented for
+a skipped candidate or a passed final stop, and a distance is worded only when the backend
+said it is in metres.
+
+Checks executed for WEB-007: `npm test` (8 files, **128 tests**), `npm run lint` (zero
+warnings), `npm run typecheck`, `npm run build`, `npx playwright test` (12 tests). Rendered
+review covered the real retained screen plus six clearly labelled synthetic scenarios
+rendered in the real UI by intercepting the detail response; 0 px overflow and no page
+errors at both viewports. Fourteen screenshots and the scenario table are in
+[the review record](reviews/WEB-007/README.md).
+
+One defect was found by looking: the trend's basis delay restated the delay already shown in
+the official block when the two agreed, which DESIGN.md forbids. It is now named only when
+it differs.
+
+Limitations: **no fresh MOVING, STATIONARY, MEASURED or non-UNKNOWN trend has ever been
+observed from the real backend**, so every fresh branch rests on fixtures and on screenshots
+of synthetic data in the real UI, labelled SYNTHETIC throughout. Route progress is parsed and
+shown in diagnostics but has no commuter-facing presentation, by decision: without route
+geometry there is nothing useful to draw, and BACKEND-UI-03 gates that.
+
 ## Next session
 
-Read AGENTS.md, architecture/design/API contract and WEB-007. Inspect status, verify the WEB-005 dependency is complete, mark WEB-007 IN_PROGRESS and add only the calculated movement, next-stop and delay-trend presentation to the existing detail hierarchy. `calculated` is an envelope sibling of `data`; each subobject is read independently, an UNKNOWN movement may still carry a historic `stationarySeconds` that must never be shown as a current duration, and the delay trend stays independent of GPS freshness. The retained database yields only UNKNOWN calculations, so the fresh MOVING, STATIONARY and trend branches need clearly labelled synthetic fixtures and their screenshots must say they are synthetic. WEB-007 is a visual ticket; automated tests alone cannot complete it. Preserve the existing backend; no map work is authorized.
+Read AGENTS.md, architecture/design/API contract and WEB-008. Inspect status, verify the WEB-003 and WEB-004 dependencies are complete, mark WEB-008 IN_PROGRESS and implement only the MARC alerts screen. Alert text arrives as nullable translation objects, not strings: prefer English then the first nonempty translation, render plain text and never injected HTML, and permit only HTTP(S) links. Cause and effect are nullable numeric enums that need a documented label table with a neutral fallback, the same rule WEB-005 applied to `scheduleRelationship`. Preserve selector scope: a route or agency entity is not a claim about one train. An empty result is only "no active MARC alerts reported" when the evidence supports it; otherwise explain that alert information is unavailable or outdated. WEB-008 is a visual ticket; automated tests alone cannot complete it. Preserve the existing backend; no map work is authorized.

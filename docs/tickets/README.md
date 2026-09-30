@@ -1,6 +1,6 @@
 # Frontend ticket index
 
-WEB-001 through WEB-005 are DONE. Recommended next: [WEB-007](WEB-007.md). Resume IN_PROGRESS work before choosing a new ticket. Work is committed here and pushed to `origin/main`.
+WEB-001 through WEB-005 and WEB-007 are DONE. Recommended next: [WEB-008](WEB-008.md). Resume IN_PROGRESS work before choosing a new ticket. Work is committed here and pushed to `origin/main`.
 
 | Ticket | Title | Dependencies | Status |
 |---|---|---|---|
@@ -10,7 +10,7 @@ WEB-001 through WEB-005 are DONE. Recommended next: [WEB-007](WEB-007.md). Resum
 | [WEB-004](WEB-004.md) | Responsive application shell | WEB-002 | DONE |
 | [WEB-005](WEB-005.md) | Service-date train list and train detail | WEB-003, WEB-004 | DONE |
 | [WEB-006](WEB-006.md) | *Merged into WEB-005* | — | MERGED |
-| [WEB-007](WEB-007.md) | Movement and delay-state presentation | WEB-005 | NOT_STARTED |
+| [WEB-007](WEB-007.md) | Movement and delay-state presentation | WEB-005 | DONE |
 | [WEB-008](WEB-008.md) | MARC alerts experience | WEB-003, WEB-004 | NOT_STARTED |
 | [WEB-009](WEB-009.md) | MARC Pulse home experience | WEB-005, WEB-008 | NOT_STARTED |
 | [WEB-010](WEB-010.md) | Central polling and resilient freshness states | WEB-007, WEB-008, WEB-009 | NOT_STARTED |
