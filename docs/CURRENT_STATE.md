@@ -4,7 +4,7 @@ Updated: 2026-09-30 (America/New_York).
 
 ## Milestone and work status
 
-[WEB-001](tickets/WEB-001.md) through [WEB-005](tickets/WEB-005.md) and [WEB-007](tickets/WEB-007.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. `/trains` and `/trains/[id]` are real screens reading the local backend through the typed client; `/` and `/alerts` remain honest placeholders owned by WEB-009 and WEB-008. Current ticket: none. Recommended next: [WEB-008 — MARC alerts experience](tickets/WEB-008.md). WEB-008–012 and WEB-MAP-1–5 remain NOT_STARTED. **WEB-006 was merged into WEB-005** on 2026-09-29: the list's detail links and the detail route cannot ship in separate tickets without leaving every row pointing at a route that does not exist, so one ticket now delivers both surfaces and reviews both. WEB-007 depends on WEB-005 accordingly.
+[WEB-001](tickets/WEB-001.md) through [WEB-005](tickets/WEB-005.md), [WEB-007](tickets/WEB-007.md) and [WEB-008](tickets/WEB-008.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. `/trains`, `/trains/[id]` and `/alerts` are real screens reading the local backend through the typed client; only `/` remains an honest placeholder, owned by WEB-009. Current ticket: none. Recommended next: [WEB-009 — MARC Pulse home experience](tickets/WEB-009.md). WEB-009–012 and WEB-MAP-1–5 remain NOT_STARTED. **WEB-006 was merged into WEB-005** on 2026-09-29: the list's detail links and the detail route cannot ship in separate tickets without leaving every row pointing at a route that does not exist, so one ticket now delivers both surfaces and reviews both. WEB-007 depends on WEB-005 accordingly.
 
 Repository: `/home/nhat/marc-now-dmv-web`, main branch tracking `origin/main` at `git@github.com:DevNhatHo/MarcNowDmv-web.git`, configured on the user's instruction after WEB-003 and pushed through `c6b3006`. Earlier ticket records state that no remote existed, which was true when they were written. Backend `/home/nhat/MarcNowDmv` was unchanged; unrelated `.idea/` remains untouched. The backend, the full shell, the map and AWS remain outside WEB-001–003; API integration is now implemented as a boundary only, with no screen consuming it.
 
@@ -177,6 +177,35 @@ of synthetic data in the real UI, labelled SYNTHETIC throughout. Route progress 
 shown in diagnostics but has no commuter-facing presentation, by decision: without route
 geometry there is nothing useful to draw, and BACKEND-UI-03 gates that.
 
+## WEB-008 alerts screen as implemented
+
+`/alerts` renders the operator's retained advisories with effect, cause, active periods,
+scope and a safe link, plus explicit refresh and bounded snapshot pagination.
+`lib/presentation/alerts.ts` owns translation choice, link sanitization and the GTFS-RT
+cause and effect tables.
+
+Two rules decide what the screen may claim. An empty list reads "No active MARC alerts
+reported" **only** when the feed's own `sourceHealth` is HEALTHY; otherwise it reads "Alert
+information is unavailable … not evidence that MARC service is running without disruption".
+And a degraded or stale feed keeps its advisories visible with a label rather than being
+treated as offline. No severity is derived from the effect code, because the feed ranks
+nothing. Only documented cause and effect numbers get a label; anything else reads "not
+described".
+
+Checks executed for WEB-008: `npm test` (9 files, **142 tests**), `npm run lint` (zero
+warnings), `npm run typecheck`, `npm run build`, `npx playwright test` (12 tests). Rendered
+review covered the real retained screen plus four intercepted scenarios: **0 px horizontal
+overflow, zero non-HTTP hrefs and no page errors in every scenario at both viewports**. The
+stress capture shows `<b>not bold</b>` as literal characters and no link at all for a
+`javascript:` URL. Twelve screenshots are in [the review record](reviews/WEB-008/README.md).
+
+One defect was found by looking: the scope caveat repeated verbatim on every card, four
+identical sentences on the real screen. It is now stated once for the whole list.
+
+Limitations: the retained alerts feed is a completed-day snapshot, so the advisories are
+historical and the screen correctly says "Reported 1 day ago by the operator". No live feed
+with a current timestamp has been observed here, and no external link was followed.
+
 ## Next session
 
-Read AGENTS.md, architecture/design/API contract and WEB-008. Inspect status, verify the WEB-003 and WEB-004 dependencies are complete, mark WEB-008 IN_PROGRESS and implement only the MARC alerts screen. Alert text arrives as nullable translation objects, not strings: prefer English then the first nonempty translation, render plain text and never injected HTML, and permit only HTTP(S) links. Cause and effect are nullable numeric enums that need a documented label table with a neutral fallback, the same rule WEB-005 applied to `scheduleRelationship`. Preserve selector scope: a route or agency entity is not a claim about one train. An empty result is only "no active MARC alerts reported" when the evidence supports it; otherwise explain that alert information is unavailable or outdated. WEB-008 is a visual ticket; automated tests alone cannot complete it. Preserve the existing backend; no map work is authorized.
+Read AGENTS.md, architecture/design/API contract and WEB-009. Inspect status, verify the WEB-005 and WEB-008 dependencies are complete, mark WEB-009 IN_PROGRESS and implement only the MARC Pulse home experience. It is three line sections linking to filtered trains plus a small advisory preview. The hard constraint is that the backend exposes no aggregate: any summary must come from the one bounded list read the screen already makes, must state its service-date scope and its unknown coverage, and must prefer plain explanatory text wherever a count would mislead. No active or stationary totals, no fabricated healthy line status, and no per-train detail fan-out. WEB-009 is a visual ticket; automated tests alone cannot complete it. Preserve the existing backend; no map work is authorized.

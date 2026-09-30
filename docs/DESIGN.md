@@ -128,6 +128,17 @@ shown, so the same figure is never stated in two cards. Raw reasons and threshol
 only inside the closed Data status disclosure. Evidence and limitations are in
 [the WEB-007 review](reviews/WEB-007/README.md).
 
+## WEB-008 alerts implementation
+
+Advisories render the operator's own words as plain text, never as markup, with links
+restricted to http(s). Effect and cause are labelled only from the documented GTFS-RT
+tables; anything else reads "not described", and no severity is derived from an effect code.
+An empty list reads "No active MARC alerts reported" only when the feed is healthy; a
+degraded, stale or unavailable feed reads "Alert information is unavailable" and says that
+this is not evidence of undisrupted service, while any retained advisories stay visible with
+a label. The scope caveat is stated once for the list, not repeated per advisory. Evidence
+is in [the WEB-008 review](reviews/WEB-008/README.md).
+
 ## Map extension
 
 Add Map navigation when WEB-MAP-2 delivers a usable route view; retain the existing Pulse/Trains/Alerts core. System mode answers “Where are the trains right now?” Focus mode emphasizes the selected train and its canonical shape, with persistent shared detail below the map on mobile. Current solid markers and historical outlined markers have explicit text labels; unknown position has a text-list fallback. Follow pauses on manual pan or stale observations. No continuous movement, excessive POIs/controls, giant popups or color-only trust states. See [MAP_PLAN.md](MAP_PLAN.md) for data gates and required map-specific visual scenarios.

@@ -2,7 +2,6 @@ import { render, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import AppShell, { independenceNotice } from "../components/AppShell";
 import { isCurrent } from "../components/SiteNavigation";
-import AlertsPage from "../app/alerts/page";
 import PulsePage from "../app/page";
 
 const pathname = vi.hoisted(() => ({ value: "/" }));
@@ -97,23 +96,16 @@ describe("current destination", () => {
 });
 
 describe("route placeholders", () => {
-  // /trains is a real screen from WEB-005; only Pulse and Alerts remain placeholders.
-  it.each([
-    ["Pulse", PulsePage, "MARC Pulse", "How is MARC running right now?"],
-    ["Alerts", AlertsPage, "Alerts", "Is there anything important I need to know?"],
-  ])("says plainly that %s is not built yet", (_name, Page, title, question) => {
-    render(<Page />);
-    expect(screen.getByRole("heading", { level: 1, name: title })).toBeVisible();
-    expect(screen.getByText(question)).toBeVisible();
-    expect(screen.getByText("Not built yet")).toBeVisible();
-  });
-
-  it("explains that an empty screen is not an operational claim", () => {
-    render(<AlertsPage />);
-    expect(
-      screen.getByText(/not evidence that there are no disruptions/),
-    ).toBeVisible();
-  });
+  // /trains and /alerts are real screens now; only Pulse remains a placeholder.
+  it.each([["Pulse", PulsePage, "MARC Pulse", "How is MARC running right now?"]])(
+    "says plainly that %s is not built yet",
+    (_name, Page, title, question) => {
+      render(<Page />);
+      expect(screen.getByRole("heading", { level: 1, name: title })).toBeVisible();
+      expect(screen.getByText(question)).toBeVisible();
+      expect(screen.getByText("Not built yet")).toBeVisible();
+    },
+  );
 
   it("shows no figure that could be mistaken for reported data", () => {
     const { container } = render(<PulsePage />);

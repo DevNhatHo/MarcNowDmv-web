@@ -1,0 +1,67 @@
+/* One advisory. Text does the work; no severity colour is invented from an effect code. */
+
+.list {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  padding: var(--space-4);
+  border: var(--border-thin) solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface);
+}
+
+.title {
+  font-size: var(--text-section);
+}
+
+.labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  margin-block-start: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--text-small);
+}
+
+/* Feed text is rendered as plain text; newlines are preserved, markup is not. */
+.description {
+  margin-block-start: var(--space-3);
+  white-space: pre-wrap;
+}
+
+.link {
+  display: inline-block;
+  margin-block-start: var(--space-3);
+}
+
+.scope {
+  margin-block-start: var(--space-4);
+  padding-block-start: var(--space-3);
+  border-block-start: var(--border-thin) solid var(--color-border);
+}
+
+.scopeTitle {
+  color: var(--color-text-secondary);
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+}
+
+.scopeList {
+  display: grid;
+  gap: var(--space-1);
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-small);
+}
+
+.caveat {
+  margin-block-start: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--text-small);
+}
