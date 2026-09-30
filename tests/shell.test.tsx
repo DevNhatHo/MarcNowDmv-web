@@ -2,7 +2,6 @@ import { render, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import AppShell, { independenceNotice } from "../components/AppShell";
 import { isCurrent } from "../components/SiteNavigation";
-import PulsePage from "../app/page";
 
 const pathname = vi.hoisted(() => ({ value: "/" }));
 vi.mock("next/navigation", () => ({ usePathname: () => pathname.value }));
@@ -92,24 +91,5 @@ describe("current destination", () => {
     expect(isCurrent("/alerts", "/trains")).toBe(false);
     // A sibling route that merely shares a prefix is not the same section.
     expect(isCurrent("/trainspotting", "/trains")).toBe(false);
-  });
-});
-
-describe("route placeholders", () => {
-  // /trains and /alerts are real screens now; only Pulse remains a placeholder.
-  it.each([["Pulse", PulsePage, "MARC Pulse", "How is MARC running right now?"]])(
-    "says plainly that %s is not built yet",
-    (_name, Page, title, question) => {
-      render(<Page />);
-      expect(screen.getByRole("heading", { level: 1, name: title })).toBeVisible();
-      expect(screen.getByText(question)).toBeVisible();
-      expect(screen.getByText("Not built yet")).toBeVisible();
-    },
-  );
-
-  it("shows no figure that could be mistaken for reported data", () => {
-    const { container } = render(<PulsePage />);
-    // A placeholder with digits in it would read as a count, a delay or a time.
-    expect(container.textContent).not.toMatch(/\d/);
   });
 });
