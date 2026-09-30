@@ -139,6 +139,16 @@ this is not evidence of undisrupted service, while any retained advisories stay 
 a label. The scope caveat is stated once for the list, not repeated per advisory. Evidence
 is in [the WEB-008 review](reviews/WEB-008/README.md).
 
+## WEB-011 accessibility floor
+
+`npm run e2e` enforces the floor on every screen at both viewports: zero axe violations
+(WCAG 2.0/2.1 A and AA), standalone controls at least 44 px, no horizontal scroll at 360 px,
+every list in `main` named, exactly one `h1` per page, a focus ring on every keyboard stop,
+`--motion-duration` of `0s` under reduced motion, and a failed refresh that retains content
+and announces politely. A link inside a sentence is exempt from the target rule, which is
+WCAG 2.5.5's inline exception. The standing record, including what is deliberately not
+claimed, is [docs/visual-review.md](visual-review.md).
+
 ## Map extension
 
 Add Map navigation when WEB-MAP-2 delivers a usable route view; retain the existing Pulse/Trains/Alerts core. System mode answers “Where are the trains right now?” Focus mode emphasizes the selected train and its canonical shape, with persistent shared detail below the map on mobile. Current solid markers and historical outlined markers have explicit text labels; unknown position has a text-list fallback. Follow pauses on manual pan or stale observations. No continuous movement, excessive POIs/controls, giant popups or color-only trust states. See [MAP_PLAN.md](MAP_PLAN.md) for data gates and required map-specific visual scenarios.

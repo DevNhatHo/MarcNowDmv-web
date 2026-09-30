@@ -133,7 +133,9 @@ export default function PulseScreen() {
             <h2 className={styles.sectionTitle}>Advisories</h2>
             <AdvisoryPreview page={data.alerts} healthy={alertFeedHealthy} />
             <p className={styles.all}>
-              <Link href="/alerts">See all MARC advisories</Link>
+              <Link href="/alerts" className="standalone-link">
+                See all MARC advisories
+              </Link>
             </p>
           </section>
         </>

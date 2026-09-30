@@ -18,12 +18,12 @@ export const independenceNotice =
 export default function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className={styles.shell}>
-      <a className={styles.skipLink} href="#main-content">
+      <a className={`${styles.skipLink} standalone-link`} href="#main-content">
         Skip to main content
       </a>
       <header className={styles.header}>
         <div className={styles.headerInner}>
-          <Link href="/" className={styles.brand}>
+          <Link href="/" className={`${styles.brand} standalone-link`}>
             MARC Now DMV
           </Link>
           <SiteNavigation />

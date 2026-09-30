@@ -100,7 +100,7 @@ export default function TrainDetailScreen({ id }: { id: string }) {
   return (
     <div className={styles.screen}>
       <p className={styles.back}>
-        <Link href={backHref}>← Back to trains</Link>
+        <Link href={backHref} className="standalone-link">← Back to trains</Link>
       </p>
 
       {resource.loading && !detail ? (
@@ -258,7 +258,7 @@ function DetailBody({
 
       <details className={styles.disclosure}>
         <summary className={styles.summary}>Data status</summary>
-        <ul className={styles.health}>
+        <ul className={styles.health} aria-label="Realtime source health">
           {detail.sourceHealth.map((source) => {
             const state = freshnessLabel(source.state);
             return (
@@ -275,7 +275,7 @@ function DetailBody({
           Schedule version {train.scheduleVersion} · evaluated {detail.evaluatedAt}
         </p>
         {detail.calculated ? (
-          <ul className={styles.health}>
+          <ul className={styles.health} aria-label="MARC Now calculation details">
             <li>
               MARC Now movement {detail.calculated.observedMovement.state}
               {reasonText(detail.calculated.observedMovement.reasons)} · stationary
@@ -357,7 +357,7 @@ function ScheduledCalls({
   return (
     <section className={styles.section}>
       <h2 className={styles.sectionTitle}>Stop times</h2>
-      <ul className={styles.calls}>
+      <ul className={styles.calls} aria-label="Scheduled stop times">
         {detail.scheduledStops.map((call) => {
           const update = updates.get(call.sequence);
           const estimate =

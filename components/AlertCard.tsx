@@ -55,7 +55,12 @@ export default function AlertCard({
         <p className={styles.caveat}>No description was published with this advisory.</p>
       )}
       {link !== null ? (
-        <a className={styles.link} href={link} rel="noreferrer noopener" target="_blank">
+        <a
+          className={`${styles.link} standalone-link`}
+          href={link}
+          rel="noreferrer noopener"
+          target="_blank"
+        >
           Read the operator&rsquo;s notice
         </a>
       ) : null}
@@ -66,7 +71,7 @@ export default function AlertCard({
             The operator did not say what this advisory applies to.
           </p>
         ) : (
-          <ul className={styles.scopeList}>
+          <ul className={styles.scopeList} aria-label="What this advisory applies to">
             {alert.informedEntity.map((entity, index) => (
               <li key={index}>{selectorLabel(entity, names)}</li>
             ))}

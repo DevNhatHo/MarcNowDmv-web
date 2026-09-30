@@ -98,6 +98,29 @@ a {
   text-underline-offset: var(--space-1);
 }
 
+/*
+ * A link that stands on its own, rather than sitting inside a sentence, is a control and
+ * gets the full minimum target height. Links inside prose keep their natural size, which is
+ * what WCAG's inline exception allows and what keeps body text readable.
+ */
+.standalone-link {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--target-min);
+}
+
+/*
+ * Form controls show a ring on plain focus as well as :focus-visible. A date input can be
+ * focused in ways the heuristic does not treat as keyboard focus, and a control with no
+ * visible focus is unusable without a mouse.
+ */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+
 /* Available to assistive technology, absent from the visual layout. */
 .visually-hidden {
   position: absolute;

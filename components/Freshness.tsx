@@ -30,6 +30,19 @@ export default function Freshness({
   if (loadedAt === null) return null;
   const received = describeReport(loadedAt.toISOString(), now);
   return (
+    <>
+      {/*
+        * Announced politely, and only when the *state* changes. The visible banner carries
+        * a timestamp that moves as the page ages, so making the banner itself live would
+        * read every tick aloud, which the architecture explicitly rules out.
+        */}
+      <span className="visually-hidden" role="status" aria-live="polite">
+        {failed
+          ? "Couldn't refresh. The information shown is what was last received."
+          : outdated
+            ? "The information shown is out of date."
+            : ""}
+      </span>
     <p className={styles.banner}>
       {failed ? (
         <span className={styles.outdated}>
@@ -48,6 +61,7 @@ export default function Freshness({
       <ActionButton onClick={onRefresh} disabled={loading}>
         {loading ? "Refreshing…" : "Refresh"}
       </ActionButton>
-    </p>
+      </p>
+    </>
   );
 }

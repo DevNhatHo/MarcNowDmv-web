@@ -20,7 +20,10 @@ Backend: existing `/home/nhat/MarcNowDmv` (logical name `marc-now-dmv-backend`),
    rather than fetch Playwright's bundled browsers. Specs live in `tests/e2e/*.spec.ts` and
    run at both required viewports, 360×800 and 1280×900. Vitest never collects them, and
    Playwright never collects Vitest's `*.test.ts(x)` files. Stop any server you started by
-   hand first, or the runner will reuse it.
+   hand first, or the runner will reuse it. The suite includes the accessibility floor in
+   `tests/e2e/accessibility.spec.ts`, which runs axe plus target-size, focus-ring,
+   list-name, heading and reduced-motion checks; `/trains`, `/alerts` and `/` read the
+   backend, so start it first or those specs fail on an unreachable service.
 
 Unit tests assert the shell's landmarks, navigation, current-destination marking and the verbatim independence footer, plus the API boundary's contract parsing. Browser review evidence belongs in `docs/reviews/<ticket>/`. WEB-004 established the permanent Playwright suite; WEB-001 had used temporary tooling for its rendered review.
 

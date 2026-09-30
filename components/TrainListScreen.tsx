@@ -201,7 +201,7 @@ export default function TrainListScreen() {
 
       {trains.length > 0 && page ? (
         <>
-          <ul className={styles.list}>
+          <ul className={styles.list} aria-label="Scheduled trains">
             <TrainRows
               trains={trains}
               lineNames={lineNames}
