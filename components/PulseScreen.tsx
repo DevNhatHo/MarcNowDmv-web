@@ -12,9 +12,10 @@ import {
   describeLine,
   summarizeLines,
 } from "../lib/presentation/pulse";
-import { formatServiceDate, describeReport } from "../lib/presentation/time";
+import { formatServiceDate } from "../lib/presentation/time";
 import { ActionButton, LoadingRows, Notice, describeFailure } from "./Feedback";
-import { useResource } from "./useResource";
+import { useSharedResource } from "./useSharedResource";
+import Freshness from "./Freshness";
 import styles from "./PulseScreen.module.css";
 
 /** How many advisories the home page previews before sending people to /alerts. */
@@ -39,7 +40,7 @@ async function loadOverview(signal: AbortSignal): Promise<Overview> {
 
 export default function PulseScreen() {
   const load = useCallback((signal: AbortSignal) => loadOverview(signal), []);
-  const resource = useResource<Overview>("pulse", load);
+  const resource = useSharedResource<Overview>("pulse", "trains", load);
   const data = resource.data;
 
   const names = useMemo(() => {
@@ -78,14 +79,14 @@ export default function PulseScreen() {
         </p>
       ) : null}
 
-      {data && resource.loadedAt ? (
-        <p className={styles.updated}>
-          <span>{describeReport(data.trains.evaluatedAt, resource.loadedAt)}</span>
-          <ActionButton onClick={resource.refresh} disabled={resource.loading}>
-            {resource.loading ? "Refreshing…" : "Refresh"}
-          </ActionButton>
-        </p>
-      ) : null}
+      <Freshness
+        loadedAt={resource.loadedAt}
+        outdated={resource.outdated}
+        loading={resource.loading}
+        failed={resource.failures > 0}
+        onRefresh={resource.refresh}
+        now={new Date()}
+      />
 
       {resource.loading && !data ? (
         <LoadingRows count={3} label="Loading the MARC overview" />

@@ -5,6 +5,7 @@ import TrainListScreen from "../components/TrainListScreen";
 import TrainDetailScreen from "../components/TrainDetailScreen";
 import { capturedBody, mutableBody } from "./fixtures/captures";
 import { syntheticEmptyDetail, syntheticUnresolvedUpdate } from "./fixtures/synthetic";
+import { resetResources } from "../lib/refresh/store";
 
 const navigation = vi.hoisted(() => ({
   replace: vi.fn(),
@@ -327,6 +328,7 @@ describe("train detail", () => {
     const matching = render(<TrainDetailScreen id="token" />);
     expect(await screen.findByText("BALTIMORE PENN STATION")).toBeVisible();
     matching.unmount();
+    resetResources();
 
     // The same catalog under a different version must not lend its name to this train.
     serve([

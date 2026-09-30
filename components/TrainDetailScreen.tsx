@@ -27,7 +27,8 @@ import {
 import { ActionButton, LoadingRows, Notice, describeFailure } from "./Feedback";
 import { DelayTrend, MovementStatus, NextStopStatus } from "./Calculated";
 import { trendScopeLabel } from "../lib/presentation/movement";
-import { useResource } from "./useResource";
+import { useSharedResource } from "./useSharedResource";
+import Freshness from "./Freshness";
 import styles from "./TrainDetailScreen.module.css";
 
 const toneClass: Record<Tone, string> = {
@@ -63,7 +64,7 @@ export default function TrainDetailScreen({ id }: { id: string }) {
     (signal: AbortSignal) => loadDetail(id, signal),
     [id],
   );
-  const resource = useResource<Loaded>(id, load);
+  const resource = useSharedResource<Loaded>(`detail:${id}`, "detail", load);
   const loaded = resource.data;
   const detail = loaded?.detail;
 
@@ -110,14 +111,20 @@ export default function TrainDetailScreen({ id }: { id: string }) {
         <DetailFailure error={resource.error} onRetry={resource.refresh} backHref={backHref} />
       ) : null}
 
+      <Freshness
+        loadedAt={resource.loadedAt}
+        outdated={resource.outdated}
+        loading={resource.loading}
+        failed={resource.failures > 0}
+        onRefresh={resource.refresh}
+        now={new Date()}
+      />
       {detail ? (
         <DetailBody
           detail={detail}
           lineName={lineName}
           stopNames={stopNames}
           loadedAt={resource.loadedAt ?? new Date(detail.evaluatedAt)}
-          loading={resource.loading}
-          onRefresh={resource.refresh}
         />
       ) : null}
     </div>
@@ -155,15 +162,11 @@ function DetailBody({
   lineName,
   stopNames,
   loadedAt,
-  loading,
-  onRefresh,
 }: {
   detail: TrainDetail;
   lineName: string | null;
   stopNames: Map<string, string>;
   loadedAt: Date;
-  loading: boolean;
-  onRefresh: () => void;
 }) {
   const train = detail.data;
   const status = trainStatusLabel(train.status);
@@ -305,17 +308,7 @@ function DetailBody({
         ) : null}
       </details>
 
-      <p className={styles.meta}>
-        Received{" "}
-        {new Intl.DateTimeFormat("en-GB", {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-        }).format(loadedAt)}{" "}
-        <ActionButton onClick={onRefresh} disabled={loading}>
-          {loading ? "Refreshing…" : "Refresh"}
-        </ActionButton>
-      </p>
+
     </>
   );
 }

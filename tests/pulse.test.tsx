@@ -8,6 +8,7 @@ import {
 } from "../lib/presentation/pulse";
 import type { Train } from "../lib/types/trains";
 import { capturedBody, mutableBody } from "./fixtures/captures";
+import { resetResources } from "../lib/refresh/store";
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ replace: vi.fn() }),
@@ -177,6 +178,7 @@ describe("pulse screen", () => {
       await screen.findByText(/reporting no active MARC advisories right now/),
     ).toBeVisible();
     first.unmount();
+    resetResources();
 
     serve(capturedBody("trains"), empty);
     render(<PulseScreen />);

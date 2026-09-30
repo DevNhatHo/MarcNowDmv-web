@@ -13,7 +13,8 @@ import {
   describeFailure,
 } from "./Feedback";
 import TrainRow from "./TrainRow";
-import { useResource } from "./useResource";
+import { useSharedResource } from "./useSharedResource";
+import Freshness from "./Freshness";
 import styles from "./TrainListScreen.module.css";
 
 /** A page of the list plus the catalog read alongside it, so both share one snapshot. */
@@ -59,7 +60,7 @@ export default function TrainListScreen() {
     },
     [serviceDate, routeId],
   );
-  const listing = useResource<Listing>(key, load);
+  const listing = useSharedResource<Listing>(`trains:${key}`, "trains", load);
 
   const setFilter = (name: string, value: string) => {
     const next = new URLSearchParams(params.toString());
@@ -176,20 +177,14 @@ export default function TrainListScreen() {
         </div>
       </div>
 
-      {listing.loadedAt && page ? (
-        <p className={styles.updated}>
-          <span>
-            Received {new Intl.DateTimeFormat("en-GB", {
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: false,
-            }).format(listing.loadedAt)}
-          </span>
-          <ActionButton onClick={listing.refresh} disabled={listing.loading}>
-            {listing.loading ? "Refreshing…" : "Refresh"}
-          </ActionButton>
-        </p>
-      ) : null}
+      <Freshness
+        loadedAt={listing.loadedAt}
+        outdated={listing.outdated}
+        loading={listing.loading}
+        failed={listing.failures > 0}
+        onRefresh={listing.refresh}
+        now={new Date()}
+      />
 
       {listing.loading && !page ? (
         <LoadingRows label="Loading scheduled trains" />

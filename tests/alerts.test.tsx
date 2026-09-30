@@ -11,6 +11,7 @@ import {
 } from "../lib/presentation/alerts";
 import type { AlertSelector } from "../lib/types/alerts";
 import { capturedBody, mutableBody } from "./fixtures/captures";
+import { resetResources } from "../lib/refresh/store";
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ replace: vi.fn() }),
@@ -186,6 +187,8 @@ describe("alerts screen", () => {
     const healthy = render(<AlertsScreen />);
     expect(await screen.findByText("No active MARC alerts reported")).toBeVisible();
     healthy.unmount();
+    // The store caches per key by design, so a second scenario needs a clean store.
+    resetResources();
 
     for (const state of ["DEGRADED", "STALE", "UNAVAILABLE"]) {
       serve(withFeedState(structuredClone(empty), state));
@@ -197,6 +200,7 @@ describe("alerts screen", () => {
       ).toBeVisible();
       expect(screen.queryByText("No active MARC alerts reported")).toBeNull();
       view.unmount();
+      resetResources();
     }
   });
 

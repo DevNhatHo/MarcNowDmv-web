@@ -7,7 +7,8 @@ import type { Route, Stop } from "../lib/types/catalogs";
 import { formatClockTime, describeReport } from "../lib/presentation/time";
 import AlertCard from "./AlertCard";
 import { ActionButton, LoadingRows, Notice, describeFailure } from "./Feedback";
-import { useResource } from "./useResource";
+import { useSharedResource } from "./useSharedResource";
+import Freshness from "./Freshness";
 import styles from "./AlertsScreen.module.css";
 
 const timeZone = "America/New_York";
@@ -46,7 +47,7 @@ export default function AlertsScreen() {
     setCursor(loaded.page.nextAfter);
     return loaded;
   }, []);
-  const resource = useResource<Loaded>("alerts", load);
+  const resource = useSharedResource<Loaded>("alerts", "alerts", load);
   const page = resource.data?.page;
 
   const names = useMemo(() => {
@@ -103,14 +104,17 @@ export default function AlertsScreen() {
       <p className={styles.question}>Is there anything important I need to know?</p>
       <h1 className={styles.title}>Alerts</h1>
 
+      <Freshness
+        loadedAt={resource.loadedAt}
+        outdated={resource.outdated}
+        loading={resource.loading}
+        failed={resource.failures > 0}
+        onRefresh={resource.refresh}
+        now={new Date()}
+      />
       {page && resource.loadedAt ? (
         <p className={styles.updated}>
-          <span>
-            {describeReport(page.sourceTimestamp, resource.loadedAt)} by the operator
-          </span>
-          <ActionButton onClick={resource.refresh} disabled={resource.loading}>
-            {resource.loading ? "Refreshing…" : "Refresh"}
-          </ActionButton>
+          {describeReport(page.sourceTimestamp, resource.loadedAt)} by the operator
         </p>
       ) : null}
 

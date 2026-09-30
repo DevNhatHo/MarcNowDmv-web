@@ -1,0 +1,16 @@
+.banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+  margin-block-end: var(--space-4);
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-thin) solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface);
+  font-size: var(--text-small);
+}
+
+.outdated { color: var(--color-warning); font-weight: var(--weight-medium); }
+
+.current { color: var(--color-text-secondary); }
