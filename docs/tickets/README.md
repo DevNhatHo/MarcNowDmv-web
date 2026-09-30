@@ -1,6 +1,6 @@
 # Frontend ticket index
 
-WEB-001 through WEB-005 and WEB-007 through WEB-011 are DONE. Recommended next: [WEB-012](WEB-012.md). Resume IN_PROGRESS work before choosing a new ticket. Work is committed here and pushed to `origin/main`.
+**The core local milestone is complete**: WEB-001 through WEB-012 are DONE (WEB-006 was merged into WEB-005). Recommended next: [WEB-MAP-1](WEB-MAP-1.md), the only map ticket whose dependency is satisfied. Resume IN_PROGRESS work before choosing a new ticket. Work is committed here and pushed to `origin/main`.
 
 | Ticket | Title | Dependencies | Status |
 |---|---|---|---|
@@ -15,7 +15,7 @@ WEB-001 through WEB-005 and WEB-007 through WEB-011 are DONE. Recommended next: 
 | [WEB-009](WEB-009.md) | MARC Pulse home experience | WEB-005, WEB-008 | DONE |
 | [WEB-010](WEB-010.md) | Central polling and resilient freshness states | WEB-007, WEB-008, WEB-009 | DONE |
 | [WEB-011](WEB-011.md) | Responsive accessibility and design review | WEB-010 | DONE |
-| [WEB-012](WEB-012.md) | Local frontend/backend integration smoke test | WEB-011 | NOT_STARTED |
+| [WEB-012](WEB-012.md) | Local frontend/backend integration smoke test | WEB-011 | DONE |
 
 Visual tickets require rendered review, not just passing tests. See [roadmap](../ROADMAP.md) and [current state](../CURRENT_STATE.md).
 

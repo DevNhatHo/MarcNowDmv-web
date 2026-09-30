@@ -83,3 +83,4 @@ review.
 | WEB-009 | [reviews/WEB-009](reviews/WEB-009/README.md) |
 | WEB-010 | [reviews/WEB-010](reviews/WEB-010/README.md) |
 | WEB-011 | [reviews/WEB-011](reviews/WEB-011/README.md) |
+| WEB-012 | [reviews/WEB-012](reviews/WEB-012/README.md) |

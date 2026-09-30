@@ -53,6 +53,26 @@ deterministic; write any live probe as a temporary test file and delete it after
 
 Each completed ticket records actual commands/results and visual limitations. Tests use deterministic data; live backend smoke remains separate. No Go checks are required for this frontend-only ticket; backend changes require separately authorized work and backend checks.
 
+## Integration smoke test (WEB-012)
+
+`tests/e2e/integration.spec.ts` is the only suite that requires the backend. Start it
+read-only against a retained database, then the frontend, then run Playwright:
+
+```
+# backend repository
+DATABASE_URL='postgres://marc_now_dmv:marc_now_dmv_local@127.0.0.1:5432/marc_208_live?sslmode=disable' \
+  HTTP_ADDR=127.0.0.1:8080 go run ./cmd/api
+
+# this repository
+npm run build && npm start
+npx playwright test
+```
+
+Never ingest feeds, run migrations or change schema for a smoke run, and stop both servers
+afterwards. The suite asserts behaviour, not particular trains or times, so it keeps working
+as retained data changes. Results and limitations are in
+[the smoke record](reviews/WEB-012/README.md).
+
 ## Contract reproduction
 
 `docs/contract-samples/manifest.json` identifies the planning capture origin, backend commit, database and requested paths/statuses. JSON files wrap raw bodies and selected response headers. They are retained-data samples, not freshness promises. Use actual returned train IDs for new smoke runs rather than assuming sample IDs still exist. Validate list, detail, alerts, health, nulls and stale evidence. Synthetic MOVING/STATIONARY/trend samples must be explicitly labeled.

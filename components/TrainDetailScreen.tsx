@@ -108,7 +108,7 @@ export default function TrainDetailScreen({ id }: { id: string }) {
       ) : null}
 
       {resource.error ? (
-        <DetailFailure error={resource.error} onRetry={resource.refresh} backHref={backHref} />
+        <DetailFailure error={resource.error} onRetry={resource.refresh} />
       ) : null}
 
       <Freshness
@@ -131,26 +131,23 @@ export default function TrainDetailScreen({ id }: { id: string }) {
   );
 }
 
+/**
+ * The back link already sits above this notice, so repeating it here would put the same
+ * control on the screen twice. Only the action the notice adds is offered.
+ */
 function DetailFailure({
   error,
   onRetry,
-  backHref,
 }: {
   error: Parameters<typeof describeFailure>[0];
   onRetry: () => void;
-  backHref: string;
 }) {
   const { title, body } = describeFailure(error);
   return (
     <Notice
       tone="critical"
       title={title}
-      actions={
-        <>
-          <ActionButton onClick={onRetry}>Try again</ActionButton>
-          <Link href={backHref}>Back to trains</Link>
-        </>
-      }
+      actions={<ActionButton onClick={onRetry}>Try again</ActionButton>}
     >
       {body}
     </Notice>
