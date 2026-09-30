@@ -8,3 +8,6 @@ dist/
 playwright-report/
 test-results/
 .DS_Store
+
+# Next regenerates this with dev/build-specific route type paths.
+next-env.d.ts

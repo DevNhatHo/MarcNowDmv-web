@@ -78,7 +78,7 @@ Render stale content with timestamps and explicit last-reported framing. Do not 
 
 ## Visual completion gate
 
-Every visual ticket must inspect rendered mobile (360×800) and desktop (1280×900), including long content, loading, empty, errors and actual backend data where feasible. Capture screenshots when tooling permits and record paths/results in the ticket. If a state is inapplicable, explain why. Synthetic scenario screenshots must be labeled. No implementation exists yet, so no visual review or accessibility pass is claimed.
+Every visual ticket must inspect rendered mobile (360×800) and desktop (1280×900), including long content, loading, empty, errors and actual backend data where feasible. Capture screenshots when tooling permits and record paths/results in the ticket. If a state is inapplicable, explain why. Synthetic scenario screenshots must be labeled. WEB-001 implements only a readable starter page; its rendered review is recorded with the ticket. This does not certify future tokens/screens or a full accessibility audit.
 
 Before DONE, answer: What dominates? Can it be understood in five seconds? Can anything be removed? Is anything duplicated? Could whitespace replace a card? Is severity appropriate? Are unknown/stale distinct from healthy? Is official distinct from calculated? Does mobile work naturally? Does it make sense without color? Are diagnostics too prominent? Does it feel calm? Simplify before completion.
 

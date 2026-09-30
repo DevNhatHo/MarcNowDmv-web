@@ -2,25 +2,28 @@
 
 ## Current state
 
-This checkout is documentation only. There is no package.json, npm script, Next server or frontend test suite yet. The commands below are the intended WEB-001+ workflow, not commands executed successfully in planning. No AWS configuration is required or planned.
+The repository now has a minimal Next.js App Router starter. Only `/` is implemented; API integration, train screens and map remain future tickets. No backend or environment variables are needed for the starter.
 
-Frontend: `/home/nhat/marc-now-dmv-web`, expected URL `http://localhost:3000`.
-Backend: existing `/home/nhat/MarcNowDmv` (logical name `marc-now-dmv-backend`), expected URL `http://localhost:8080`. Do not rename or modify it for frontend work.
+Frontend: `/home/nhat/marc-now-dmv-web`, URL `http://localhost:3000`.
+Backend: existing `/home/nhat/MarcNowDmv` (logical name `marc-now-dmv-backend`), future URL `http://localhost:8080`. Do not rename or modify it for frontend work.
 
-## After WEB-001
+## Start and check the app
 
-1. Check the installed Node/npm versions against the stable Next.js installation requirements. WEB-001 records exact dependency versions in package.json/lockfile and creates test, lint, typecheck and build scripts.
-2. Run `npm ci` from the frontend repository after a lockfile exists.
-3. Copy `.env.example` to `.env.local`. Keep `API_BASE_URL=http://localhost:8080` server-side and `NEXT_PUBLIC_API_BASE_URL=/api/backend` relative. Restart the dev server after environment changes. Never commit `.env.local` or credentials.
-4. Start the existing backend following its own docs/RUNBOOK.md and configured PostGIS database. Use `go run ./cmd/api` with its DATABASE_URL and HTTP_ADDR supplied locally; this frontend does not own migrations or ingestion. Existing planning database was `marc_208_live`. Do not drop, reseed or migrate user databases merely to view the frontend.
-5. Run `npm run dev` for port 3000. The proxy becomes available only after WEB-003.
-6. Verify `/health` on the backend and visit `/trains`, then open a returned train ID. Health alone does not prove feeds are fresh. Inspect sourceHealth and evidence timestamps. Retained data can legitimately be UNKNOWN/UNAVAILABLE.
+1. Use Node 24 LTS and npm 11 (verified Node 24.13.0, npm 11.6.2). The framework minimum is Node 20.9; the repository's development dependencies may require a newer version, so use the verified Node 24 environment.
+2. Run `npm ci` from the frontend repository. The lockfile pins all dependencies.
+3. Run `npm run dev`, then open http://localhost:3000. Port 3000 is explicit; if busy, stop your earlier frontend server rather than silently switching ports.
+4. Run `npm test` (non-watch Vitest), `npm run lint` (ESLint CLI, zero warnings), `npm run typecheck` (Next route type generation, then strict TypeScript), and `npm run build` (production build). Avoid running build concurrently with the development server.
+5. For production preview, stop development, run `npm run build`, then `npm start`; open the same local URL. Stop your foreground server with Ctrl-C.
 
-## Planned checks
+The starter tests assert the main landmark/heading and honest unavailable-live-information copy. Browser review evidence belongs in `docs/reviews/WEB-001/`. A permanent Playwright suite is deferred to WEB-004; WEB-001 uses temporary Playwright tooling with installed Chrome for its required rendered review. No future empty API/component packages are scaffolded.
 
-WEB-001 must establish executable scripts: `npm test` (non-watch), `npm run lint`, `npm run typecheck`, `npm run build`. Use the stable Next-compatible ESLint CLI rather than assuming a removed framework lint command. Appropriate initial smoke tests should exercise the initial page, not duplicate configuration. Add `npm run test:e2e` with Playwright when the first navigation/screen work needs it; document browser installation then. Do not claim these commands passed before they exist and run.
+## Future backend integration (WEB-003 onward)
 
-Each completed ticket records commands, exit results, rendered reviews and limitations. Network-independent fixtures are required for regular tests. Local smoke against the real backend is separate and cannot require fresh live MTA data for every test run. No Go checks are required for documentation-only/frontend-only changes; backend modifications would require a separately authorized backend task and its checks.
+Copy `.env.example` to `.env.local` when implementing the proxy. Keep `API_BASE_URL=http://localhost:8080` server-side and `NEXT_PUBLIC_API_BASE_URL=/api/backend` relative. Restart Next after environment changes; never commit `.env.local` or credentials. These settings are documented but are not consumed by the starter.
+
+Start the existing backend following its own docs/RUNBOOK.md with its DATABASE_URL and HTTP_ADDR. This frontend does not own migrations/ingestion; never drop or reseed user databases for a smoke test. Check backend `/health`, then the frontend train routes once implemented. Health does not prove fresh feeds: inspect sourceHealth and timestamps. The retained planning database was `marc_208_live`.
+
+Each completed ticket records actual commands/results and visual limitations. Tests use deterministic data; live backend smoke remains separate. No Go checks are required for this frontend-only ticket; backend changes require separately authorized work and backend checks.
 
 ## Contract reproduction
 
@@ -39,3 +42,13 @@ One completed implementation ticket per final commit. Check status first and inc
 ## Future map checks
 
 WEB-MAP-1 records chosen stable Leaflet version/license and provider decision; default plan has no external tile service or API key. Do not configure paid tiles implicitly. WEB-MAP-2 adds actual geometry endpoints to the proxy only after backend contract delivery. Extend existing smoke tests in WEB-MAP-5 to cover system→focus→detail→system, current versus last-known markers, missing positions, stale follow pause and bounded requests. Use actual local backend responses plus clearly synthetic fresh-state fixtures; no runtime or visual map check was executed during planning.
+
+## WEB-001 toolchain compatibility
+
+Pinned Next.js 16.3.7, React/React DOM 19.3.0, TypeScript 6.0.3, Vitest 5.0.2 and ESLint 9.39.5 (full exact dependency list in package.json). The project requires Node >=24 and was checked with Node 24.13.0/npm 11.6.2.
+
+ESLint 9 emits an upstream deprecation notice. ESLint 10.11.0 was tested but Next's bundled React/import/accessibility plugins have incompatible peer ranges and its React lint rule crashed. Keep 9.39.5 until that plugin chain supports 10; do not force incompatible peer dependencies. Vitest 5 uses its current default JSX transformation; no obsolete esbuild JSX option is set. The initial lint/type/build failures were fixed before the final checks.
+
+`next-env.d.ts` and `.next/` are generated and ignored. `npm run typecheck` generates the needed Next types, so type checking does not depend on a previous build.
+
+Next's dev agent-file generator is disabled with `agentRules: false` in next.config.ts so starting the app preserves repository-owned AGENTS.md. Both dev and production startup were verified in WEB-001; screenshots and observations are in [the review record](reviews/WEB-001/README.md).

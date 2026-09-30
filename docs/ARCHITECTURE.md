@@ -2,7 +2,7 @@
 
 ## Boundary and stack
 
-Next.js with TypeScript, React, and App Router; choose current stable versions and commit the lockfile during WEB-001. No application is installed in this planning session. Native CSS custom properties and CSS Modules provide a small styling surface. Use system fonts. No runtime state library, UI framework, authentication, analytics, GraphQL, WebSockets, or AWS.
+Next.js 16.3.7 with React 19.3.0, TypeScript and App Router is installed by WEB-001; package.json and package-lock.json record exact dependency versions. The implemented surface is the minimal starter page only. Native CSS custom properties and CSS Modules provide a small styling surface. Use system fonts. No runtime state library, UI framework, authentication, analytics, GraphQL, WebSockets, or AWS.
 
 Use the [official installation guide](https://nextjs.org/docs/app/getting-started/installation) to recheck prerequisites when implementing. Node v24.13.0 and npm 11.6.2 were observed locally during planning. Use App Router [Route Handlers](https://nextjs.org/docs/app/getting-started/route-handlers) for the local API proxy.
 
@@ -43,7 +43,7 @@ Version/snapshot conflicts restart pagination at most once, discard incompatible
 
 ## Verification architecture
 
-Vitest and Testing Library are planned development-only dependencies for contract parsing, presentation, and fake-clock refresh behavior. Playwright is planned for mobile/desktop, keyboard, and deterministic network scenarios. No runtime testing dependencies or arbitrary coverage threshold. Live local smoke tests are separate from deterministic CI fixtures. Capture-derived fixtures retain provenance; synthetic states are clearly marked, never called live observations.
+Vitest and Testing Library are development-only dependencies for contract parsing, presentation, and fake-clock refresh behavior. Playwright is planned for mobile/desktop, keyboard, and deterministic network scenarios. No runtime testing dependencies or arbitrary coverage threshold. Live local smoke tests are separate from deterministic CI fixtures. Capture-derived fixtures retain provenance; synthetic states are clearly marked, never called live observations.
 
 See [API contract](API_CONTRACT.md), [design](DESIGN.md), and [runbook](RUNBOOK.md).
 

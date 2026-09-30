@@ -1,12 +1,12 @@
 # Frontend current state
 
-Updated: 2026-09-29.
+Updated: 2026-09-29 (America/New_York).
 
 ## Milestone and work status
 
-Local frontend planning/bootstrap documentation is complete. The Next.js app does not exist yet. Current implementation ticket: none. Completed implementation tickets: none. All WEB-001–WEB-012 and WEB-MAP-1–WEB-MAP-5 are NOT_STARTED. Recommended next: [WEB-001 — Bootstrap Next.js/TypeScript project](tickets/WEB-001.md), only in a subsequent authorized implementation session. Stop after planning in this session.
+Local frontend core milestone has begun. [WEB-001](tickets/WEB-001.md) is DONE: Next.js 16.3.7 / React 19.3.0 App Router starter, strict TypeScript, pinned npm lockfile and repeatable checks. Only `/` exists; it honestly says live service information is not yet available. Current ticket: none. Completed: WEB-001. Recommended next: [WEB-002 — Design tokens and visual foundation](tickets/WEB-002.md). WEB-002–012 and WEB-MAP-1–5 remain NOT_STARTED. This session stopped after WEB-001.
 
-Repository: `/home/nhat/marc-now-dmv-web`, newly initialized main branch, separate from existing backend `/home/nhat/MarcNowDmv`. No remote configured; no push target exists. No backend files were modified. Existing unrelated backend `.idea/` directory was preserved.
+Repository: `/home/nhat/marc-now-dmv-web`, main branch. No remote configured; no push target exists. Backend `/home/nhat/MarcNowDmv` was unchanged; unrelated `.idea/` remains untouched. Backend, API integration, full shell, map and AWS were outside WEB-001.
 
 ## Backend dependency and actual observations
 
@@ -20,16 +20,16 @@ See [verified contract](API_CONTRACT.md) and [backend proposals](BACKEND_GAPS.md
 
 ## Checks and visual status
 
-Planning validation: JSON captures parse; all 17 tickets contain required sections and resolvable, acyclic dependencies; local Markdown links and whitespace checks pass. No package.json or implementation files were created. Documentation diff reviewed before planning commit.
+Executed successfully for final WEB-001 code: clean `npm ci`; `npm test` (2 tests); `npm run lint` (zero warnings); `npm run typecheck`; `npm run build`. Dev and production preview each served HTTP 200 on localhost:3000. npm install/ci reported zero vulnerabilities. Node 24.13.0/npm 11.6.2 verified; project requires Node >=24. Runtime checks did not require Go/backend access.
 
-Frontend tests/lint/typecheck/build: NOT RUN — app and scripts do not exist. Backend Go tests/vet/build: NOT RUN this planning session — backend unmodified. Actual API requests above were executed. Visual/mobile/desktop/accessibility verification: NOT RUN — no rendered frontend exists. Every future visual ticket includes the rendered verification gate and screenshot recording where possible. Proposed token colors are not yet contrast-certified.
+Rendered and visually inspected mobile 360×800 and desktop 1280×900 using installed Chrome via temporary Playwright tooling; no horizontal overflow, correct title/language/main heading, no uncaught page errors. Screenshots and limitations: [WEB-001 review](reviews/WEB-001/README.md). Loading/error/empty/real-data states are not applicable to this static starter. Design tokens, full accessibility audit and future screen reviews remain outstanding in their tickets.
+
+Initial lint/type/build failures were corrected. ESLint 10 was incompatible with Next's bundled plugins; compatible 9.39.5 is pinned but emits an upstream deprecation notice. Revisit when plugin compatibility permits an upgrade. Next's automatic agent-file generation is disabled to preserve repository instructions. Go tests/vet/build were NOT RUN: backend unchanged.
+
+## Map roadmap remains planned
+
+System map/focus follow WEB-012 through WEB-MAP-1–5. Client-only Leaflet and canonical backend geometry remain the recommendation; geometry and active-membership APIs are explicit backend proposal gates. No map dependencies were installed. See [map plan](MAP_PLAN.md).
 
 ## Next session
 
-Read AGENTS.md, architecture, design, API contract and WEB-001. Inspect status first. Mark WEB-001 IN_PROGRESS, install the current stable stack while preserving these docs, establish executable checks and render the starter page at both target widths. Do not skip to later screens or treat planning as completed implementation.
-
-## Map planning update
-
-Added required system-map and train-focus roadmap without restarting the completed core plan. Five follow-on tickets begin after WEB-012; WEB-001 remains the next implementation ticket. Recommendation: client-only Leaflet with canonical backend geometry and no external basemap initially; provider alternatives, licensing references, freshness and navigation rules are in [MAP_PLAN.md](MAP_PLAN.md).
-
-Current backend route registration was re-inspected: no public shape-geometry endpoint. Existing list does not define active system membership. BACKEND-UI-03 gates route rendering; BACKEND-UI-02 gates active markers; display metadata remains a documented fallback gap. No new HTTP capture, frontend implementation, dependency installation, backend modification or AWS work occurred in this update. Planning links, 17 ticket structures/dependencies and whitespace were checked; frontend/rendered/runtime checks remain NOT RUN because no app exists.
+Read AGENTS.md, architecture/design/API contract and WEB-002. Check git status, mark WEB-002 IN_PROGRESS, and implement only the token/visual foundation scope. Preserve the starter and existing docs. Use `npm ci`, `npm run dev`, and the established checks; capture rendered mobile/desktop evidence for visual changes. Do not skip ahead to API integration or map work.
