@@ -73,6 +73,40 @@ afterwards. The suite asserts behaviour, not particular trains or times, so it k
 as retained data changes. Results and limitations are in
 [the smoke record](reviews/WEB-012/README.md).
 
+## Live realtime data
+
+The API only reads the database; **nothing polls MTA unless the ingester runs**, and
+`cmd/ingest` is one-shot. For live movement, run a loop in a third terminal alongside the
+backend and frontend:
+
+```
+cd /home/nhat/MarcNowDmv
+go build -o /tmp/marc-ingest ./cmd/ingest      # build once; go run recompiles every tick
+
+while true; do
+  DATABASE_URL='postgres://marc_now_dmv:marc_now_dmv_local@127.0.0.1:5432/marc_208_live?sslmode=disable' \
+    /tmp/marc-ingest
+  sleep 30
+done
+```
+
+Thirty seconds matches the frontend's trains cadence. **Ingesting writes to whichever database
+you name**, so a run against the retained review database changes the data earlier reviews were
+captured from; choose deliberately and record the choice.
+
+Weekday peaks are roughly 05:00–09:00 and 15:00–19:00 Eastern. The quickest check of whether
+trains are reporting is the Vehicle Positions payload size — a few hundred bytes is an empty
+feed, kilobytes means live GPS:
+
+```
+curl -s -o /tmp/vp.pb -w '%{http_code} %{size_download}\n' "$MARC_VEHICLE_POSITIONS_URL"
+```
+
+Movement needs at least two qualifying positions within the backend's own gap threshold, so a
+single ingest will show UNKNOWN; a second run about 30 seconds later is what produces MOVING
+or STATIONARY. First observed live on 2026-09-30; see
+[the live capture](reviews/live-2026-09-30/).
+
 ## Contract reproduction
 
 `docs/contract-samples/manifest.json` identifies the planning capture origin, backend commit, database and requested paths/statuses. JSON files wrap raw bodies and selected response headers. They are retained-data samples, not freshness promises. Use actual returned train IDs for new smoke runs rather than assuming sample IDs still exist. Validate list, detail, alerts, health, nulls and stale evidence. Synthetic MOVING/STATIONARY/trend samples must be explicitly labeled.

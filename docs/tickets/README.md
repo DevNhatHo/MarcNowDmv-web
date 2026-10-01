@@ -1,6 +1,6 @@
 # Frontend ticket index
 
-**The core local milestone is complete**: WEB-001 through WEB-012 are DONE (WEB-006 was merged into WEB-005). [WEB-MAP-1](WEB-MAP-1.md) is DONE. **No ticket is currently actionable:** WEB-MAP-2 through WEB-MAP-5 are blocked on backend contracts that do not exist, and this repository must not modify the backend. Resume IN_PROGRESS work before choosing a new ticket. Work is committed here and pushed to `origin/main`.
+**The core local milestone is complete**: WEB-001 through WEB-012 are DONE (WEB-006 was merged into WEB-005). [WEB-MAP-1](WEB-MAP-1.md) is DONE. Three follow-on tickets were opened from verified findings: recommended next is **[WEB-013](WEB-013.md)**, which fixes a contradiction seen in live data. WEB-MAP-2 through WEB-MAP-5 remain blocked on backend contracts that do not exist, and this repository must not modify the backend. Resume IN_PROGRESS work before choosing a new ticket. Work is committed here and pushed to `origin/main`.
 
 | Ticket | Title | Dependencies | Status |
 |---|---|---|---|
@@ -16,6 +16,14 @@
 | [WEB-010](WEB-010.md) | Central polling and resilient freshness states | WEB-007, WEB-008, WEB-009 | DONE |
 | [WEB-011](WEB-011.md) | Responsive accessibility and design review | WEB-010 | DONE |
 | [WEB-012](WEB-012.md) | Local frontend/backend integration smoke test | WEB-011 | DONE |
+| [WEB-013](WEB-013.md) | Reconcile trip-level and stop-level official status | WEB-005, WEB-007 | NOT_STARTED |
+| [WEB-014](WEB-014.md) | Show the operator's scheduled destination | WEB-005 | NOT_STARTED |
+| [WEB-015](WEB-015.md) | Verify the app against live MARC service | WEB-012 | NOT_STARTED |
+
+WEB-013 through WEB-015 came out of running the app against the real backend rather than from
+planning: WEB-013 from a contradiction visible only in live MDOT data, WEB-014 from an
+endpoint the original contract review missed, and WEB-015 from the first live ingest proving
+the synthetic movement fixtures can be replaced with observations.
 
 Visual tickets require rendered review, not just passing tests. See [roadmap](../ROADMAP.md) and [current state](../CURRENT_STATE.md).
 

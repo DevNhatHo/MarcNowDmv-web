@@ -4,7 +4,7 @@ Updated: 2026-09-30 (America/New_York).
 
 ## Milestone and work status
 
-[WEB-001](tickets/WEB-001.md) through [WEB-005](tickets/WEB-005.md), and [WEB-007](tickets/WEB-007.md) through [WEB-012](tickets/WEB-012.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. Every route is now a real screen reading the local backend through the typed client: `/` (Pulse), `/trains`, `/trains/[id]` and `/alerts`. No placeholder remains. Current ticket: none. **The core local milestone (WEB-001–WEB-012) is complete, and [WEB-MAP-1](tickets/WEB-MAP-1.md) is DONE.** No ticket is currently actionable: WEB-MAP-2 through WEB-MAP-5 are blocked on backend contracts that do not exist. WEB-MAP-1 is DONE as an assessment; WEB-MAP-2 and WEB-MAP-3 are **blocked** on the undelivered BACKEND-UI-03 and BACKEND-UI-02 proposals, and WEB-MAP-4 and WEB-MAP-5 chain off them. **WEB-006 was merged into WEB-005** on 2026-09-29: the list's detail links and the detail route cannot ship in separate tickets without leaving every row pointing at a route that does not exist, so one ticket now delivers both surfaces and reviews both. WEB-007 depends on WEB-005 accordingly.
+[WEB-001](tickets/WEB-001.md) through [WEB-005](tickets/WEB-005.md), and [WEB-007](tickets/WEB-007.md) through [WEB-012](tickets/WEB-012.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. Every route is now a real screen reading the local backend through the typed client: `/` (Pulse), `/trains`, `/trains/[id]` and `/alerts`. No placeholder remains. Current ticket: none. **The core local milestone (WEB-001–WEB-012) is complete, and [WEB-MAP-1](tickets/WEB-MAP-1.md) is DONE.** Recommended next: **[WEB-013](tickets/WEB-013.md)**. WEB-013–015 were opened from findings made by running the app against the real backend, not from planning. WEB-MAP-2 through WEB-MAP-5 remain blocked on backend contracts that do not exist. WEB-MAP-1 is DONE as an assessment; WEB-MAP-2 and WEB-MAP-3 are **blocked** on the undelivered BACKEND-UI-03 and BACKEND-UI-02 proposals, and WEB-MAP-4 and WEB-MAP-5 chain off them. **WEB-006 was merged into WEB-005** on 2026-09-29: the list's detail links and the detail route cannot ship in separate tickets without leaving every row pointing at a route that does not exist, so one ticket now delivers both surfaces and reviews both. WEB-007 depends on WEB-005 accordingly.
 
 Repository: `/home/nhat/marc-now-dmv-web`, main branch tracking `origin/main` at `git@github.com:DevNhatHo/MarcNowDmv-web.git`, configured on the user's instruction after WEB-003 and pushed through `c6b3006`. Earlier ticket records state that no remote existed, which was true when they were written. Backend `/home/nhat/MarcNowDmv` was unchanged; unrelated `.idea/` remains untouched. The backend, the full shell, the map and AWS remain outside WEB-001–003; API integration is now implemented as a boundary only, with no screen consuming it.
 
@@ -229,27 +229,47 @@ Three real captures were added to `docs/contract-samples/` with the manifest ext
 Unblocking them is separately authorized backend work; this repository owns presentation
 only.
 
+## First live service observation, 2026-09-30
+
+The app was run against the **live MDOT MTA feeds** for the first time. Two `cmd/ingest` runs
+35 seconds apart, into `marc_208_live`, produced 2 Trip Updates, 2 Vehicle Positions and 9
+alerts, with both realtime sources reporting HEALTHY.
+
+Train548 on the Penn Line rendered **MOVING**, route progress **MEASURED** at 81,078 m along
+the shape, next stop **IDENTIFIED** as Martin Airport 2,052 m away, and the delay trend
+**STABLE** — the first time any of those states has come from real data rather than a
+synthetic fixture. Screenshots are in `docs/reviews/live-2026-09-30/`.
+
+Two things followed from it. The ingester is **one-shot**, so live data needs a polling loop;
+the command is in [RUNBOOK.md](RUNBOOK.md). And one real inconsistency appeared immediately:
+MDOT publishes stop-level delays with **no trip-level status**, so the detail screen showed
+"Realtime status unavailable" as its dominant claim while the trend below it cited a
+published delay of 1 min 2 sec. Both are correct; together they read as the page contradicting
+itself. That is [WEB-013](tickets/WEB-013.md), and no synthetic fixture had caught it because
+every fixture paired a trip-level delay with its stop-level one.
+
+## Tickets opened from live and contract findings
+
+| Ticket | Came from |
+|---|---|
+| [WEB-013](tickets/WEB-013.md) | the live contradiction above |
+| [WEB-014](tickets/WEB-014.md) | WEB-MAP-1 finding that `/api/v1/departures` publishes a scheduled `headsign` |
+| [WEB-015](tickets/WEB-015.md) | the first live ingest showing the synthetic movement fixtures can be replaced with rush-hour observations |
+
 ## Next session
 
-**No frontend ticket is currently actionable.** WEB-001 through WEB-012 and WEB-MAP-1 are
-DONE; WEB-MAP-2 through WEB-MAP-5 are blocked on backend contracts that do not exist, and
-this repository owns presentation only and must not modify the backend.
+Read AGENTS.md, this file and the ticket index, inspect `git status` in both repositories,
+then start **[WEB-013](tickets/WEB-013.md)**: a train with stop-level delays and no
+trip-level status currently reads as though the page disagrees with itself, and that is the
+normal case for MARC rather than an edge case. It is a visual ticket, so rendered review is
+required and automated tests alone cannot complete it; reproduce it against live service
+rather than only against a fixture.
 
-Before starting anything, read AGENTS.md, this file and the ticket index, and inspect
-`git status` in both repositories.
+[WEB-014](tickets/WEB-014.md) then gives every screen a real destination instead of an opaque
+trip identifier, and [WEB-015](tickets/WEB-015.md) replaces the remaining synthetic evidence
+with rush-hour observations.
 
-Two pieces of work would genuinely move things forward, neither of which is authorized here:
-
-1. **Backend geometry (BACKEND-UI-03) and active membership (BACKEND-UI-02).** These are the
-   hard gates on the map. They are proposals in [BACKEND_GAPS.md](BACKEND_GAPS.md), not
-   tickets, and they belong to the backend repository with its own authorization and checks.
-2. **A live ingest during MARC service hours.** The retained database holds no fresh realtime
-   evidence, so every calculation reads UNKNOWN and no live MOVING, STATIONARY, delayed or
-   cancelled presentation has ever been observed. Those branches currently rest on unit tests
-   and clearly labelled synthetic fixtures. Running `cmd/ingest` against the live feeds while
-   MARC is operating would let several tickets' "never observed" caveats be replaced with
-   real evidence. That is backend-repository work and needs its own authorization.
-
-A smaller, self-contained follow-up also exists: `/api/v1/departures` exposes a scheduled
-`headsign` that no screen uses yet. Putting a real destination on the list and detail would
-need a new ticket, because it is stop-scoped and the screens are train-scoped.
+WEB-MAP-2 through WEB-MAP-5 stay blocked. Their dependencies are *delivered* backend
+contracts — BACKEND-UI-03 geometry and BACKEND-UI-02 active membership — and neither exists.
+This repository owns presentation only and must not modify the backend, so unblocking them is
+separately authorized work there.
