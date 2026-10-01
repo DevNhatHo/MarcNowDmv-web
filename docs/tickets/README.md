@@ -1,6 +1,6 @@
 # Frontend ticket index
 
-**The core local milestone is complete**: WEB-001 through WEB-012 are DONE (WEB-006 was merged into WEB-005). Recommended next: [WEB-MAP-1](WEB-MAP-1.md), the only map ticket whose dependency is satisfied. Resume IN_PROGRESS work before choosing a new ticket. Work is committed here and pushed to `origin/main`.
+**The core local milestone is complete**: WEB-001 through WEB-012 are DONE (WEB-006 was merged into WEB-005). [WEB-MAP-1](WEB-MAP-1.md) is DONE. **No ticket is currently actionable:** WEB-MAP-2 through WEB-MAP-5 are blocked on backend contracts that do not exist, and this repository must not modify the backend. Resume IN_PROGRESS work before choosing a new ticket. Work is committed here and pushed to `origin/main`.
 
 | Ticket | Title | Dependencies | Status |
 |---|---|---|---|
@@ -21,14 +21,14 @@ Visual tickets require rendered review, not just passing tests. See [roadmap](..
 
 ## Required map follow-on
 
-The original core tickets remain unchanged in order. [Map plan](../MAP_PLAN.md) adds these follow-on tickets; all remain NOT_STARTED.
+The original core tickets remain unchanged in order. [Map plan](../MAP_PLAN.md) adds these follow-on tickets; WEB-MAP-1 is DONE and the rest are blocked.
 
 | Ticket | Title | Dependencies | Status |
 |---|---|---|---|
-| [WEB-MAP-1](WEB-MAP-1.md) | Map technology and data contract | WEB-012 | NOT_STARTED |
-| [WEB-MAP-2](WEB-MAP-2.md) | Canonical MARC route rendering | WEB-MAP-1 + delivered BACKEND-UI-03 | NOT_STARTED |
-| [WEB-MAP-3](WEB-MAP-3.md) | Active train markers with position trust | WEB-MAP-2 + delivered BACKEND-UI-02 | NOT_STARTED |
-| [WEB-MAP-4](WEB-MAP-4.md) | Train focus and observation-based follow | WEB-MAP-3 | NOT_STARTED |
-| [WEB-MAP-5](WEB-MAP-5.md) | Map and train-detail integration | WEB-MAP-4 | NOT_STARTED |
+| [WEB-MAP-1](WEB-MAP-1.md) | Map technology and data contract | WEB-012 | DONE |
+| [WEB-MAP-2](WEB-MAP-2.md) | Canonical MARC route rendering | WEB-MAP-1 + delivered BACKEND-UI-03 | **BLOCKED** — no geometry endpoint exists |
+| [WEB-MAP-3](WEB-MAP-3.md) | Active train markers with position trust | WEB-MAP-2 + delivered BACKEND-UI-02 | **BLOCKED** — no active-membership endpoint exists |
+| [WEB-MAP-4](WEB-MAP-4.md) | Train focus and observation-based follow | WEB-MAP-3 | **BLOCKED** via WEB-MAP-3 |
+| [WEB-MAP-5](WEB-MAP-5.md) | Map and train-detail integration | WEB-MAP-4 | **BLOCKED** via WEB-MAP-4 |
 
 Backend proposal delivery is a gate, not permission to modify the backend. Assessment can document gaps; map implementation cannot claim missing contracts are satisfied.

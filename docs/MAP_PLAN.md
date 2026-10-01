@@ -62,3 +62,60 @@ Show route/line, official delay/status, movement, freshness, direction, next sto
 Keep core WEB-001–012 first. Then WEB-MAP-1 → WEB-MAP-2 → WEB-MAP-3 → WEB-MAP-4 → WEB-MAP-5. WEB-MAP-2 requires delivered BACKEND-UI-03; WEB-MAP-3 requires delivered active/membership contract from BACKEND-UI-02. Metadata enhancements improve labels but do not block safe ID fallbacks. Backend work requires its own authorization; these dependencies do not authorize editing it here.
 
 Every visual map ticket requires real rendered mobile/desktop review and screenshots when available, covering loading, errors, empty system, unknown coordinates, mixed fresh/stale trains, stationary versus stale, long IDs, overlapping markers, selection, reduced motion and relevant real backend responses. Mark synthetic scenarios explicitly. Test no fake movement, no stale follow, bounded requests, no data leaks across schedule versions and text-only fallback. WEB-MAP-5 records an end-to-end system→focus→detail→system journey and extends the existing smoke tests rather than duplicating them.
+
+## WEB-MAP-1 assessment (2026-09-30)
+
+An assessment, not an implementation. **No map code, dependency or screen was added**, and
+no map rendering ticket is cleared by anything here.
+
+### Library and provider decision
+
+**Leaflet 1.9.4, BSD-2-Clause**, confirmed from the npm registry rather than from memory. It
+stays the recommendation: it is small, needs no API key, renders plain GeoJSON without a
+tile provider, and its licence imposes nothing beyond attribution of the library itself. It
+is **not installed**; installing it belongs to WEB-MAP-2, the first ticket that renders
+anything.
+
+**No external basemap.** The plan's neutral-background approach holds: MARC geometry drawn
+on a plain background needs no tile service, no API key, no per-view cost and no
+third-party request from a commuter's browser. A basemap would add all four, and the
+question this map answers — where a train is along its own line — does not need streets
+underneath it.
+
+Accessibility consequence, decided now rather than later: a map is not an accessible way to
+convey position, so the map screen must carry the same information as text. The detail
+screen already does — reported location, next stop, progress — so the map is an alternative
+view of information already available without it, never the only route to it.
+
+### Data contract verification
+
+Probed against the running backend, not inferred:
+
+| Map need | Source | Status |
+|---|---|---|
+| Route geometry | none | **Missing.** `/api/v1/shapes`, `/api/v1/geometry` and `/api/v1/routes/geometry` all return 404. `calculated.routeProgress.shapeId` names a shape but carries no coordinates. Gate: BACKEND-UI-03. |
+| Which trains to draw now | none | **Missing.** `/api/v1/trains/active` returns 404; the list is a whole scheduled service date. Gate: BACKEND-UI-02. |
+| Position | `data.position.latitude` / `.longitude` | **Available**, nullable, on list and detail. |
+| Bearing | `data.position.bearingDegrees` | **Available**, nullable. Orients a marker; it is never a destination. |
+| Position freshness | `data.position.freshness` + `sourceTimestamp` | **Available.** Decides solid versus outlined markers. |
+| Progress along a line | `calculated.routeProgress` | **Available** as a measurement, but it is not geometry and cannot be drawn without BACKEND-UI-03. |
+| Station positions | `/api/v1/stops` `latitude` / `longitude` | **Available**, nullable. |
+| Selected train's detail | `/api/v1/trains/{id}` | **Available.** |
+| Destination label | `/api/v1/departures` `headsign` | **Newly found**, stop-scoped and SCHEDULED. Absent from list and detail, so markers still fall back to `tripId`. |
+
+Every field above has a source or an explicit fallback, and no proposed payload is
+described as if it existed.
+
+### Gates, restated plainly
+
+**WEB-MAP-2 and WEB-MAP-3 cannot be started.** Their dependencies are *delivered* backend
+contracts, and the backend's route table contains neither. WEB-MAP-4 and WEB-MAP-5 chain
+off them. Documenting the absence satisfies this assessment ticket; it does not satisfy
+theirs, and no map ticket may be cleared on synthetic geometry.
+
+### Orientation experiment
+
+**Not performed.** A temporary Leaflet spike would have rendered invented coordinates, and
+the one thing this ticket must not produce is a picture that looks like MARC geometry but
+is not. The feasibility question it would have answered is settled by Leaflet's documented
+GeoJSON support and needs no invented data.

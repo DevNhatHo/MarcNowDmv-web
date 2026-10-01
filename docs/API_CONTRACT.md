@@ -47,6 +47,32 @@ Alert text fields are nullable translation objects (`translation: [{text, langua
 
 Source-health states include HEALTHY, DEGRADED, STALE and UNAVAILABLE. A GTFS-RT 3.0 feed accepted with warning is usable but DEGRADED; stale retained alerts must show last-received time. Feed health is secondary to the commuter content and does not replace per-evidence freshness. Display no-alert success only with usable, sufficiently current evidence; otherwise explain unavailable or outdated alert information.
 
+## Endpoint missed by the WEB-003 review, found in WEB-MAP-1
+
+`GET /api/v1/departures` exists and was **absent from this document until WEB-MAP-1**. The
+WEB-003 review worked from the planning captures, which never requested it; reading the
+backend's route table (`internal/httpapi/httpapi.go`) shows the full set is `/health`,
+`/api/v1/routes`, `/api/v1/stops`, `/api/v1/trains`, `/api/v1/trains/{id}`,
+`/api/v1/alerts` and `/api/v1/departures`.
+
+It is SCHEDULED provenance, shaped like the catalogs (`scheduleVersion`, `provenance`,
+`data`, `nextAfter`), and requires **both** `stopId` and `serviceDate`. Its service date is
+**`YYYY-MM-DD`**, not the `YYYYMMDD` every other endpoint uses; `?serviceDate=20260930`
+returns 400. Optional parameters are `from`/`to` (GTFS service seconds), `windowStart`/
+`windowEnd` (RFC3339, mutually exclusive with `from`/`to`, at most 24 hours), `after`
+(a base64url cursor), `limit`, `version` and `routeId`.
+
+Each row carries `tripId`, `routeId`, `stopId`, `stopSequence`, `serviceDate`, **`headsign`**,
+`arrivalTime`, `departureTime` (GTFS clock strings), `scheduledArrival`,
+`scheduledDeparture` (instants), `pickupType` and `timepoint`.
+
+**This changes BACKEND-UI-01.** A scheduled `headsign` — "UNION STATION" in the captured
+response — *is* exposed, per trip at a stop. It is not available on the train list or detail,
+so the commuter-facing screens still fall back to the verbatim `tripId`; but the claim that
+no destination exists anywhere in the contract was wrong. Captures:
+[departures.json](contract-samples/departures.json) and
+[departures-invalid-date.json](contract-samples/departures-invalid-date.json).
+
 ## Field types corrected during WEB-003 (backend untouched)
 
 WEB-003 read the handler DTOs in `internal/httpapi/trains.go` and `catalog.go` rather than

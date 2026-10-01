@@ -1,0 +1,91 @@
+{
+ "method": "GET",
+ "path": "/api/v1/departures?stopId=11940&serviceDate=2026-09-30&limit=5",
+ "status": 200,
+ "headers": {
+  "Content-Type": "application/json; charset=utf-8",
+  "Cache-Control": "no-store"
+ },
+ "body": {
+  "scheduleVersion": {
+   "id": "1",
+   "checksum": "e0d7d70270938ebfe2adcbe2fe779fbaf17c41a7c1a27a00fc72ba898e288ebc",
+   "timezone": "America/New_York",
+   "activatedAt": "2026-09-29T00:25:51.234457Z"
+  },
+  "provenance": "SCHEDULED",
+  "data": [
+   {
+    "tripId": "Train872",
+    "routeId": "11704",
+    "stopId": "11940",
+    "stopSequence": 0,
+    "serviceDate": "2026-09-30",
+    "headsign": "UNION STATION",
+    "arrivalTime": "05:00:00",
+    "departureTime": "05:00:00",
+    "scheduledArrival": "2026-09-30T09:00:00Z",
+    "scheduledDeparture": "2026-09-30T09:00:00Z",
+    "pickupType": null,
+    "timepoint": 1
+   },
+   {
+    "tripId": "Train874",
+    "routeId": "11704",
+    "stopId": "11940",
+    "stopSequence": 0,
+    "serviceDate": "2026-09-30",
+    "headsign": "UNION STATION",
+    "arrivalTime": "05:40:00",
+    "departureTime": "05:40:00",
+    "scheduledArrival": "2026-09-30T09:40:00Z",
+    "scheduledDeparture": "2026-09-30T09:40:00Z",
+    "pickupType": null,
+    "timepoint": 1
+   },
+   {
+    "tripId": "Train878",
+    "routeId": "11704",
+    "stopId": "11940",
+    "stopSequence": 0,
+    "serviceDate": "2026-09-30",
+    "headsign": "UNION STATION",
+    "arrivalTime": "06:15:00",
+    "departureTime": "06:15:00",
+    "scheduledArrival": "2026-09-30T10:15:00Z",
+    "scheduledDeparture": "2026-09-30T10:15:00Z",
+    "pickupType": null,
+    "timepoint": 1
+   },
+   {
+    "tripId": "Train875",
+    "routeId": "11704",
+    "stopId": "11940",
+    "stopSequence": 12,
+    "serviceDate": "2026-09-30",
+    "headsign": "MARTINSBURG",
+    "arrivalTime": "18:39:00",
+    "departureTime": "18:39:00",
+    "scheduledArrival": "2026-09-30T22:39:00Z",
+    "scheduledDeparture": "2026-09-30T22:39:00Z",
+    "pickupType": null,
+    "timepoint": 1
+   },
+   {
+    "tripId": "Train879",
+    "routeId": "11704",
+    "stopId": "11940",
+    "stopSequence": 16,
+    "serviceDate": "2026-09-30",
+    "headsign": "MARTINSBURG",
+    "arrivalTime": "19:32:00",
+    "departureTime": "19:32:00",
+    "scheduledArrival": "2026-09-30T23:32:00Z",
+    "scheduledDeparture": "2026-09-30T23:32:00Z",
+    "pickupType": null,
+    "timepoint": 1
+   }
+  ],
+  "nextAfter": "eyJJbnN0YW50IjoiMjAyNi0wOS0zMFQxOTozMjowMC0wNDowMCIsIkRhdGUiOiIyMDI2MDkzMCIsIlRyaXBJRCI6IlRyYWluODc5IiwiU2VxdWVuY2UiOjE2fQ"
+ }
+}

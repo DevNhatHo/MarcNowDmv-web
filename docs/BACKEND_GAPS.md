@@ -10,6 +10,22 @@ These are frontend planning references, not allocated MARC ticket IDs. No backen
 | BACKEND-UI-04 | API documentation differs from current handlers | Use verified contract/captures in this repository. | Correct cursor names, calculated envelope placement, independent trend freshness, duration field and identity activation semantics; add contract examples/tests. |
 | BACKEND-UI-05 | Published field types and nullability are not documented | WEB-003 derived the wire types from the handler DTOs; the corrections are tabulated in API_CONTRACT.md. | Document `scheduleRelationship` as a nullable numeric enum, mark `officialStopUpdates[].stopId`/`.resolvedSequence`, the envelope `nextStop`/`nextUpdate` cursors, catalog `shortName`/`longName`/`name`/`wheelchairBoarding` nullable, guarantee `sourceHealth[].signals` is always an array rather than a nil slice, and state the cursor prerequisites (`serviceDate`+`version` for trains, `snapshot`+`version` for alerts, no `version` on detail). |
 
+## WEB-MAP-1 verification against the running backend (2026-09-30)
+
+Probed live, against backend commit `fdd6d4b` on the retained database:
+
+| Proposal | Status after verification |
+|---|---|
+| BACKEND-UI-01 | **Partly available, and previously overstated.** `/api/v1/departures` exposes a scheduled `headsign` per trip at a stop. It is absent from the train list and detail, so those screens still fall back to `tripId`, but a destination does exist in the contract. The remaining gap is a display name on the list and detail responses. |
+| BACKEND-UI-02 | **Undelivered.** No active-membership endpoint exists; `/api/v1/trains/active` returns 404. The train list remains a whole scheduled service date with no current-running semantics. |
+| BACKEND-UI-03 | **Undelivered.** No geometry endpoint exists; `/api/v1/shapes`, `/api/v1/geometry` and `/api/v1/routes/geometry` all return 404. Shape identity reaches the frontend only as `calculated.routeProgress.shapeId`, with no coordinates. |
+| BACKEND-UI-04 | **Confirmed live.** On the same real identifier, `?stopAfter=1` returns 400 and `?afterStop=1` returns 200. |
+| BACKEND-UI-05 | Unchanged; the field-type corrections stand. |
+
+The full backend route table is `/health`, `/api/v1/routes`, `/api/v1/stops`,
+`/api/v1/trains`, `/api/v1/trains/{id}`, `/api/v1/alerts` and `/api/v1/departures`. No other
+path exists, so WEB-MAP-2 and WEB-MAP-3 cannot be started.
+
 CORS headers were absent on inspected browser-Origin requests. The frontend same-origin proxy resolves local integration; no backend CORS change is required for this plan. Product polish is constrained by missing names, but the local milestone is not blocked. Never mask these gaps with fabricated operational statements.
 
 Map is required roadmap work now; see [MAP_PLAN.md](MAP_PLAN.md). BACKEND-UI-01 improves identity/destination labels but remains nonblocking with explicit missing-data fallbacks. A reported nullable bearing can orient the marker without inventing a destination. BACKEND-UI-02 and BACKEND-UI-03 are hard gates for their map implementation scopes, not blockers to the original core or this documentation update.

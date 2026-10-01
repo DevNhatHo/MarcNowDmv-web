@@ -1,0 +1,15 @@
+{
+ "method": "GET",
+ "path": "/api/v1/departures?stopId=11940&serviceDate=20260930",
+ "status": 400,
+ "headers": {
+  "Content-Type": "application/json; charset=utf-8",
+  "Cache-Control": "no-store"
+ },
+ "body": {
+  "error": {
+   "code": "invalid_query",
+   "message": "invalid departure query parameters"
+  }
+ }
+}

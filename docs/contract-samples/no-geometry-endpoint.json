@@ -1,0 +1,15 @@
+{
+ "method": "GET",
+ "path": "/api/v1/shapes",
+ "status": 404,
+ "headers": {
+  "Content-Type": "application/json; charset=utf-8",
+  "Cache-Control": "no-store"
+ },
+ "body": {
+  "error": {
+   "code": "not_found",
+   "message": "resource not found"
+  }
+ }
+}

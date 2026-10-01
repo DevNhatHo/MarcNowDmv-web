@@ -1,69 +1,95 @@
 {
-  "capturedAt": "2026-09-29T12:05:28.991196+00:00",
-  "backendCommit": "ade2f9e",
-  "database": "marc_208_live",
-  "origin": "http://127.0.0.1:8080",
-  "note": "Actual local responses from retained official feed observations; no new feed ingestion, not a claim of live freshness.",
-  "requests": [
+ "capturedAt": "2026-09-29T12:05:28.991196+00:00",
+ "backendCommit": "ade2f9e",
+ "database": "marc_208_live",
+ "origin": "http://127.0.0.1:8080",
+ "note": "Actual local responses from retained official feed observations; no new feed ingestion, not a claim of live freshness.",
+ "requests": [
+  {
+   "sample": "health",
+   "path": "/health",
+   "status": 200
+  },
+  {
+   "sample": "routes",
+   "path": "/api/v1/routes",
+   "status": 200
+  },
+  {
+   "sample": "stops",
+   "path": "/api/v1/stops?limit=5",
+   "status": 200
+  },
+  {
+   "sample": "trains",
+   "path": "/api/v1/trains?limit=3",
+   "status": 200
+  },
+  {
+   "sample": "previous-service-date",
+   "path": "/api/v1/trains?serviceDate=20260928&limit=200",
+   "status": 200
+  },
+  {
+   "sample": "train-detail",
+   "path": "/api/v1/trains/NzUwZmNmYjYtZGQwZS1jNWVlLTcxZTEtNWNkYWVhYTU4ZDE4fDIwMjYwOTI4",
+   "status": 200
+  },
+  {
+   "sample": "alerts",
+   "path": "/api/v1/alerts?limit=200",
+   "status": 200
+  },
+  {
+   "sample": "invalid-query",
+   "path": "/api/v1/trains?limit=bad",
+   "status": 400
+  },
+  {
+   "sample": "wrong-detail-cursor",
+   "path": "/api/v1/trains/NzUwZmNmYjYtZGQwZS1jNWVlLTcxZTEtNWNkYWVhYTU4ZDE4fDIwMjYwOTI4?stopAfter=1",
+   "status": 400
+  },
+  {
+   "sample": "correct-detail-cursor",
+   "path": "/api/v1/trains/NzUwZmNmYjYtZGQwZS1jNWVlLTcxZTEtNWNkYWVhYTU4ZDE4fDIwMjYwOTI4?afterStop=1",
+   "status": 200
+  },
+  {
+   "sample": "unknown-route",
+   "path": "/api/v1/routes/not-a-route",
+   "status": 404
+  },
+  {
+   "sample": "head",
+   "path": "/health",
+   "status": 200
+  }
+ ],
+ "laterCaptures": [
+  {
+   "capturedAt": "2026-09-30T04:40:00Z",
+   "ticket": "WEB-MAP-1",
+   "backendCommit": "fdd6d4b",
+   "database": "marc_208_live",
+   "note": "Actual responses captured while verifying map data contracts. The departures endpoint was absent from the WEB-003 contract review and exposes a scheduled headsign.",
+   "requests": [
     {
-      "sample": "health",
-      "path": "/health",
-      "status": 200
+     "sample": "departures",
+     "path": "/api/v1/departures?stopId=11940&serviceDate=2026-09-30&limit=5",
+     "status": 200
     },
     {
-      "sample": "routes",
-      "path": "/api/v1/routes",
-      "status": 200
+     "sample": "departures-invalid-date",
+     "path": "/api/v1/departures?stopId=11940&serviceDate=20260930",
+     "status": 400
     },
     {
-      "sample": "stops",
-      "path": "/api/v1/stops?limit=5",
-      "status": 200
-    },
-    {
-      "sample": "trains",
-      "path": "/api/v1/trains?limit=3",
-      "status": 200
-    },
-    {
-      "sample": "previous-service-date",
-      "path": "/api/v1/trains?serviceDate=20260928&limit=200",
-      "status": 200
-    },
-    {
-      "sample": "train-detail",
-      "path": "/api/v1/trains/NzUwZmNmYjYtZGQwZS1jNWVlLTcxZTEtNWNkYWVhYTU4ZDE4fDIwMjYwOTI4",
-      "status": 200
-    },
-    {
-      "sample": "alerts",
-      "path": "/api/v1/alerts?limit=200",
-      "status": 200
-    },
-    {
-      "sample": "invalid-query",
-      "path": "/api/v1/trains?limit=bad",
-      "status": 400
-    },
-    {
-      "sample": "wrong-detail-cursor",
-      "path": "/api/v1/trains/NzUwZmNmYjYtZGQwZS1jNWVlLTcxZTEtNWNkYWVhYTU4ZDE4fDIwMjYwOTI4?stopAfter=1",
-      "status": 400
-    },
-    {
-      "sample": "correct-detail-cursor",
-      "path": "/api/v1/trains/NzUwZmNmYjYtZGQwZS1jNWVlLTcxZTEtNWNkYWVhYTU4ZDE4fDIwMjYwOTI4?afterStop=1",
-      "status": 200
-    },
-    {
-      "sample": "unknown-route",
-      "path": "/api/v1/routes/not-a-route",
-      "status": 404
-    },
-    {
-      "sample": "head",
-      "path": "/health",
-      "status": 200
+     "sample": "no-geometry-endpoint",
+     "path": "/api/v1/shapes",
+     "status": 404
     }
-  ]
+   ]
+  }
+ ]
 }
