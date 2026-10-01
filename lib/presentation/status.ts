@@ -7,7 +7,7 @@
  */
 import { isKnown } from "../types/common";
 import type { Freshness } from "../types/common";
-import { trainStatuses, type TrainStatus } from "../types/trains";
+import { trainStatuses, type OfficialStopUpdate, type TrainStatus } from "../types/trains";
 
 /** Presentation tone. It selects wording and a text colour, never a filled surface. */
 export type Tone = "positive" | "information" | "warning" | "critical" | "unknown";
@@ -35,6 +35,30 @@ export function trainStatusLabel(status: TrainStatus): StatusLabel {
   return isKnown(trainStatuses, status)
     ? statusLabels[status]
     : { text: "Realtime status unavailable", tone: "unknown" };
+}
+
+/**
+ * The dominant claim, given what else the operator published.
+ *
+ * MDOT MTA publishes per-stop delays with no trip-level status at all, so an UNKNOWN or
+ * STALE top-level status is the normal case for MARC rather than an edge case. Saying
+ * "Realtime status unavailable" while the same screen quotes a published delay reads as a
+ * contradiction, so where stop-level evidence exists the wording narrows to what is actually
+ * missing: an **overall** status. Nothing is derived from the stop delays to fill the gap.
+ */
+export function dominantStatusLabel(
+  status: TrainStatus,
+  hasStopLevelDelay: boolean,
+): StatusLabel {
+  const label = trainStatusLabel(status);
+  if (!hasStopLevelDelay) return label;
+  if (status === "UNKNOWN") {
+    return { text: "No overall status reported", tone: "unknown" };
+  }
+  if (status === "STALE") {
+    return { text: "No current overall status", tone: "unknown" };
+  }
+  return label;
 }
 
 /**
@@ -125,4 +149,45 @@ export function positionLabel(
 /** Coordinates are the honest interim fallback; no place name is ever inferred from them. */
 export function coordinatesText(latitude: number, longitude: number): string {
   return `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+}
+
+/**
+ * The official delay to show beside the status, chosen from the operator's own per-stop
+ * reports when no trip-level delay was published.
+ *
+ * Real MDOT data carries a different delay at nearly every call — −48 s to +282 s on one
+ * observed train — so there is no single "the delay" to quote. The figure that answers a
+ * commuter's question is the one at the stop they are waiting for, so the calculated next
+ * stop selects it when that stop is identified; otherwise the operator's furthest-ahead
+ * report is used, which is its latest projection.
+ *
+ * The value stays an official per-stop figure and is always labelled with its stop. It is
+ * never relabelled as the train's status, and nothing is averaged, interpolated or inferred.
+ */
+export interface StopDelay {
+  seconds: number;
+  stopId: string | null;
+  sequence: number | null;
+}
+
+export function officialStopDelay(
+  updates: readonly OfficialStopUpdate[],
+  nextStopSequence: number | null,
+): StopDelay | null {
+  const resolved = updates.filter(
+    (update) =>
+      update.resolvedSequence !== null &&
+      (update.officialArrivalDelaySeconds !== null ||
+        update.officialDepartureDelaySeconds !== null),
+  );
+  if (resolved.length === 0) return null;
+  const chosen =
+    (nextStopSequence === null
+      ? undefined
+      : resolved.find((update) => update.resolvedSequence === nextStopSequence)) ??
+    resolved[resolved.length - 1];
+  const seconds =
+    chosen.officialArrivalDelaySeconds ?? chosen.officialDepartureDelaySeconds;
+  if (seconds === null) return null;
+  return { seconds, stopId: chosen.stopId, sequence: chosen.resolvedSequence };
 }

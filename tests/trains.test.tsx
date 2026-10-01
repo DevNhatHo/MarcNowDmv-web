@@ -236,7 +236,9 @@ describe("train detail", () => {
     expect(
       await screen.findByRole("heading", { level: 1, name: (detail.data as { tripId: string }).tripId }),
     ).toBeVisible();
-    expect(screen.getByText("Realtime status unavailable")).toBeVisible();
+    // The capture carries per-stop delays, so the dominant line names what is missing
+    // rather than claiming nothing is known.
+    expect(screen.getByText("No overall status reported")).toBeVisible();
     expect(screen.getByText(/last published .On time./)).toBeVisible();
     expect(screen.getByText(/no longer current/)).toBeVisible();
   });

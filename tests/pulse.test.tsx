@@ -65,7 +65,7 @@ describe("line summaries", () => {
     const [line] = summarizeLines([train("A", "UNKNOWN"), train("A", "STALE")], new Map());
     expect(line.reported).toBe(0);
     const text = describeLine(line);
-    expect(text).toMatch(/not currently reporting status for any of them/);
+    expect(text).toMatch(/not publishing an overall status for any of them/);
     // The words that would be a lie here must never appear.
     expect(text).not.toMatch(/on time|normal|good|running well/i);
   });

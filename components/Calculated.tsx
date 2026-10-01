@@ -9,6 +9,7 @@ import {
   nextStopLabel,
   trendChangeLabel,
   trendLabel,
+  trendScopeLabel,
 } from "../lib/presentation/movement";
 import { delayLabel } from "../lib/presentation/status";
 import styles from "./Calculated.module.css";
@@ -120,10 +121,13 @@ export function NextStopStatus({
 export function DelayTrend({
   calculated,
   officialDelaySeconds,
+  seriesStopName,
 }: {
   calculated: Calculated;
   /** The train's own published delay, so the same figure is not stated twice. */
   officialDelaySeconds: number | null;
+  /** The station the trend's series belongs to, where the catalog can name it. */
+  seriesStopName?: string | null;
 }) {
   const trend = calculated.officialDelayTrend;
   const label = trendLabel(trend.state);
@@ -141,7 +145,13 @@ export function DelayTrend({
       {change !== null ? <p className={styles.detail}>{change}</p> : null}
       {basis !== null ? (
         <p className={styles.detail}>
-          Measured against the operator&rsquo;s published delay of {delayLabel(basis)}.
+          {/*
+            * The series is named because the operator publishes a different delay at nearly
+            * every stop. Without it, this figure and the one beside the status above read as
+            * two contradictory official delays rather than two different stops.
+            */}
+          Measured {trendScopeLabel(trend, seriesStopName)}, against a published delay of{" "}
+          {delayLabel(basis)}.
         </p>
       ) : null}
       {trend.state === "UNKNOWN" ? (

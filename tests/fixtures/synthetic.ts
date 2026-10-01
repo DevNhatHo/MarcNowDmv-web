@@ -268,3 +268,34 @@ export function syntheticStaleGpsWithLiveTrend(): Record<string, unknown> {
   position.freshness = "STALE";
   return body;
 }
+
+/**
+ * The **real MDOT shape**, derived from a live capture on 2026-09-30 rather than invented:
+ * per-stop delays at every resolved call and **no trip-level status or delay at all**. The
+ * delays genuinely differ from stop to stop, from -48 s to +282 s on the observed train.
+ *
+ * This is the normal case for MARC, not an edge case, which is why it has its own fixture.
+ */
+export function marcShapedStopDelaysWithoutTripStatus(): Record<string, unknown> {
+  const body = mutableBody("train-detail");
+  const data = body.data as Record<string, unknown>;
+  data.status = "UNKNOWN";
+  const official = data.official as Record<string, unknown>;
+  official.status = "UNKNOWN";
+  official.delaySeconds = null;
+  official.scheduleRelationship = null;
+  official.freshness = "FRESH";
+  const observed = [62, -48, -21, 21, 72, 213, 165, 258, 120, 182];
+  body.officialStopUpdates = observed.map((seconds, index) => ({
+    ordinal: index,
+    resolvedSequence: index,
+    stopId: (body.scheduledStops as { stopId: string }[])[index]?.stopId ?? `1199${index}`,
+    scheduleRelationship: null,
+    officialEstimatedArrival: null,
+    officialEstimatedDeparture: null,
+    officialArrivalDelaySeconds: seconds,
+    officialDepartureDelaySeconds: seconds,
+    resolution: "resolved",
+  }));
+  return body;
+}

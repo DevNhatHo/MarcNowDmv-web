@@ -44,8 +44,12 @@ export default function TrainRow({
   const status = trainStatusLabel(train.status);
   const scheduled = formatClockTime(train.scheduled.start, timeZone);
   const delay = train.official.delaySeconds;
-  // A delay is only meaningful next to a current claim; retained evidence reports its age.
-  const showDelay = delay !== null || train.official.freshness === "FRESH";
+  /*
+   * Only a published trip-level delay is shown. The list response carries no stop updates,
+   * so "No delay reported" here would imply an absence this endpoint cannot establish: MDOT
+   * publishes per-stop delays that only the detail response contains.
+   */
+  const showDelay = delay !== null;
 
   return (
     <li>

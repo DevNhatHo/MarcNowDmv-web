@@ -65,7 +65,9 @@ export function describeLine(summary: LineSummary): string {
     return "No trains scheduled for this service date.";
   }
   if (summary.reported === 0) {
-    return `${summary.scheduled} scheduled. The operator is not currently reporting status for any of them.`;
+    // Precise about what is missing: MDOT publishes per-stop delays this endpoint does not
+    // carry, so "not reporting anything" would overstate the absence.
+    return `${summary.scheduled} scheduled. The operator is not publishing an overall status for any of them.`;
   }
   const covered = `${summary.reported} of ${summary.scheduled} scheduled trains have a current report`;
   if (summary.disrupted === 0) {

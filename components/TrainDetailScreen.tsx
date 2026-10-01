@@ -9,7 +9,9 @@ import type { TrainDetail } from "../lib/types/trains";
 import {
   coordinatesText,
   delayLabel,
+  dominantStatusLabel,
   freshnessLabel,
+  officialStopDelay,
   isReportedSkipped,
   positionLabel,
   stopRelationshipLabel,
@@ -166,8 +168,20 @@ function DetailBody({
   loadedAt: Date;
 }) {
   const train = detail.data;
-  const status = trainStatusLabel(train.status);
   const official = train.official;
+  /*
+   * The operator publishes per-stop delays with no trip-level status, so the dominant line
+   * narrows to what is actually missing and the stop figure is shown beside it, named with
+   * its stop. Neither is derived from the other.
+   */
+  const stopDelay = officialStopDelay(
+    detail.officialStopUpdates,
+    detail.calculated?.nextStop.stopSequence ?? null,
+  );
+  const status = dominantStatusLabel(
+    train.status,
+    official.delaySeconds === null && stopDelay !== null,
+  );
   const position = train.position;
   const place = positionLabel(position.latitude, position.longitude, position.freshness);
   // The feed timezone is not published on detail, so times are shown in the agency zone the
@@ -189,10 +203,19 @@ function DetailBody({
 
       <p className={`${styles.status} ${toneClass[status.tone]}`}>{status.text}</p>
       <p className={styles.provenance}>
-        Official MTA · {delayLabel(official.delaySeconds)} ·{" "}
-        {describeReport(official.sourceTimestamp, loadedAt)}
+        Official MTA ·{" "}
+        {official.delaySeconds !== null || stopDelay === null
+          ? delayLabel(official.delaySeconds)
+          : `${delayLabel(stopDelay.seconds)} at ${stopName(stopDelay, stopNames)}`}{" "}
+        · {describeReport(official.sourceTimestamp, loadedAt)}
         {relationship !== null ? ` · ${relationship}` : ""}
       </p>
+      {official.delaySeconds === null && stopDelay !== null ? (
+        <p className={styles.meta}>
+          The operator publishes a delay for each stop rather than one for the whole trip.
+          Other stops on this trip may report a different figure.
+        </p>
+      ) : null}
       {official.status !== train.status ? (
         <p className={styles.meta}>
           The operator last published “{trainStatusLabel(official.status).text}”. That
@@ -233,7 +256,8 @@ function DetailBody({
             <div className={styles.value}>
               <DelayTrend
                 calculated={detail.calculated}
-                officialDelaySeconds={official.delaySeconds}
+                officialDelaySeconds={official.delaySeconds ?? stopDelay?.seconds ?? null}
+                seriesStopName={trendStopName(detail, stopNames)}
               />
             </div>
           </section>
@@ -308,6 +332,28 @@ function DetailBody({
 
     </>
   );
+}
+
+/** The station a stop-level trend was measured at, where the catalog can name it. */
+function trendStopName(
+  detail: TrainDetail,
+  names: Map<string, string>,
+): string | null {
+  const sequence = detail.calculated?.officialDelayTrend.stopSequence ?? null;
+  if (sequence === null) return null;
+  const call = detail.scheduledStops.find((stop) => stop.sequence === sequence);
+  return call === undefined ? null : (names.get(call.stopId) ?? null);
+}
+
+/** A stop's name where the matching-version catalog has one, otherwise its identifier. */
+function stopName(
+  delay: { stopId: string | null; sequence: number | null },
+  names: Map<string, string>,
+): string {
+  if (delay.stopId === null) {
+    return delay.sequence === null ? "one of its stops" : `stop ${delay.sequence}`;
+  }
+  return names.get(delay.stopId) ?? `stop ${delay.stopId}`;
 }
 
 /** Reasons are raw backend vocabulary, so they appear only inside diagnostics. */

@@ -116,11 +116,21 @@ export function trendChangeLabel(trend: OfficialDelayTrend): string | null {
   return change > 0 ? `${size} worse over the window` : `${size} better over the window`;
 }
 
-/** Which official delay series the trend was measured over, for the diagnostics list. */
-export function trendScopeLabel(trend: OfficialDelayTrend): string {
+/**
+ * Which official delay series the trend was measured over.
+ *
+ * A station name is used when the caller can resolve one, because a bare sequence number is
+ * diagnostic vocabulary and the delay beside the status is named with its station; showing
+ * one as a number and the other as a name makes two scoped figures look inconsistent.
+ */
+export function trendScopeLabel(
+  trend: OfficialDelayTrend,
+  stopName?: string | null,
+): string {
   if (trend.level === "TRIP") return "across the whole trip";
   if (trend.level === "STOP") {
     const event = trend.event === "ARRIVAL" ? "arrival" : "departure";
+    if (stopName != null) return `at ${stopName}'s ${event}`;
     return trend.stopSequence === null
       ? `at one stop's ${event}`
       : `at stop ${trend.stopSequence}'s ${event}`;

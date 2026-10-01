@@ -55,6 +55,7 @@ Direction and train number appear only if a future backend contract supports the
 | Refresh failure | “Couldn’t refresh. Showing information received [time]. Try again.” |
 | Official stop reported skipped | “Reported skipped” beside that scheduled call, neutral or warning treatment; never advance the next stop yourself. |
 | Unrecognized `scheduleRelationship` number | Neutral unavailable label; never guess a meaning from the number. |
+| Per-stop delays with no trip-level status | “No overall status reported” (UNKNOWN) or “No current overall status” (STALE), with the official delay beside it **named with its station**. The normal MARC case; never derive a trip status from stop delays. |
 
 `scheduleRelationship` is a nullable **numeric** GTFS-RT enum at both trip and stop level, not a string. WEB-005 owns mapping those numbers to the labels above; only documented values get a label, and anything else is unavailable rather than guessed.
 

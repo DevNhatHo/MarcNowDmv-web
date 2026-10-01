@@ -285,7 +285,7 @@ describe("calculated presentation on detail", () => {
     serveDetail(body);
     render(<TrainDetailScreen id="token" />);
     expect(
-      await screen.findByText(/Measured against the operator’s published delay of 7 min late/),
+      await screen.findByText(/Measured .*, against a published delay of 7 min late/),
     ).toBeVisible();
     expect(screen.getByText(/Official · 1 min late|1 min late/)).toBeVisible();
   });
