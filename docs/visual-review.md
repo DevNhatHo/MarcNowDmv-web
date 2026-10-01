@@ -64,6 +64,12 @@ one, so the native input stays.
 **Colour independence is checked by grayscale capture, not by a simulator.** Every status is
 a distinct phrase as well as a tone, which is what makes the grayscale captures legible.
 
+**Updated by WEB-015 on 2026-09-30.** MOVING, measured route progress, an identified next
+stop and a stable delay trend have now been reviewed against **live** MARC service, at
+evening service with two reporting trains. STATIONARY and any trip-level ON_TIME, DELAYED or
+CANCELED remain unobserved — MDOT publishes no trip-level status at all — and still rest on
+clearly labelled synthetic fixtures. See [the live record](reviews/WEB-015/README.md).
+
 **Live data limits what could be reviewed.** The retained database reports no current status
 for any train and no fresh movement, so the delayed, cancelled, moving and stationary
 presentations were reviewed against clearly labelled synthetic fixtures rather than live
@@ -84,3 +90,6 @@ review.
 | WEB-010 | [reviews/WEB-010](reviews/WEB-010/README.md) |
 | WEB-011 | [reviews/WEB-011](reviews/WEB-011/README.md) |
 | WEB-012 | [reviews/WEB-012](reviews/WEB-012/README.md) |
+| WEB-013 | [reviews/WEB-013](reviews/WEB-013/README.md) |
+| WEB-014 | [reviews/WEB-014](reviews/WEB-014/README.md) |
+| WEB-015 | [reviews/WEB-015](reviews/WEB-015/README.md) |

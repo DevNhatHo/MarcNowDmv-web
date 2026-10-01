@@ -4,7 +4,7 @@ Updated: 2026-09-30 (America/New_York).
 
 ## Milestone and work status
 
-[WEB-001](tickets/WEB-001.md) through [WEB-005](tickets/WEB-005.md), and [WEB-007](tickets/WEB-007.md) through [WEB-012](tickets/WEB-012.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. Every route is now a real screen reading the local backend through the typed client: `/` (Pulse), `/trains`, `/trains/[id]` and `/alerts`. No placeholder remains. Current ticket: none. **The core local milestone (WEB-001–WEB-012) is complete, and [WEB-MAP-1](tickets/WEB-MAP-1.md) is DONE.** Recommended next: **[WEB-013](tickets/WEB-013.md)**. WEB-013–015 were opened from findings made by running the app against the real backend, not from planning. WEB-MAP-2 through WEB-MAP-5 remain blocked on backend contracts that do not exist. WEB-MAP-1 is DONE as an assessment; WEB-MAP-2 and WEB-MAP-3 are **blocked** on the undelivered BACKEND-UI-03 and BACKEND-UI-02 proposals, and WEB-MAP-4 and WEB-MAP-5 chain off them. **WEB-006 was merged into WEB-005** on 2026-09-29: the list's detail links and the detail route cannot ship in separate tickets without leaving every row pointing at a route that does not exist, so one ticket now delivers both surfaces and reviews both. WEB-007 depends on WEB-005 accordingly.
+[WEB-001](tickets/WEB-001.md) through [WEB-005](tickets/WEB-005.md), and [WEB-007](tickets/WEB-007.md) through [WEB-012](tickets/WEB-012.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. Every route is now a real screen reading the local backend through the typed client: `/` (Pulse), `/trains`, `/trains/[id]` and `/alerts`. No placeholder remains. Current ticket: none. **The core local milestone (WEB-001–WEB-012) is complete, and [WEB-MAP-1](tickets/WEB-MAP-1.md) is DONE.** **WEB-013 through WEB-015 are DONE.** No ticket is currently actionable. WEB-MAP-2 through WEB-MAP-5 remain blocked on backend contracts that do not exist. WEB-MAP-1 is DONE as an assessment; WEB-MAP-2 and WEB-MAP-3 are **blocked** on the undelivered BACKEND-UI-03 and BACKEND-UI-02 proposals, and WEB-MAP-4 and WEB-MAP-5 chain off them. **WEB-006 was merged into WEB-005** on 2026-09-29: the list's detail links and the detail route cannot ship in separate tickets without leaving every row pointing at a route that does not exist, so one ticket now delivers both surfaces and reviews both. WEB-007 depends on WEB-005 accordingly.
 
 Repository: `/home/nhat/marc-now-dmv-web`, main branch tracking `origin/main` at `git@github.com:DevNhatHo/MarcNowDmv-web.git`, configured on the user's instruction after WEB-003 and pushed through `c6b3006`. Earlier ticket records state that no remote existed, which was true when they were written. Backend `/home/nhat/MarcNowDmv` was unchanged; unrelated `.idea/` remains untouched. The backend, the full shell, the map and AWS remain outside WEB-001–003; API integration is now implemented as a boundary only, with no screen consuming it.
 
@@ -256,20 +256,44 @@ every fixture paired a trip-level delay with its stop-level one.
 | [WEB-014](tickets/WEB-014.md) | WEB-MAP-1 finding that `/api/v1/departures` publishes a scheduled `headsign` |
 | [WEB-015](tickets/WEB-015.md) | the first live ingest showing the synthetic movement fixtures can be replaced with rush-hour observations |
 
+## Live verification, 2026-09-30 evening
+
+[WEB-015](tickets/WEB-015.md) verified the app against live MDOT service at 22:23–22:50 EDT,
+writing to `marc_208_live`. **MOVING, MEASURED route progress, an IDENTIFIED next stop and a
+STABLE delay trend were all observed live for the first time**, with the distance to the next
+stop falling 5.9 km → 4.9 km between captures as the train actually moved. All 46 e2e tests
+passed against live, changing data.
+
+Still never observed: **STATIONARY**, which needs a station dwell, and any **trip-level
+ON_TIME, DELAYED or CANCELED**, because MDOT publishes no trip-level status at all. Both
+remain on clearly labelled synthetic fixtures. The observation was evening service with two
+trains, not a weekday peak.
+
+Movement reads MOVING only when two positions arrive within the backend's 60-second gap, so
+a polling loop is what makes it observable; the command is in [RUNBOOK.md](RUNBOOK.md).
+
+One flake is recorded in the WEB-015 outcome: two integration specs failed once while the
+ingest loop was writing, and passed on rerun. It was left unfixed deliberately, because
+fixing what that ticket finds is outside its scope.
+
 ## Next session
 
-Read AGENTS.md, this file and the ticket index, inspect `git status` in both repositories,
-then start **[WEB-013](tickets/WEB-013.md)**: a train with stop-level delays and no
-trip-level status currently reads as though the page disagrees with itself, and that is the
-normal case for MARC rather than an edge case. It is a visual ticket, so rendered review is
-required and automated tests alone cannot complete it; reproduce it against live service
-rather than only against a fixture.
+**No ticket is currently actionable.** WEB-001 through WEB-015 and WEB-MAP-1 are DONE;
+WEB-MAP-2 through WEB-MAP-5 are blocked on backend contracts that do not exist, and this
+repository owns presentation only.
 
-[WEB-014](tickets/WEB-014.md) then gives every screen a real destination instead of an opaque
-trip identifier, and [WEB-015](tickets/WEB-015.md) replaces the remaining synthetic evidence
-with rush-hour observations.
+Read AGENTS.md, this file and the ticket index, and inspect `git status` in both repositories
+before starting anything.
 
-WEB-MAP-2 through WEB-MAP-5 stay blocked. Their dependencies are *delivered* backend
-contracts — BACKEND-UI-03 geometry and BACKEND-UI-02 active membership — and neither exists.
-This repository owns presentation only and must not modify the backend, so unblocking them is
-separately authorized work there.
+What would move things forward, none of it authorized here:
+
+1. **Backend geometry (BACKEND-UI-03) and active membership (BACKEND-UI-02)** — the hard
+   gates on the map, and backend-repository work.
+2. **Carrying `headsign` on the train list response, or exposing each line's terminal** —
+   WEB-014 delivered the destination on detail but could not on the list, because the list
+   response carries no stop to anchor the stop-scoped departures read on. One probe showed a
+   single read at stop 11958 returns 91 trips across all three routes, so the data is cheap;
+   only the anchor is missing.
+3. **A weekday-peak verification pass**, repeating [WEB-015](tickets/WEB-015.md) at scale to
+   observe STATIONARY and mixed fresh/stale positions. Write it as a new ticket rather than
+   reopening WEB-015, whose evening pass is complete and recorded.
