@@ -16,7 +16,8 @@ Probed live, against backend commit `fdd6d4b` on the retained database:
 
 | Proposal | Status after verification |
 |---|---|
-| BACKEND-UI-01 | **Partly available, and previously overstated.** `/api/v1/departures` exposes a scheduled `headsign` per trip at a stop. It is absent from the train list and detail, so those screens still fall back to `tripId`, but a destination does exist in the contract. The remaining gap is a display name on the list and detail responses. |
+| BACKEND-UI-01 | **Sharpened by WEB-014.** Detail now shows the operator's headsign, anchored on the train's own first stop. The **list** still cannot: its response carries no stops, so there is no anchor and no way to find one without a per-train detail read. One probe shows the data is cheap — a single departures read at stop 11958 returns 91 trips across all three routes with `nextAfter: null`. Either carry `headsign` on the train list and detail responses, or expose each line's terminal so one anchored read covers it. | — |
+| BACKEND-UI-01 (original note) | **Partly available, and previously overstated.** `/api/v1/departures` exposes a scheduled `headsign` per trip at a stop. It is absent from the train list and detail, so those screens still fall back to `tripId`, but a destination does exist in the contract. The remaining gap is a display name on the list and detail responses. |
 | BACKEND-UI-02 | **Undelivered.** No active-membership endpoint exists; `/api/v1/trains/active` returns 404. The train list remains a whole scheduled service date with no current-running semantics. |
 | BACKEND-UI-03 | **Undelivered.** No geometry endpoint exists; `/api/v1/shapes`, `/api/v1/geometry` and `/api/v1/routes/geometry` all return 404. Shape identity reaches the frontend only as `calculated.routeProgress.shapeId`, with no coordinates. |
 | BACKEND-UI-04 | **Confirmed live.** On the same real identifier, `?stopAfter=1` returns 400 and `?afterStop=1` returns 200. |

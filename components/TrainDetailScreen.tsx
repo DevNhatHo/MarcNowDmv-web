@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import { fetchRoutes, fetchStops, fetchTrainDetail } from "../lib/api";
+import { fetchDepartures, fetchRoutes, fetchStops, fetchTrainDetail } from "../lib/api";
 import type { Route, Stop } from "../lib/types/catalogs";
 import type { TrainDetail } from "../lib/types/trains";
 import {
@@ -46,17 +46,58 @@ interface Loaded {
   stops: Stop[];
   routes: Route[];
   catalogVersion: string;
+  /** The operator's published destination, when it could be established. */
+  headsign: string | null;
+}
+
+/**
+ * The scheduled destination, read from the departures endpoint.
+ *
+ * That endpoint is stop-scoped, so this anchors on a stop this train demonstrably calls at —
+ * its own first scheduled stop — and takes the headsign for this trip from the result. One
+ * bounded request, always about this train, never a scan.
+ *
+ * A failure here must not cost the commuter the whole screen: an absent destination is a
+ * missing label, while an absent status is the reason they came. So it resolves to null
+ * rather than rejecting.
+ */
+async function loadHeadsign(
+  detail: TrainDetail,
+  signal: AbortSignal,
+): Promise<string | null> {
+  const first = detail.scheduledStops[0];
+  if (first === undefined) return null;
+  try {
+    const page = await fetchDepartures(
+      {
+        stopId: first.stopId,
+        serviceDate: detail.data.serviceDate,
+        routeId: detail.data.routeId,
+        limit: 200,
+      },
+      { signal },
+    );
+    // Join on the trip the backend itself named; nothing is matched by position or guess.
+    return (
+      page.data.find((departure) => departure.tripId === detail.data.tripId)?.headsign ??
+      null
+    );
+  } catch {
+    return null;
+  }
 }
 
 async function loadDetail(id: string, signal: AbortSignal): Promise<Loaded> {
   const detail = await fetchTrainDetail(id, { limit: 200 }, { signal });
   const stops = await fetchStops({ limit: 200 }, { signal });
   const routes = await fetchRoutes({ limit: 200 }, { signal });
+  const headsign = await loadHeadsign(detail, signal);
   return {
     detail,
     stops: stops.data,
     routes: routes.data,
     catalogVersion: stops.scheduleVersion.id,
+    headsign,
   };
 }
 
@@ -124,6 +165,7 @@ export default function TrainDetailScreen({ id }: { id: string }) {
       {detail ? (
         <DetailBody
           detail={detail}
+          headsign={loaded?.headsign ?? null}
           lineName={lineName}
           stopNames={stopNames}
           loadedAt={resource.loadedAt ?? new Date(detail.evaluatedAt)}
@@ -158,11 +200,13 @@ function DetailFailure({
 
 function DetailBody({
   detail,
+  headsign,
   lineName,
   stopNames,
   loadedAt,
 }: {
   detail: TrainDetail;
+  headsign: string | null;
   lineName: string | null;
   stopNames: Map<string, string>;
   loadedAt: Date;
@@ -192,9 +236,22 @@ function DetailBody({
   return (
     <>
       <div className={styles.identity}>
-        <h1 className={styles.tripId}>{train.tripId}</h1>
+        {/*
+          * The operator's destination leads when it is published, with the verbatim trip
+          * identifier kept beside it: the destination is what a commuter recognises, and the
+          * identifier is what support and diagnosis need. Nothing is parsed out of the
+          * identifier to produce the destination.
+          */}
+        <h1 className={styles.tripId}>{headsign ?? train.tripId}</h1>
+        {headsign !== null ? <span className={styles.line}>{train.tripId}</span> : null}
         <span className={styles.line}>{lineName ?? train.routeId}</span>
       </div>
+      {headsign !== null ? (
+        <p className={styles.meta}>
+          Destination as scheduled by the operator; it does not describe where this train is
+          now.
+        </p>
+      ) : null}
       <p className={styles.meta}>
         Scheduled for {formatServiceDate(train.serviceDate)} ·{" "}
         {formatClockTime(train.scheduled.start, timeZone) ?? "time unavailable"}{" "}

@@ -31,6 +31,7 @@ describe("path allowlist", () => {
       "/api/v1/stops",
       "/api/v1/trains",
       "/api/v1/alerts",
+      "/api/v1/departures",
       "/api/v1/trains/abc123",
     ]) {
       expect(isAllowedPath(path)).toBe(true);

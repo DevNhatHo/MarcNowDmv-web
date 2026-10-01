@@ -23,6 +23,7 @@ import type {
   Translation,
 } from "../types/alerts";
 import type { CatalogPage, Route, Stop } from "../types/catalogs";
+import type { Departure, DeparturePage } from "../types/departures";
 import type {
   Calculated,
   CalculatedNextStop,
@@ -554,4 +555,38 @@ export function parseRoutePage(value: unknown, path = "routes") {
 
 export function parseStopPage(value: unknown, path = "stops") {
   return parseCatalogPage(value, path, parseStop);
+}
+
+function parseDeparture(value: unknown, path: string): Departure {
+  const raw = object(value, path);
+  return {
+    tripId: text(raw.tripId, `${path}.tripId`),
+    routeId: text(raw.routeId, `${path}.routeId`),
+    stopId: text(raw.stopId, `${path}.stopId`),
+    stopSequence: numeric(raw.stopSequence, `${path}.stopSequence`),
+    serviceDate: text(raw.serviceDate, `${path}.serviceDate`),
+    headsign: nullableText(raw.headsign, `${path}.headsign`),
+    arrivalTime: nullableText(raw.arrivalTime, `${path}.arrivalTime`),
+    departureTime: nullableText(raw.departureTime, `${path}.departureTime`),
+    scheduledArrival: nullableText(raw.scheduledArrival, `${path}.scheduledArrival`),
+    scheduledDeparture: nullableText(raw.scheduledDeparture, `${path}.scheduledDeparture`),
+    pickupType: nullableNumeric(raw.pickupType, `${path}.pickupType`),
+    timepoint: nullableNumeric(raw.timepoint, `${path}.timepoint`),
+  };
+}
+
+export function parseDeparturePage(
+  value: unknown,
+  path = "departures",
+): DeparturePage {
+  const raw = object(value, path);
+  return {
+    scheduleVersion: parseScheduleVersion(
+      raw.scheduleVersion,
+      `${path}.scheduleVersion`,
+    ),
+    provenance: enumText(raw.provenance, `${path}.provenance`),
+    data: list(raw.data, `${path}.data`, parseDeparture),
+    nextAfter: nullableText(raw.nextAfter, `${path}.nextAfter`),
+  };
 }

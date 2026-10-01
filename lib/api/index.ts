@@ -3,6 +3,7 @@
  * past the client into request construction or parsing.
  */
 export { fetchAlerts, type AlertQuery } from "./alerts";
+export { fetchDepartures, type DepartureQuery } from "./departures";
 export { fetchRoutes, fetchStops, type CatalogQuery, type StopQuery } from "./catalogs";
 export { defaultTimeoutMs, type RequestOptions } from "./client";
 export {

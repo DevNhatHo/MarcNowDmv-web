@@ -1,6 +1,6 @@
 # Frontend ticket index
 
-**The core local milestone is complete**: WEB-001 through WEB-012 are DONE (WEB-006 was merged into WEB-005). [WEB-MAP-1](WEB-MAP-1.md) is DONE. Three follow-on tickets were opened from verified findings: Recommended next: **[WEB-014](WEB-014.md)**. WEB-MAP-2 through WEB-MAP-5 remain blocked on backend contracts that do not exist, and this repository must not modify the backend. Resume IN_PROGRESS work before choosing a new ticket. Work is committed here and pushed to `origin/main`.
+**The core local milestone is complete**: WEB-001 through WEB-012 are DONE (WEB-006 was merged into WEB-005). [WEB-MAP-1](WEB-MAP-1.md) is DONE. Three follow-on tickets were opened from verified findings: Recommended next: **[WEB-015](WEB-015.md)**. WEB-MAP-2 through WEB-MAP-5 remain blocked on backend contracts that do not exist, and this repository must not modify the backend. Resume IN_PROGRESS work before choosing a new ticket. Work is committed here and pushed to `origin/main`.
 
 | Ticket | Title | Dependencies | Status |
 |---|---|---|---|
@@ -17,7 +17,7 @@
 | [WEB-011](WEB-011.md) | Responsive accessibility and design review | WEB-010 | DONE |
 | [WEB-012](WEB-012.md) | Local frontend/backend integration smoke test | WEB-011 | DONE |
 | [WEB-013](WEB-013.md) | Reconcile trip-level and stop-level official status | WEB-005, WEB-007 | DONE |
-| [WEB-014](WEB-014.md) | Show the operator's scheduled destination | WEB-005 | NOT_STARTED |
+| [WEB-014](WEB-014.md) | Show the operator's scheduled destination | WEB-005 | DONE — detail only |
 | [WEB-015](WEB-015.md) | Verify the app against live MARC service | WEB-012 | NOT_STARTED |
 
 WEB-013 through WEB-015 came out of running the app against the real backend rather than from

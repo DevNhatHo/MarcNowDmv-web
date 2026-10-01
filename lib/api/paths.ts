@@ -13,6 +13,7 @@ export const backendPaths = {
   stops: "/api/v1/stops",
   trains: "/api/v1/trains",
   alerts: "/api/v1/alerts",
+  departures: "/api/v1/departures",
 } as const;
 
 const exactPaths: readonly string[] = Object.values(backendPaths);
