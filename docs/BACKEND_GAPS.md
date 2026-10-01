@@ -10,6 +10,22 @@ These are frontend planning references, not allocated MARC ticket IDs. No backen
 | BACKEND-UI-04 | API documentation differs from current handlers | Use verified contract/captures in this repository. | Correct cursor names, calculated envelope placement, independent trend freshness, duration field and identity activation semantics; add contract examples/tests. |
 | BACKEND-UI-05 | Published field types and nullability are not documented | WEB-003 derived the wire types from the handler DTOs; the corrections are tabulated in API_CONTRACT.md. | Document `scheduleRelationship` as a nullable numeric enum, mark `officialStopUpdates[].stopId`/`.resolvedSequence`, the envelope `nextStop`/`nextUpdate` cursors, catalog `shortName`/`longName`/`name`/`wheelchairBoarding` nullable, guarantee `sourceHealth[].signals` is always an array rather than a nil slice, and state the cursor prerequisites (`serviceDate`+`version` for trains, `snapshot`+`version` for alerts, no `version` on detail). |
 
+## Delivered by the backend, 2026-09-30 — both map gates are now satisfied
+
+Verified live after backend commits `8a1bca5`, `744fb32` and `4c01a6f`:
+
+| Proposal | Status |
+|---|---|
+| BACKEND-UI-03 geometry | **DELIVERED.** `GET /api/v1/shapes` returns RFC 7946 LineStrings in the catalog envelope, `provenance: SCHEDULED`, addressed by `shapeId` and filterable by `routeId`. Confirmed: `shapeId 116473`, 485 points, `LineString`. |
+| BACKEND-UI-02 active membership | **DELIVERED as three facts, not one.** Every train carries `membership` with `scheduledActive`, `realtimeObserved` and `positionFresh`. There is deliberately no `active` boolean. |
+| BACKEND-UI-01 destination | **DELIVERED on the list.** `scheduled` now carries `shapeId`, `directionId` and `headsign` — confirmed live as `shapeId 116595`, `headsign "BALTIMORE CAMDEN"`. This closes the part WEB-014 could not reach, which needed a stop to anchor the stop-scoped departures read. |
+
+Two consequences for this repository. `/api/v1/shapes` is **refused by our own proxy
+allowlist** until a ticket adds it, which is the allowlist behaving correctly. And
+`membership` must be read as three independent facts: collapsing them in the client would
+reintroduce exactly what the backend refused to do, and live data shows them disagreeing — a
+train with `positionFresh: true` and `scheduledActive: false` is running late, not absent.
+
 ## WEB-MAP-1 verification against the running backend (2026-09-30)
 
 Probed live, against backend commit `fdd6d4b` on the retained database:
