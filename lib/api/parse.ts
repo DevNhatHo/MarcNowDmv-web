@@ -37,6 +37,7 @@ import type {
   RouteProgress,
   ScheduledStop,
   ScheduledTrain,
+  TrainMembership,
   Train,
   TrainDetail,
   TrainListPage,
@@ -139,6 +140,22 @@ function parseScheduledTrain(value: unknown, path: string): ScheduledTrain {
     provenance: enumText(raw.provenance, `${path}.provenance`),
     start: text(raw.start, `${path}.start`),
     end: nullableText(raw.end, `${path}.end`),
+    shapeId: nullableText(raw.shapeId, `${path}.shapeId`),
+    directionId: nullableNumeric(raw.directionId, `${path}.directionId`),
+    headsign: nullableText(raw.headsign, `${path}.headsign`),
+  };
+}
+
+/**
+ * Three booleans, each required. They are read separately and never combined here: the
+ * presentation layer decides what to draw, and no caller may be handed one collapsed flag.
+ */
+function parseMembership(value: unknown, path: string): TrainMembership {
+  const raw = object(value, path);
+  return {
+    scheduledActive: flag(raw.scheduledActive, `${path}.scheduledActive`),
+    realtimeObserved: flag(raw.realtimeObserved, `${path}.realtimeObserved`),
+    positionFresh: flag(raw.positionFresh, `${path}.positionFresh`),
   };
 }
 
@@ -182,6 +199,7 @@ export function parseTrain(value: unknown, path: string): Train {
     scheduled: parseScheduledTrain(raw.scheduled, `${path}.scheduled`),
     official: parseOfficialTrain(raw.official, `${path}.official`),
     position: parsePosition(raw.position, `${path}.position`),
+    membership: parseMembership(raw.membership, `${path}.membership`),
   };
 }
 

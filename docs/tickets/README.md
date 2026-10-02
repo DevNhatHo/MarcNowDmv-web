@@ -1,6 +1,6 @@
 # Frontend ticket index
 
-**The core local milestone is complete**: WEB-001 through WEB-012 are DONE (WEB-006 was merged into WEB-005), and WEB-013 through WEB-015 followed from findings made by running the app against the real backend. [WEB-MAP-1](WEB-MAP-1.md), [WEB-MAP-2](WEB-MAP-2.md) and [WEB-MAP-6](WEB-MAP-6.md) are DONE. **The backend delivered both map gates on 2026-09-30** — see [backend proposals](../BACKEND_GAPS.md) — so WEB-MAP-3 through WEB-MAP-5 are unblocked, and a [live movement addendum](../MAP_PLAN.md) on 2026-10-02 added WEB-MAP-7. The renderer is now MapLibre GL JS, so the marker work is written once. Recommended next: **[WEB-MAP-3](WEB-MAP-3.md)** — active train markers, which also owes the station markers WEB-MAP-2 deferred. Resume IN_PROGRESS work before choosing a new ticket. Work is committed here and pushed to `origin/main`.
+**The core local milestone is complete**: WEB-001 through WEB-012 are DONE (WEB-006 was merged into WEB-005), and WEB-013 through WEB-015 followed from findings made by running the app against the real backend. [WEB-MAP-1](WEB-MAP-1.md), [WEB-MAP-2](WEB-MAP-2.md), [WEB-MAP-6](WEB-MAP-6.md) and [WEB-MAP-3](WEB-MAP-3.md) are DONE. **The backend delivered both map gates on 2026-09-30** — see [backend proposals](../BACKEND_GAPS.md) — so WEB-MAP-3 through WEB-MAP-5 are unblocked, and a [live movement addendum](../MAP_PLAN.md) on 2026-10-02 added WEB-MAP-7. The renderer is now MapLibre GL JS, so the marker work is written once. Recommended next: **[WEB-MAP-4](WEB-MAP-4.md)** — train focus and observation-based follow. Resume IN_PROGRESS work before choosing a new ticket. Work is committed here and pushed to `origin/main`.
 
 | Ticket | Title | Dependencies | Status |
 |---|---|---|---|
@@ -36,8 +36,8 @@ Map order is WEB-MAP-1 → WEB-MAP-2 → **WEB-MAP-6** → WEB-MAP-3 → WEB-MAP
 | [WEB-MAP-1](WEB-MAP-1.md) | Map technology and data contract | WEB-012 | DONE |
 | [WEB-MAP-2](WEB-MAP-2.md) | Canonical MARC route rendering | WEB-MAP-1 + BACKEND-UI-03 (delivered) | DONE — stations owed to WEB-MAP-3 |
 | [WEB-MAP-6](WEB-MAP-6.md) | **Adopt MapLibre GL JS** — ran before WEB-MAP-3 | WEB-MAP-2 | DONE |
-| [WEB-MAP-3](WEB-MAP-3.md) | Active train markers with position trust | WEB-MAP-6 (done) + BACKEND-UI-02 (delivered) | **NEXT** |
-| [WEB-MAP-4](WEB-MAP-4.md) | Train focus and observation-based follow | WEB-MAP-3 | NOT_STARTED |
+| [WEB-MAP-3](WEB-MAP-3.md) | Active train markers with position trust | WEB-MAP-6 (done) + BACKEND-UI-02 (delivered) | DONE |
+| [WEB-MAP-4](WEB-MAP-4.md) | Train focus and observation-based follow | WEB-MAP-3 (done) | **NEXT** |
 | [WEB-MAP-7](WEB-MAP-7.md) | **Smooth transitions between observed positions** — runs after WEB-MAP-4, before WEB-MAP-5 | WEB-MAP-4 | NOT_STARTED |
 | [WEB-MAP-5](WEB-MAP-5.md) | Map and train-detail integration | WEB-MAP-7 | NOT_STARTED |
 

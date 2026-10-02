@@ -90,6 +90,35 @@
      "status": 404
     }
    ]
+  },
+  {
+   "capturedAt": "2026-10-02T12:00:00Z",
+   "ticket": "WEB-MAP-3",
+   "backendCommit": "4c01a6f",
+   "database": "marc_208_live",
+   "note": "Re-captured, not hand-edited: MARC-507 added scheduled shapeId/directionId/headsign and MARC-508 added the membership group, so the earlier samples no longer matched the contract and the strict parser rejected them. Only the samples whose bodies actually changed were rewritten -- trains, previous-service-date, train-detail, correct-detail-cursor. health, routes, stops, alerts, departures and the error samples were byte-identical and are untouched. no-geometry-endpoint is deliberately NOT re-captured: it records a 404 that MARC-506 has since closed, and re-capturing it would erase the record of the gap.",
+   "requests": [
+    {
+     "sample": "trains",
+     "path": "/api/v1/trains?limit=3",
+     "status": 200
+    },
+    {
+     "sample": "previous-service-date",
+     "path": "/api/v1/trains?serviceDate=20260928&limit=200",
+     "status": 200
+    },
+    {
+     "sample": "train-detail",
+     "path": "/api/v1/trains/NzUwZmNmYjYtZGQwZS1jNWVlLTcxZTEtNWNkYWVhYTU4ZDE4fDIwMjYwOTI4",
+     "status": 200
+    },
+    {
+     "sample": "correct-detail-cursor",
+     "path": "/api/v1/trains/NzUwZmNmYjYtZGQwZS1jNWVlLTcxZTEtNWNkYWVhYTU4ZDE4fDIwMjYwOTI4?afterStop=1",
+     "status": 200
+    }
+   ]
   }
  ]
 }

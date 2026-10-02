@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import type { GeoJSONSource, Map as MapLibreMap } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Shape } from "../../lib/types/geometry";
+import type { MapStation, MapTrain } from "../../lib/presentation/markers";
+import { drawableTrains } from "../../lib/presentation/markers";
 import styles from "./RouteMap.module.css";
 
 /**
@@ -16,6 +18,53 @@ const styleUrl =
 
 const sourceId = "marc-alignments";
 const layerId = "marc-alignments-line";
+const stationSourceId = "marc-stations";
+const stationLayerId = "marc-stations-point";
+const trainSourceId = "marc-trains";
+const lastKnownLayerId = "marc-trains-last-known";
+const currentLayerId = "marc-trains-current";
+const trainLabelLayerId = "marc-trains-label";
+
+const empty = { type: "FeatureCollection", features: [] } as const;
+
+/**
+ * Current and last-known markers differ by **shape and label**, never by colour alone: a
+ * filled disc for a position the backend calls fresh, a hollow ring for one it still holds
+ * but does not. Colour reinforces the distinction; it never carries it.
+ */
+function trainFeatures(trains: readonly MapTrain[]) {
+  return {
+    type: "FeatureCollection" as const,
+    features: drawableTrains(trains).map((train) => ({
+      type: "Feature" as const,
+      geometry: {
+        type: "Point" as const,
+        coordinates: [train.place!.longitude, train.place!.latitude],
+      },
+      // The backend's own train identity, so MapLibre updates the right feature.
+      id: undefined,
+      properties: {
+        trainId: train.id,
+        current: train.place!.trust === "CURRENT",
+        label: train.label,
+      },
+    })),
+  };
+}
+
+function stationFeatures(stations: readonly MapStation[]) {
+  return {
+    type: "FeatureCollection" as const,
+    features: stations.map((station) => ({
+      type: "Feature" as const,
+      geometry: {
+        type: "Point" as const,
+        coordinates: [station.longitude, station.latitude],
+      },
+      properties: { stopId: station.id, name: station.name },
+    })),
+  };
+}
 
 /**
  * Canonical MARC route geometry on a neutral vector basemap.
@@ -36,9 +85,17 @@ const layerId = "marc-alignments-line";
  */
 export default function RouteMap({
   shapes,
+  stations,
+  trains,
   label,
 }: {
   shapes: readonly Shape[];
+  stations: readonly MapStation[];
+  /**
+   * Train view models, already judged by the presentation layer. The renderer draws what it
+   * is given and decides nothing about trust, freshness or movement.
+   */
+  trains: readonly MapTrain[];
   /** Names what is drawn, for assistive technology and for the visible caption. */
   label: string;
 }) {
@@ -98,6 +155,74 @@ export default function RouteMap({
             layout: { "line-cap": "round", "line-join": "round" },
             paint: { "line-color": "#174ea6", "line-width": 3, "line-opacity": 0.9 },
           });
+
+          // Stations sit above the alignment and below the trains, so a train is never
+          // hidden under a station dot.
+          instance.addSource(stationSourceId, { type: "geojson", data: empty });
+          instance.addLayer({
+            id: stationLayerId,
+            type: "circle",
+            source: stationSourceId,
+            paint: {
+              "circle-radius": 3,
+              "circle-color": "#ffffff",
+              "circle-stroke-color": "#5f6368",
+              "circle-stroke-width": 1.5,
+            },
+          });
+
+          // One train source. Two layers read it, filtered on the trust the presentation
+          // layer decided, so a freshness change is a data update and never a layer rebuild.
+          instance.addSource(trainSourceId, { type: "geojson", data: empty });
+          instance.addLayer({
+            id: lastKnownLayerId,
+            type: "circle",
+            source: trainSourceId,
+            filter: ["==", ["get", "current"], false],
+            paint: {
+              // A hollow ring: a different shape, not merely a different colour.
+              "circle-radius": 6,
+              "circle-color": "rgba(0,0,0,0)",
+              "circle-stroke-color": "#805600",
+              "circle-stroke-width": 2,
+            },
+          });
+          instance.addLayer({
+            id: currentLayerId,
+            type: "circle",
+            source: trainSourceId,
+            filter: ["==", ["get", "current"], true],
+            paint: {
+              "circle-radius": 6,
+              "circle-color": "#17633b",
+              "circle-stroke-color": "#ffffff",
+              "circle-stroke-width": 2,
+            },
+          });
+          instance.addLayer({
+            id: trainLabelLayerId,
+            type: "symbol",
+            source: trainSourceId,
+            layout: {
+              "text-field": ["get", "label"],
+              // The style's own glyph stack. MapLibre's default font is not served by this
+              // provider, and asking for it 404s the glyph range and silently drops every
+              // label, which looked like working markers with no names.
+              "text-font": ["Noto Sans Regular"],
+              "text-size": 11,
+              "text-offset": [0, 1.2],
+              "text-anchor": "top",
+              // Never drop a label silently: an unlabelled marker says less than no marker.
+              "text-allow-overlap": false,
+              "text-optional": true,
+            },
+            paint: {
+              "text-color": "#202124",
+              "text-halo-color": "#ffffff",
+              "text-halo-width": 1.5,
+            },
+          });
+
           map.current = instance;
           setReady(true);
         });
@@ -176,6 +301,25 @@ export default function RouteMap({
     }
   }, [shapes, ready]);
 
+  // Stations change only when a schedule version is activated, so this effect almost never
+  // runs; it is separate from the trains effect so a position tick cannot redraw stations.
+  useEffect(() => {
+    const instance = map.current;
+    if (!ready || instance === null) return;
+    const source = instance.getSource<GeoJSONSource>(stationSourceId);
+    source?.setData(stationFeatures(stations));
+  }, [stations, ready]);
+
+  // Train positions, on the polling cadence. This is a `setData` call on an existing source:
+  // the map, its style, its tiles, the alignments and the stations are all untouched, and no
+  // layer is added or removed when a train appears, moves, goes stale or leaves the list.
+  useEffect(() => {
+    const instance = map.current;
+    if (!ready || instance === null) return;
+    const source = instance.getSource<GeoJSONSource>(trainSourceId);
+    source?.setData(trainFeatures(trains));
+  }, [trains, ready]);
+
   if (failed) {
     return (
       <p className={styles.attribution}>
@@ -197,6 +341,23 @@ export default function RouteMap({
         <span className={styles.legendItem}>
           <span className={styles.swatch} aria-hidden="true" />
           Scheduled route alignment
+        </span>
+        {/*
+          * The key the map plan requires. Current and last-known differ by filled versus
+          * hollow — a shape difference the key names in words — so the distinction survives
+          * greyscale and colour blindness rather than resting on green against amber.
+          */}
+        <span className={styles.legendItem}>
+          <span className={styles.currentDot} aria-hidden="true" />
+          Current position
+        </span>
+        <span className={styles.legendItem}>
+          <span className={styles.lastKnownDot} aria-hidden="true" />
+          Last known position
+        </span>
+        <span className={styles.legendItem}>
+          <span className={styles.stationDot} aria-hidden="true" />
+          Station
         </span>
       </p>
       <p className={styles.attribution}>

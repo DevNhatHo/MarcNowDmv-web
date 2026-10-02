@@ -42,6 +42,38 @@ export interface ScheduledTrain {
   start: string;
   /** Absent for a schedule that declares no end. */
   end: string | null;
+  /**
+   * Scheduled map identity (MARC-507). All three are nullable because GTFS permits a trip
+   * with no shape, no direction and no headsign, and a null must stay null rather than
+   * becoming an empty string or a zero.
+   *
+   * `shapeId` is the trip's *scheduled* shape and is present whether or not the train is
+   * reporting. It is a different claim from `calculated.routeProgress.shapeId`, which names
+   * the shape a measurement was made against; the two are allowed to disagree.
+   */
+  shapeId: string | null;
+  /** GTFS `direction_id` verbatim: an opaque 0/1 whose meaning is agency-defined. */
+  directionId: number | null;
+  /** Where the train is *booked* to go. Never a claim about where it is now. */
+  headsign: string | null;
+}
+
+/**
+ * Three separate facts about whether a train belongs on a live map (MARC-508).
+ *
+ * They are deliberately not one `active` boolean, and they routinely disagree: a train can
+ * be scheduled with no realtime at all, observed with tracking lost, or holding a fresh
+ * position past its scheduled window because it is running late. Collapsing them in the
+ * client would reintroduce exactly what the backend refused to do.
+ *
+ * None of them is a status. `positionFresh` describes the position's freshness only and is
+ * never movement: a fresh position may be a stationary train, and a stale one is not a
+ * stopped one.
+ */
+export interface TrainMembership {
+  scheduledActive: boolean;
+  realtimeObserved: boolean;
+  positionFresh: boolean;
 }
 
 /** `delaySeconds` null means no official delay was published; zero means on time. */
@@ -61,9 +93,13 @@ export interface TrainPosition extends Evidence {
 }
 
 /**
- * One train for one service date. The backend exposes no train number, headsign or
- * direction; `tripId` is the only verbatim fallback and must never be parsed to invent
- * one. List rows carry no calculated movement.
+ * One train for one service date.
+ *
+ * `scheduled` carries the operator's headsign and direction since MARC-507, so `tripId` is
+ * now only the fallback when the feed publishes no headsign, and must still never be parsed
+ * to invent one. List rows carry **no** calculated movement: `calculated` is deliberately
+ * absent from the list, so a caller that needs movement reads the detail endpoint for the
+ * one run it cares about rather than fetching it per train.
  */
 export interface Train {
   id: string;
@@ -75,6 +111,7 @@ export interface Train {
   scheduled: ScheduledTrain;
   official: OfficialTrain;
   position: TrainPosition;
+  membership: TrainMembership;
 }
 
 /**

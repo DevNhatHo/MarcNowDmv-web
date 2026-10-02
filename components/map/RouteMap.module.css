@@ -87,3 +87,32 @@
   background-repeat: no-repeat;
   background-position: center;
 }
+
+/*
+ * Legend marks, matching the layers exactly. Filled for a position the backend calls fresh,
+ * hollow for one it still holds but does not — a shape difference, not only a colour one.
+ */
+.currentDot,
+.lastKnownDot,
+.stationDot {
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+  border-radius: 50%;
+}
+
+.currentDot {
+  background: var(--color-positive);
+  box-shadow: 0 0 0 2px var(--color-surface);
+}
+
+.lastKnownDot {
+  background: transparent;
+  border: 2px solid var(--color-warning);
+}
+
+.stationDot {
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-text-secondary);
+}

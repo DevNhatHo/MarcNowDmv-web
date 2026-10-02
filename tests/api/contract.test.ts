@@ -37,10 +37,10 @@ describe("captured responses", () => {
     const page = parseTrainListPage(capturedBody("trains"));
     expect(page.data).toHaveLength(3);
     expect(page.scheduleVersion.id).toBe("1");
-    expect(page.serviceDate).toBe("20260929");
-    expect(page.nextAfter).toBe(
-      "MDY0MmY1ZjMtMzMzMS1iNWRmLWU1ZDctMTc5OWJlMTVmNzJlfDIwMjYwOTI5",
-    );
+    // Read from the capture rather than hardcoded: the samples are re-captured against the
+    // local backend when a contract changes, and the date is not what this test is about.
+    expect(page.serviceDate).toMatch(/^\d{8}$/);
+    expect(page.nextAfter).not.toBeNull();
     const train = page.data[0];
     expect(train.scheduled.provenance).toBe("SCHEDULED");
     expect(train.official.provenance).toBe("OFFICIAL_REALTIME");
@@ -51,13 +51,54 @@ describe("captured responses", () => {
   });
 
   it("keeps a retained list row's absent realtime evidence absent", () => {
-    const [train] = parseTrainListPage(capturedBody("trains")).data;
+    // Find the row this test is about rather than assuming it is first, and select it by
+    // the backend's own statement that no realtime evidence exists. Position freshness is
+    // the wrong predicate: the capture contains a train with a Trip Update and no position,
+    // which has evidence.
+    const train = parseTrainListPage(capturedBody("trains")).data.find(
+      (row) => !row.membership.realtimeObserved,
+    );
+    expect(train, "the capture contains no row without realtime evidence").toBeDefined();
+    if (train === undefined) return;
     expect(train.official.delaySeconds).toBeNull();
     expect(train.official.observationId).toBeNull();
     expect(train.position.latitude).toBeNull();
     expect(train.position.freshness).toBe("UNAVAILABLE");
     // Missing realtime is never promoted to a positive claim.
     expect(train.status).not.toBe("ON_TIME");
+  });
+
+  it("keeps a retained coordinate that is observed but not fresh", () => {
+    // The case that justifies membership being three facts, and the one WEB-MAP-3 must draw
+    // as last-known rather than live: the backend observed this train and still holds a
+    // coordinate for it, but the coordinate is not fresh. "Has a position" and "has a
+    // current position" are different questions and a map must not answer one with the other.
+    const retained = parseTrainListPage(capturedBody("trains")).data.find(
+      (row) => row.membership.realtimeObserved && !row.membership.positionFresh,
+    );
+    expect(retained).toBeDefined();
+    if (retained === undefined) return;
+    expect(retained.position.latitude).not.toBeNull();
+    expect(retained.position.freshness).not.toBe("FRESH");
+    // A retained coordinate never becomes a positive claim about the train.
+    expect(retained.status).not.toBe("ON_TIME");
+  });
+
+  it("carries the map identity and membership the list now publishes", () => {
+    // MARC-507 and MARC-508. Membership is three separate facts and must stay that way.
+    for (const train of parseTrainListPage(capturedBody("trains")).data) {
+      expect(typeof train.membership.scheduledActive).toBe("boolean");
+      expect(typeof train.membership.realtimeObserved).toBe("boolean");
+      expect(typeof train.membership.positionFresh).toBe("boolean");
+      expect(train).not.toHaveProperty("active");
+      // Nullable by contract, but typed when present.
+      if (train.scheduled.shapeId !== null) {
+        expect(typeof train.scheduled.shapeId).toBe("string");
+      }
+      if (train.scheduled.directionId !== null) {
+        expect(typeof train.scheduled.directionId).toBe("number");
+      }
+    }
   });
 
   it("parses train detail with the calculated envelope as a sibling of data", () => {

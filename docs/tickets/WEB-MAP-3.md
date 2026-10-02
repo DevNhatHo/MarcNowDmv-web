@@ -1,6 +1,6 @@
 # WEB-MAP-3 — Active train markers with position trust
 
-Status: NOT_STARTED
+Status: **DONE** (2026-10-02)
 
 ## Goal
 
@@ -88,3 +88,83 @@ Inspect rendered 360×800 mobile and 1280×900 desktop, actual data where availa
 ## Definition of Done
 
 Acceptance criteria and required checks pass with recorded evidence. Update ticket/index/current state and relevant docs, review diff and preserve unrelated work. One completed-ticket commit with WEB-MAP-3 subject. Missing required backend contracts block implementation completion; record the blocker and leave incomplete rather than making a completion commit.
+
+## Outcome
+
+`/map` draws train positions over the alignments, with stations, a key, and a text equivalent
+that matches what the map shows. Markers live in **one GeoJSON source** read by two filtered
+circle layers plus a label layer, all added once; a polling tick is a `setData` call.
+
+### Checks actually executed
+
+`npm run lint` clean, `npm run typecheck` clean, `npx vitest run` **228 tests in 15 files, 0
+failures**, `npm run build` succeeded, `npx playwright test` **64 passed** across both required
+viewports. Rendered review at 360×800 and 1280×900 in `docs/reviews/WEB-MAP-3/`, including
+greyscale.
+
+Measured live against `marc_208_live` with `cmd/ingest` polling: **97 trains, 35 drawn, 8–9
+current, 26 last-known, 62 with no position at all.**
+
+### Current versus last-known
+
+A filled disc for a position the backend calls fresh, a hollow ring for one it still holds but
+does not. **Shape carries the distinction and the key names it in words**; colour only
+reinforces it, which the greyscale capture confirms. Trust comes from
+`membership.positionFresh` — the backend's own evaluation — never from a coordinate merely
+being present, and a test pins that a recent-looking timestamp cannot promote a stale position.
+
+A last-known marker is never counted as a live train. The caption says "*N* of 97 trains report
+a current position", which is a claim about **reports**, not about trains running, and an e2e
+test fails if the screen ever says "trains running".
+
+### Movement is absent, deliberately
+
+`calculated` is not on the trains list, so the system map cannot know MOVING or STATIONARY. It
+omits the claim rather than approximating one from coordinates. An e2e test asserts neither
+word appears, and a unit test asserts the view model carries no movement field at all.
+
+### Three defects the rendered review caught
+
+**Marker labels were not drawn at all.** The symbol layer used MapLibre's default font stack,
+which this provider does not serve: the glyph range 404'd and every label was dropped
+silently. The map looked finished and was missing the thing the ticket asked for. Now pinned to
+the style's own `Noto Sans Regular`, and the review capture reports zero failed requests.
+
+**The key explained only the alignment.** A map drawing three new kinds of mark had no legend
+entry for any of them, which the map plan explicitly requires. The key now names current
+position, last known position and station.
+
+**The text equivalent was a 97-row wall** that made the page **13,172 px** tall and buried the
+map's actual content — the same defect WEB-MAP-2's review caught with raw shape identifiers.
+The visible list is now what the map draws (35), and the 62 trains with no position are counted
+and named in a closed disclosure. Page height fell to **5,876 px**. Nothing was dropped, and a
+test asserts both lists together account for every train.
+
+### The contract samples were re-captured, not edited
+
+MARC-507 and MARC-508 shipped after the samples were taken, so the strict parser rejected them.
+They were re-captured from the running backend rather than hand-edited, because a hand-edited
+"captured response" is no longer a capture. Only the four samples whose bodies actually changed
+were rewritten; `no-geometry-endpoint` was deliberately left alone because it records a 404 that
+MARC-506 has since closed.
+
+Two tests were reading the capture's service date as a literal and one assumed the first
+captured row had no realtime evidence. Both now read the fixture, so re-capturing cannot
+silently break tests that are not about the date. The second turned out to be a finding: the
+captured row has a Trip Update **and** a retained coordinate that is not fresh, which is exactly
+the disagreement `membership` exists to express, and it is now its own test.
+
+### Accessibility
+
+The 44 px floor caught the new train links as undersized standalone controls. The control was
+fixed rather than the check weakened. Every marker's meaning is in words, every train is
+reachable by keyboard, and overlapping markers are individually reachable from the list.
+
+### Limitation
+
+At the system zoom a last-known ring and a station dot are both hollow circles, differing by
+size, stroke weight and the presence of a label. They are distinguishable in the greyscale
+capture but it is the weakest of the distinctions on the map. Distinct marker *shapes* would
+need a sprite, which this ticket did not take on.
+
+No blockers. Next: [WEB-MAP-4](WEB-MAP-4.md) — train focus and observation-based follow.

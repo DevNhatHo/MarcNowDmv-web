@@ -3,17 +3,33 @@
 import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { fetchRoutes, fetchShapes, type BackendError } from "../../lib/api";
-import type { Route } from "../../lib/types/catalogs";
+import {
+  fetchRoutes,
+  fetchShapes,
+  fetchStops,
+  fetchTrains,
+  type BackendError,
+} from "../../lib/api";
+import type { Route, Stop } from "../../lib/types/catalogs";
 import type { Shape, ShapePage } from "../../lib/types/geometry";
+import type { TrainListPage } from "../../lib/types/trains";
+import {
+  currentCount,
+  mapStations,
+  mapTrains,
+  routeNameMap,
+  type MapTrain,
+} from "../../lib/presentation/markers";
 import { ActionButton, LoadingRows, Notice, describeFailure } from "../Feedback";
 import { useSharedResource } from "../useSharedResource";
 import RouteMap from "./RouteMap";
+import TrainMarkerList from "./TrainMarkerList";
 import styles from "./MapScreen.module.css";
 
 interface Loaded {
   shapes: ShapePage;
   routes: Route[];
+  stops: Stop[];
 }
 
 /**
@@ -24,7 +40,20 @@ interface Loaded {
 async function loadGeometry(routeId: string | undefined, signal: AbortSignal): Promise<Loaded> {
   const shapes = await fetchShapes({ routeId, limit: 200 }, { signal });
   const routes = await fetchRoutes({ limit: 200 }, { signal });
-  return { shapes, routes: routes.data };
+  const stops = await fetchStops({ limit: 200 }, { signal });
+  return { shapes, routes: routes.data, stops: stops.data };
+}
+
+/**
+ * Train positions, read on the **trains** cadence — thirty seconds — from the single list
+ * the app already uses. One bounded request covers every marker: there is deliberately no
+ * per-train read here, and none may be added.
+ */
+async function loadTrains(
+  routeId: string | undefined,
+  signal: AbortSignal,
+): Promise<TrainListPage> {
+  return fetchTrains({ routeId, limit: 200 }, { signal });
 }
 
 export default function MapScreen() {
@@ -38,14 +67,38 @@ export default function MapScreen() {
   const resource = useSharedResource<Loaded>(`map:${routeId ?? "all"}`, "catalog", load);
   const page = resource.data?.shapes;
 
-  const routeNames = useMemo(() => {
-    const names = new Map<string, string>();
-    for (const route of resource.data?.routes ?? []) {
-      const name = route.longName ?? route.shortName;
-      if (name !== null) names.set(route.id, name);
-    }
-    return names;
-  }, [resource.data]);
+  const loadTrainPage = useCallback(
+    (signal: AbortSignal) => loadTrains(routeId, signal),
+    [routeId],
+  );
+  const trainResource = useSharedResource<TrainListPage>(
+    `map-trains:${routeId ?? "all"}`,
+    "trains",
+    loadTrainPage,
+  );
+
+  const routeNames = useMemo(
+    () => routeNameMap(resource.data?.routes ?? []),
+    [resource.data],
+  );
+
+  const stations = useMemo(
+    () => mapStations(resource.data?.stops ?? []),
+    [resource.data],
+  );
+
+  /*
+   * One evaluation clock for the whole render, taken from the response that produced these
+   * trains rather than from the wall clock, so every "reported N min ago" on screen is aged
+   * against the same instant the backend evaluated.
+   */
+  const trains = useMemo<MapTrain[]>(() => {
+    const data = trainResource.data;
+    if (data === undefined || data === null) return [];
+    const evaluatedAt = Date.parse(data.evaluatedAt);
+    const now = Number.isNaN(evaluatedAt) ? new Date() : new Date(evaluatedAt);
+    return mapTrains(data.data, routeNames, now);
+  }, [trainResource.data, routeNames]);
 
   const setRoute = (value: string) => {
     router.replace(value === "" ? "/map" : `/map?routeId=${encodeURIComponent(value)}`);
@@ -128,11 +181,37 @@ export default function MapScreen() {
       ) : null}
 
       {drawn && !(page && page.data.length === 0) ? (
-        <RouteMap shapes={drawn.shapes} label={drawn.label} />
+        <RouteMap
+          shapes={drawn.shapes}
+          stations={stations}
+          trains={trains}
+          label={drawn.label}
+        />
       ) : null}
 
       {page && page.data.length > 0 ? (
         <>
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>Trains</h2>
+            {/*
+              * What this count is, exactly: positions the backend calls fresh. It is not a
+              * count of trains running, which this service cannot determine, and a
+              * last-known marker is never included in it.
+              */}
+            <p className={styles.caption}>
+              {trainResource.error !== null
+                ? "Train positions could not be read, so none are drawn. The lines below are unaffected."
+                : trains.length === 0
+                  ? "No train positions are published for this service date yet."
+                  : `${currentCount(trains)} of ${trains.length} trains report a current position. The rest are drawn where they were last reported, or are not drawn at all.`}
+            </p>
+            <TrainMarkerList
+              trains={trains}
+              serviceDate={trainResource.data?.serviceDate ?? ""}
+              routeId={routeId}
+            />
+          </section>
+
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Lines</h2>
             {/*

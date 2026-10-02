@@ -14,22 +14,29 @@ vi.mock("next/navigation", () => ({
   usePathname: () => "/map",
 }));
 
-// Leaflet touches window at module scope and draws nothing useful in jsdom, so the map
-// surface is stubbed. What these tests check is the data path and the text equivalent,
-// which is what a commuter without a working map actually relies on.
+// MapLibre needs WebGL and touches window at module scope, so it draws nothing useful in
+// jsdom and the map surface is stubbed. What these tests check is the data path and the text
+// equivalent, which is what a commuter without a working map actually relies on. The marker
+// layer's own behaviour is covered by tests/e2e/map.spec.ts, which has a real browser.
 vi.mock("../components/map/RouteMap", () => ({
   default: ({ label }: { label: string }) => <div data-testid="map" aria-label={label} />,
 }));
 
 const base = { baseUrl: "/api/backend" };
 
-function serve(shapes: unknown) {
+function serve(shapes: unknown, trains: unknown = capturedBody("trains")) {
   const calls: string[] = [];
   vi.stubGlobal(
     "fetch",
     vi.fn(async (url: string) => {
       calls.push(url);
-      const body = /\/api\/v1\/routes/.test(url) ? capturedBody("routes") : shapes;
+      const body = /\/api\/v1\/routes/.test(url)
+        ? capturedBody("routes")
+        : /\/api\/v1\/stops/.test(url)
+          ? capturedBody("stops")
+          : /\/api\/v1\/trains/.test(url)
+            ? trains
+            : shapes;
       return new Response(JSON.stringify(body), {
         status: 200,
         headers: { "Content-Type": "application/json" },

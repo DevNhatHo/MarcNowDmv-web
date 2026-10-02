@@ -88,6 +88,11 @@ rather than stylistic:
 Measured: filtering a line costs **0–2 tile requests**, against the 15–20 a fresh map load
 issues.
 
+WEB-MAP-3 shipped markers on exactly this basis: one train source read by two filtered circle
+layers and a label layer, all added once, with a polling tick as a `setData` call. Trust comes
+from `membership.positionFresh`, and the system map states no movement because the trains list
+carries no `calculated` group.
+
 The same discipline governs **train markers** under the [live movement addendum](MAP_PLAN.md):
 trains are their own source and layer, keyed by the backend's train identity, updated with
 `setData` on the polling cadence. A marker moves only for a newer `position.sourceTimestamp`.

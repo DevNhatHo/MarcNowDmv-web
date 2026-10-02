@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import TrainListScreen from "../components/TrainListScreen";
 import TrainDetailScreen from "../components/TrainDetailScreen";
 import { capturedBody, mutableBody } from "./fixtures/captures";
+import type { TrainListPage } from "../lib/types/trains";
 import { syntheticEmptyDetail, syntheticUnresolvedUpdate } from "./fixtures/synthetic";
 import { resetResources } from "../lib/refresh/store";
 
@@ -35,6 +36,13 @@ function serve(routes: Array<[RegExp, unknown, number?]>) {
   vi.stubGlobal("fetch", impl);
   return calls;
 }
+
+/**
+ * The captured list's own service date. Read from the sample rather than written as a
+ * literal, so re-capturing against the local backend cannot silently break tests that are
+ * not about the date.
+ */
+const capturedServiceDate = (capturedBody("trains") as TrainListPage).serviceDate;
 
 const listRoutes = (page: unknown = capturedBody("trains")) =>
   [
@@ -94,14 +102,17 @@ describe("train list", () => {
   });
 
   it("links every row to a detail route carrying the active filters", async () => {
-    navigation.params = new URLSearchParams({ serviceDate: "20260929", routeId: "11007" });
+    navigation.params = new URLSearchParams({
+      serviceDate: capturedServiceDate,
+      routeId: "11007",
+    });
     serve(listRoutes());
     render(<TrainListScreen />);
     const links = await screen.findAllByRole("link");
     for (const link of links) {
       const href = link.getAttribute("href") ?? "";
       expect(href).toMatch(/^\/trains\/[^?]+\?/);
-      expect(href).toContain("serviceDate=20260929");
+      expect(href).toContain(`serviceDate=${capturedServiceDate}`);
       expect(href).toContain("routeId=11007");
     }
   });
@@ -158,7 +169,7 @@ describe("train list", () => {
     await userEvent.click(screen.getByRole("button", { name: "Load more trains" }));
     await waitFor(() => expect(screen.getAllByRole("listitem")).toHaveLength(6));
     const continuation = calls.find((url) => url.includes("after="));
-    expect(continuation).toContain("serviceDate=20260929");
+    expect(continuation).toContain(`serviceDate=${capturedServiceDate}`);
     expect(continuation).toContain("version=1");
     expect(screen.getByText(/All 6 scheduled trains/)).toBeVisible();
   });

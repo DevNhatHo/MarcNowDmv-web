@@ -1,356 +1,358 @@
 {
-  "method": "GET",
-  "path": "/api/v1/trains/NzUwZmNmYjYtZGQwZS1jNWVlLTcxZTEtNWNkYWVhYTU4ZDE4fDIwMjYwOTI4",
-  "status": 200,
-  "headers": {
-    "Cache-Control": "no-store",
-    "Content-Type": "application/json; charset=utf-8"
+ "method": "GET",
+ "path": "/api/v1/trains/NzUwZmNmYjYtZGQwZS1jNWVlLTcxZTEtNWNkYWVhYTU4ZDE4fDIwMjYwOTI4",
+ "status": 200,
+ "headers": {
+  "Cache-Control": "no-store",
+  "Content-Type": "application/json; charset=utf-8"
+ },
+ "body": {
+  "evaluatedAt": "2026-10-02T12:10:54.93164489Z",
+  "data": {
+   "id": "NzUwZmNmYjYtZGQwZS1jNWVlLTcxZTEtNWNkYWVhYTU4ZDE4fDIwMjYwOTI4",
+   "scheduleVersion": "1",
+   "tripId": "Train860",
+   "routeId": "11706",
+   "serviceDate": "20260928",
+   "status": "UNKNOWN",
+   "scheduled": {
+    "provenance": "SCHEDULED",
+    "start": "2026-09-28T23:45:00Z",
+    "end": "2026-09-29T00:55:00Z",
+    "shapeId": "116595",
+    "directionId": 1,
+    "headsign": "BALTIMORE CAMDEN"
+   },
+   "official": {
+    "source": "MARC_TRIP_UPDATES",
+    "observationId": "4",
+    "sourceTimestamp": "2026-09-29T00:25:45Z",
+    "receivedAt": "2026-09-29T00:25:54.227174Z",
+    "freshness": "UNAVAILABLE",
+    "conflict": false,
+    "provenance": "OFFICIAL_REALTIME",
+    "status": "UNKNOWN",
+    "delaySeconds": null,
+    "scheduleRelationship": null
+   },
+   "position": {
+    "source": "MARC_VEHICLE_POSITIONS",
+    "observationId": "4",
+    "sourceTimestamp": "2026-09-29T00:25:27Z",
+    "receivedAt": "2026-09-29T00:25:54.392017Z",
+    "freshness": "UNAVAILABLE",
+    "conflict": false,
+    "provenance": "OFFICIAL_REALTIME",
+    "latitude": 39.14573287963867,
+    "longitude": -76.7813491821289,
+    "speedMetersPerSecond": 29.68344497680664,
+    "bearingDegrees": 29,
+    "vehicleId": "000029"
+   },
+   "membership": {
+    "scheduledActive": false,
+    "realtimeObserved": true,
+    "positionFresh": false
+   }
   },
-  "body": {
-    "evaluatedAt": "2026-09-29T12:05:28.757929113Z",
-    "data": {
-      "id": "NzUwZmNmYjYtZGQwZS1jNWVlLTcxZTEtNWNkYWVhYTU4ZDE4fDIwMjYwOTI4",
-      "scheduleVersion": "1",
-      "tripId": "Train860",
-      "routeId": "11706",
-      "serviceDate": "20260928",
-      "status": "UNKNOWN",
-      "scheduled": {
-        "provenance": "SCHEDULED",
-        "start": "2026-09-28T23:45:00Z",
-        "end": "2026-09-29T00:55:00Z"
-      },
-      "official": {
-        "source": "MARC_TRIP_UPDATES",
-        "observationId": "4",
-        "sourceTimestamp": "2026-09-29T00:25:45Z",
-        "receivedAt": "2026-09-29T00:25:54.227174Z",
-        "freshness": "UNAVAILABLE",
-        "conflict": false,
-        "provenance": "OFFICIAL_REALTIME",
-        "status": "UNKNOWN",
-        "delaySeconds": null,
-        "scheduleRelationship": null
-      },
-      "position": {
-        "source": "MARC_VEHICLE_POSITIONS",
-        "observationId": "4",
-        "sourceTimestamp": "2026-09-29T00:25:27Z",
-        "receivedAt": "2026-09-29T00:25:54.392017Z",
-        "freshness": "UNAVAILABLE",
-        "conflict": false,
-        "provenance": "OFFICIAL_REALTIME",
-        "latitude": 39.14573287963867,
-        "longitude": -76.7813491821289,
-        "speedMetersPerSecond": 29.68344497680664,
-        "bearingDegrees": 29,
-        "vehicleId": "000029"
-      }
-    },
-    "sourceHealth": [
-      {
-        "source": "MARC_STATIC_GTFS",
-        "state": "HEALTHY",
-        "signals": [],
-        "sourceTimestamp": null,
-        "receivedAt": "2026-09-29T00:25:47.31457Z",
-        "lastFetch": "2026-09-29T00:25:47.31457Z",
-        "lastSuccess": "2026-09-29T00:25:51.24578Z",
-        "failureStreak": 0,
-        "httpStatus": 200,
-        "entityCount": null,
-        "invalidCount": 0,
-        "feedVersion": null,
-        "compatibility": null
-      },
-      {
-        "source": "MARC_TRIP_UPDATES",
-        "state": "UNAVAILABLE",
-        "signals": [
-          "polling_unavailable",
-          "source_unavailable"
-        ],
-        "sourceTimestamp": "2026-09-29T00:25:45Z",
-        "receivedAt": "2026-09-29T00:25:54.227174Z",
-        "lastFetch": "2026-09-29T00:25:54.228677Z",
-        "lastSuccess": "2026-09-29T00:25:54.228677Z",
-        "failureStreak": 0,
-        "httpStatus": 200,
-        "entityCount": 5,
-        "invalidCount": 0,
-        "feedVersion": "2.0",
-        "compatibility": "RECOGNIZED"
-      },
-      {
-        "source": "MARC_VEHICLE_POSITIONS",
-        "state": "UNAVAILABLE",
-        "signals": [
-          "polling_unavailable",
-          "source_unavailable"
-        ],
-        "sourceTimestamp": "2026-09-29T00:25:45Z",
-        "receivedAt": "2026-09-29T00:25:54.392017Z",
-        "lastFetch": "2026-09-29T00:25:54.392435Z",
-        "lastSuccess": "2026-09-29T00:25:54.392435Z",
-        "failureStreak": 0,
-        "httpStatus": 200,
-        "entityCount": 5,
-        "invalidCount": 0,
-        "feedVersion": "2.0",
-        "compatibility": "RECOGNIZED"
-      },
-      {
-        "source": "MTA_SERVICE_ALERTS",
-        "state": "UNAVAILABLE",
-        "signals": [
-          "unrecognized_feed_version",
-          "polling_unavailable",
-          "source_unavailable"
-        ],
-        "sourceTimestamp": "2026-09-29T00:25:45Z",
-        "receivedAt": "2026-09-29T00:25:54.544719Z",
-        "lastFetch": "2026-09-29T00:25:54.545592Z",
-        "lastSuccess": "2026-09-29T00:25:54.545592Z",
-        "failureStreak": 0,
-        "httpStatus": 200,
-        "entityCount": 10,
-        "invalidCount": 0,
-        "feedVersion": "3.0",
-        "compatibility": "ACCEPTED_WITH_WARNING"
-      }
+  "sourceHealth": [
+   {
+    "source": "MARC_STATIC_GTFS",
+    "state": "DEGRADED",
+    "signals": [
+     "verification_overdue"
     ],
-    "scheduledStops": [
-      {
-        "sequence": 0,
-        "stopId": "11958",
-        "scheduledArrival": "2026-09-28T23:45:00Z",
-        "scheduledDeparture": "2026-09-28T23:45:00Z"
-      },
-      {
-        "sequence": 1,
-        "stopId": "12017",
-        "scheduledArrival": "2026-09-28T23:54:00Z",
-        "scheduledDeparture": "2026-09-28T23:54:00Z"
-      },
-      {
-        "sequence": 2,
-        "stopId": "12018",
-        "scheduledArrival": "2026-09-28T23:57:00Z",
-        "scheduledDeparture": "2026-09-28T23:57:00Z"
-      },
-      {
-        "sequence": 3,
-        "stopId": "12019",
-        "scheduledArrival": "2026-09-29T00:01:00Z",
-        "scheduledDeparture": "2026-09-29T00:01:00Z"
-      },
-      {
-        "sequence": 4,
-        "stopId": "12020",
-        "scheduledArrival": "2026-09-29T00:07:00Z",
-        "scheduledDeparture": "2026-09-29T00:07:00Z"
-      },
-      {
-        "sequence": 5,
-        "stopId": "12021",
-        "scheduledArrival": "2026-09-29T00:13:00Z",
-        "scheduledDeparture": "2026-09-29T00:13:00Z"
-      },
-      {
-        "sequence": 6,
-        "stopId": "12023",
-        "scheduledArrival": "2026-09-29T00:18:00Z",
-        "scheduledDeparture": "2026-09-29T00:18:00Z"
-      },
-      {
-        "sequence": 7,
-        "stopId": "12025",
-        "scheduledArrival": "2026-09-29T00:24:00Z",
-        "scheduledDeparture": "2026-09-29T00:24:00Z"
-      },
-      {
-        "sequence": 8,
-        "stopId": "12006",
-        "scheduledArrival": "2026-09-29T00:55:00Z",
-        "scheduledDeparture": "2026-09-29T00:55:00Z"
-      }
+    "sourceTimestamp": null,
+    "receivedAt": "2026-09-29T00:25:47.31457Z",
+    "lastFetch": "2026-09-29T00:25:47.31457Z",
+    "lastSuccess": "2026-09-29T00:25:51.24578Z",
+    "failureStreak": 0,
+    "httpStatus": 200,
+    "entityCount": null,
+    "invalidCount": 0,
+    "feedVersion": null,
+    "compatibility": null
+   },
+   {
+    "source": "MARC_TRIP_UPDATES",
+    "state": "HEALTHY",
+    "signals": [],
+    "sourceTimestamp": "2026-10-02T12:10:44Z",
+    "receivedAt": "2026-10-02T12:10:44.718736Z",
+    "lastFetch": "2026-10-02T12:10:44.737185Z",
+    "lastSuccess": "2026-10-02T12:10:44.737185Z",
+    "failureStreak": 0,
+    "httpStatus": 200,
+    "entityCount": 11,
+    "invalidCount": 0,
+    "feedVersion": "2.0",
+    "compatibility": "RECOGNIZED"
+   },
+   {
+    "source": "MARC_VEHICLE_POSITIONS",
+    "state": "HEALTHY",
+    "signals": [],
+    "sourceTimestamp": "2026-10-02T12:10:44Z",
+    "receivedAt": "2026-10-02T12:10:44.995154Z",
+    "lastFetch": "2026-10-02T12:10:44.996055Z",
+    "lastSuccess": "2026-10-02T12:10:44.996055Z",
+    "failureStreak": 0,
+    "httpStatus": 200,
+    "entityCount": 11,
+    "invalidCount": 0,
+    "feedVersion": "2.0",
+    "compatibility": "RECOGNIZED"
+   },
+   {
+    "source": "MTA_SERVICE_ALERTS",
+    "state": "DEGRADED",
+    "signals": [
+     "unrecognized_feed_version"
     ],
-    "officialStopUpdates": [
-      {
-        "ordinal": 0,
-        "resolvedSequence": 0,
-        "stopId": "11958",
-        "scheduleRelationship": null,
-        "officialEstimatedArrival": null,
-        "officialEstimatedDeparture": "2026-09-28T23:46:53Z",
-        "officialArrivalDelaySeconds": null,
-        "officialDepartureDelaySeconds": 113,
-        "resolution": "resolved"
-      },
-      {
-        "ordinal": 1,
-        "resolvedSequence": 1,
-        "stopId": "12017",
-        "scheduleRelationship": null,
-        "officialEstimatedArrival": "2026-09-28T23:56:30Z",
-        "officialEstimatedDeparture": "2026-09-28T23:56:42Z",
-        "officialArrivalDelaySeconds": 210,
-        "officialDepartureDelaySeconds": 162,
-        "resolution": "resolved"
-      },
-      {
-        "ordinal": 2,
-        "resolvedSequence": 2,
-        "stopId": "12018",
-        "scheduleRelationship": null,
-        "officialEstimatedArrival": "2026-09-28T23:59:12Z",
-        "officialEstimatedDeparture": "2026-09-28T23:59:33Z",
-        "officialArrivalDelaySeconds": 192,
-        "officialDepartureDelaySeconds": 153,
-        "resolution": "resolved"
-      },
-      {
-        "ordinal": 3,
-        "resolvedSequence": 3,
-        "stopId": "12019",
-        "scheduleRelationship": null,
-        "officialEstimatedArrival": "2026-09-29T00:03:51Z",
-        "officialEstimatedDeparture": "2026-09-29T00:04:03Z",
-        "officialArrivalDelaySeconds": 231,
-        "officialDepartureDelaySeconds": 183,
-        "resolution": "resolved"
-      },
-      {
-        "ordinal": 4,
-        "resolvedSequence": 4,
-        "stopId": "12020",
-        "scheduleRelationship": null,
-        "officialEstimatedArrival": "2026-09-29T00:10:03Z",
-        "officialEstimatedDeparture": "2026-09-29T00:10:15Z",
-        "officialArrivalDelaySeconds": 273,
-        "officialDepartureDelaySeconds": 195,
-        "resolution": "resolved"
-      },
-      {
-        "ordinal": 5,
-        "resolvedSequence": 5,
-        "stopId": "12021",
-        "scheduleRelationship": null,
-        "officialEstimatedArrival": "2026-09-29T00:16:36Z",
-        "officialEstimatedDeparture": "2026-09-29T00:16:36Z",
-        "officialArrivalDelaySeconds": 306,
-        "officialDepartureDelaySeconds": 216,
-        "resolution": "resolved"
-      },
-      {
-        "ordinal": 6,
-        "resolvedSequence": 6,
-        "stopId": "12023",
-        "scheduleRelationship": null,
-        "officialEstimatedArrival": "2026-09-29T00:22:09Z",
-        "officialEstimatedDeparture": "2026-09-29T00:22:27Z",
-        "officialArrivalDelaySeconds": 339,
-        "officialDepartureDelaySeconds": 267,
-        "resolution": "resolved"
-      },
-      {
-        "ordinal": 7,
-        "resolvedSequence": 7,
-        "stopId": "12025",
-        "scheduleRelationship": null,
-        "officialEstimatedArrival": "2026-09-29T00:28:54Z",
-        "officialEstimatedDeparture": "2026-09-29T00:30:24Z",
-        "officialArrivalDelaySeconds": 384,
-        "officialDepartureDelaySeconds": 384,
-        "resolution": "resolved"
-      },
-      {
-        "ordinal": 8,
-        "resolvedSequence": 8,
-        "stopId": "12006",
-        "scheduleRelationship": null,
-        "officialEstimatedArrival": "2026-09-29T01:01:24Z",
-        "officialEstimatedDeparture": null,
-        "officialArrivalDelaySeconds": 384,
-        "officialDepartureDelaySeconds": null,
-        "resolution": "resolved"
-      }
+    "sourceTimestamp": "2026-10-02T12:10:13Z",
+    "receivedAt": "2026-10-02T12:10:45.275826Z",
+    "lastFetch": "2026-10-02T12:10:45.276394Z",
+    "lastSuccess": "2026-10-02T12:10:45.276394Z",
+    "failureStreak": 0,
+    "httpStatus": 200,
+    "entityCount": 12,
+    "invalidCount": 0,
+    "feedVersion": "3.0",
+    "compatibility": "ACCEPTED_WITH_WARNING"
+   }
+  ],
+  "scheduledStops": [
+   {
+    "sequence": 0,
+    "stopId": "11958",
+    "scheduledArrival": "2026-09-28T23:45:00Z",
+    "scheduledDeparture": "2026-09-28T23:45:00Z"
+   },
+   {
+    "sequence": 1,
+    "stopId": "12017",
+    "scheduledArrival": "2026-09-28T23:54:00Z",
+    "scheduledDeparture": "2026-09-28T23:54:00Z"
+   },
+   {
+    "sequence": 2,
+    "stopId": "12018",
+    "scheduledArrival": "2026-09-28T23:57:00Z",
+    "scheduledDeparture": "2026-09-28T23:57:00Z"
+   },
+   {
+    "sequence": 3,
+    "stopId": "12019",
+    "scheduledArrival": "2026-09-29T00:01:00Z",
+    "scheduledDeparture": "2026-09-29T00:01:00Z"
+   },
+   {
+    "sequence": 4,
+    "stopId": "12020",
+    "scheduledArrival": "2026-09-29T00:07:00Z",
+    "scheduledDeparture": "2026-09-29T00:07:00Z"
+   },
+   {
+    "sequence": 5,
+    "stopId": "12021",
+    "scheduledArrival": "2026-09-29T00:13:00Z",
+    "scheduledDeparture": "2026-09-29T00:13:00Z"
+   },
+   {
+    "sequence": 6,
+    "stopId": "12023",
+    "scheduledArrival": "2026-09-29T00:18:00Z",
+    "scheduledDeparture": "2026-09-29T00:18:00Z"
+   },
+   {
+    "sequence": 7,
+    "stopId": "12025",
+    "scheduledArrival": "2026-09-29T00:24:00Z",
+    "scheduledDeparture": "2026-09-29T00:24:00Z"
+   },
+   {
+    "sequence": 8,
+    "stopId": "12006",
+    "scheduledArrival": "2026-09-29T00:55:00Z",
+    "scheduledDeparture": "2026-09-29T00:55:00Z"
+   }
+  ],
+  "officialStopUpdates": [
+   {
+    "ordinal": 0,
+    "resolvedSequence": 0,
+    "stopId": "11958",
+    "scheduleRelationship": null,
+    "officialEstimatedArrival": null,
+    "officialEstimatedDeparture": "2026-09-28T23:46:53Z",
+    "officialArrivalDelaySeconds": null,
+    "officialDepartureDelaySeconds": 113,
+    "resolution": "resolved"
+   },
+   {
+    "ordinal": 1,
+    "resolvedSequence": 1,
+    "stopId": "12017",
+    "scheduleRelationship": null,
+    "officialEstimatedArrival": "2026-09-28T23:56:30Z",
+    "officialEstimatedDeparture": "2026-09-28T23:56:42Z",
+    "officialArrivalDelaySeconds": 210,
+    "officialDepartureDelaySeconds": 162,
+    "resolution": "resolved"
+   },
+   {
+    "ordinal": 2,
+    "resolvedSequence": 2,
+    "stopId": "12018",
+    "scheduleRelationship": null,
+    "officialEstimatedArrival": "2026-09-28T23:59:12Z",
+    "officialEstimatedDeparture": "2026-09-28T23:59:33Z",
+    "officialArrivalDelaySeconds": 192,
+    "officialDepartureDelaySeconds": 153,
+    "resolution": "resolved"
+   },
+   {
+    "ordinal": 3,
+    "resolvedSequence": 3,
+    "stopId": "12019",
+    "scheduleRelationship": null,
+    "officialEstimatedArrival": "2026-09-29T00:03:51Z",
+    "officialEstimatedDeparture": "2026-09-29T00:04:03Z",
+    "officialArrivalDelaySeconds": 231,
+    "officialDepartureDelaySeconds": 183,
+    "resolution": "resolved"
+   },
+   {
+    "ordinal": 4,
+    "resolvedSequence": 4,
+    "stopId": "12020",
+    "scheduleRelationship": null,
+    "officialEstimatedArrival": "2026-09-29T00:10:03Z",
+    "officialEstimatedDeparture": "2026-09-29T00:10:15Z",
+    "officialArrivalDelaySeconds": 273,
+    "officialDepartureDelaySeconds": 195,
+    "resolution": "resolved"
+   },
+   {
+    "ordinal": 5,
+    "resolvedSequence": 5,
+    "stopId": "12021",
+    "scheduleRelationship": null,
+    "officialEstimatedArrival": "2026-09-29T00:16:36Z",
+    "officialEstimatedDeparture": "2026-09-29T00:16:36Z",
+    "officialArrivalDelaySeconds": 306,
+    "officialDepartureDelaySeconds": 216,
+    "resolution": "resolved"
+   },
+   {
+    "ordinal": 6,
+    "resolvedSequence": 6,
+    "stopId": "12023",
+    "scheduleRelationship": null,
+    "officialEstimatedArrival": "2026-09-29T00:22:09Z",
+    "officialEstimatedDeparture": "2026-09-29T00:22:27Z",
+    "officialArrivalDelaySeconds": 339,
+    "officialDepartureDelaySeconds": 267,
+    "resolution": "resolved"
+   },
+   {
+    "ordinal": 7,
+    "resolvedSequence": 7,
+    "stopId": "12025",
+    "scheduleRelationship": null,
+    "officialEstimatedArrival": "2026-09-29T00:28:54Z",
+    "officialEstimatedDeparture": "2026-09-29T00:30:24Z",
+    "officialArrivalDelaySeconds": 384,
+    "officialDepartureDelaySeconds": 384,
+    "resolution": "resolved"
+   },
+   {
+    "ordinal": 8,
+    "resolvedSequence": 8,
+    "stopId": "12006",
+    "scheduleRelationship": null,
+    "officialEstimatedArrival": "2026-09-29T01:01:24Z",
+    "officialEstimatedDeparture": null,
+    "officialArrivalDelaySeconds": 384,
+    "officialDepartureDelaySeconds": null,
+    "resolution": "resolved"
+   }
+  ],
+  "nextStop": null,
+  "nextUpdate": null,
+  "calculated": {
+   "evaluatedAt": "2026-10-02T12:10:54.93164489Z",
+   "observedMovement": {
+    "provenance": "CALCULATED",
+    "state": "UNKNOWN",
+    "reasons": [
+     "insufficient_samples",
+     "missing_observation",
+     "wrong_source",
+     "unresolved",
+     "run_mismatch",
+     "schedule_version_mismatch",
+     "missing_coordinates",
+     "missing_source_time",
+     "missing_receipt_time"
     ],
-    "nextStop": null,
-    "nextUpdate": null,
-    "calculated": {
-      "evaluatedAt": "2026-09-29T12:05:28.757929113Z",
-      "observedMovement": {
-        "provenance": "CALCULATED",
-        "state": "UNKNOWN",
-        "reasons": [
-          "insufficient_samples",
-          "missing_observation",
-          "wrong_source",
-          "unresolved",
-          "run_mismatch",
-          "schedule_version_mismatch",
-          "missing_coordinates",
-          "missing_source_time",
-          "missing_receipt_time"
-        ],
-        "observedStart": null,
-        "observedEnd": null,
-        "stationarySeconds": null,
-        "maxDisplacementMeters": null,
-        "observationIds": [],
-        "radiusMeters": 30,
-        "minStationarySeconds": 60,
-        "maxGapSeconds": 60,
-        "rejectedCount": 0
-      },
-      "routeProgress": {
-        "provenance": "CALCULATED",
-        "state": "UNKNOWN",
-        "reasons": [
-          "source_stale",
-          "receipt_stale"
-        ],
-        "shapeId": null,
-        "shapeLengthMeters": null,
-        "alongRouteMeters": null,
-        "fractionAlong": null,
-        "offRouteMeters": null,
-        "candidates": [],
-        "nearest": null,
-        "corridorMeters": 150,
-        "separationMeters": 200,
-        "sourceDistanceUnits": "unknown"
-      },
-      "nextStop": {
-        "provenance": "CALCULATED",
-        "state": "UNKNOWN",
-        "reasons": [
-          "source_stale",
-          "receipt_stale"
-        ],
-        "stopSequence": null,
-        "stopId": null,
-        "alongRouteDistanceMeters": null,
-        "units": "meters",
-        "officiallySkipped": null
-      },
-      "officialDelayTrend": {
-        "provenance": "CALCULATED",
-        "state": "UNKNOWN",
-        "reasons": [
-          "insufficient_observations"
-        ],
-        "level": "TRIP",
-        "stopSequence": null,
-        "event": null,
-        "changeSeconds": null,
-        "officialDelaySeconds": null,
-        "observationIds": [],
-        "windowSeconds": 900,
-        "toleranceSeconds": 60,
-        "excludedCount": 0
-      }
-    }
+    "observedStart": null,
+    "observedEnd": null,
+    "stationarySeconds": null,
+    "maxDisplacementMeters": null,
+    "observationIds": [],
+    "radiusMeters": 30,
+    "minStationarySeconds": 60,
+    "maxGapSeconds": 60,
+    "rejectedCount": 0
+   },
+   "routeProgress": {
+    "provenance": "CALCULATED",
+    "state": "UNKNOWN",
+    "reasons": [
+     "source_stale",
+     "receipt_stale"
+    ],
+    "shapeId": null,
+    "shapeLengthMeters": null,
+    "alongRouteMeters": null,
+    "fractionAlong": null,
+    "offRouteMeters": null,
+    "candidates": [],
+    "nearest": null,
+    "corridorMeters": 150,
+    "separationMeters": 200,
+    "sourceDistanceUnits": "unknown"
+   },
+   "nextStop": {
+    "provenance": "CALCULATED",
+    "state": "UNKNOWN",
+    "reasons": [
+     "source_stale",
+     "receipt_stale"
+    ],
+    "stopSequence": null,
+    "stopId": null,
+    "alongRouteDistanceMeters": null,
+    "units": "meters",
+    "officiallySkipped": null
+   },
+   "officialDelayTrend": {
+    "provenance": "CALCULATED",
+    "state": "UNKNOWN",
+    "reasons": [
+     "insufficient_observations"
+    ],
+    "level": "TRIP",
+    "stopSequence": null,
+    "event": null,
+    "changeSeconds": null,
+    "officialDelaySeconds": null,
+    "observationIds": [],
+    "windowSeconds": 900,
+    "toleranceSeconds": 60,
+    "excludedCount": 0
+   }
   }
+ }
 }

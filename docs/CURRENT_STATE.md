@@ -4,7 +4,11 @@ Updated: 2026-10-02 (America/New_York).
 
 ## Milestone and work status
 
-[WEB-001](tickets/WEB-001.md) through [WEB-005](tickets/WEB-005.md), and [WEB-007](tickets/WEB-007.md) through [WEB-012](tickets/WEB-012.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. Every route is now a real screen reading the local backend through the typed client: `/` (Pulse), `/trains`, `/trains/[id]` and `/alerts`. No placeholder remains. Current ticket: none. **WEB-013 through WEB-015 are DONE**, and the backend delivered both map gates on 2026-09-30, so WEB-MAP-2 through WEB-MAP-5 are unblocked. **[WEB-MAP-2](tickets/WEB-MAP-2.md) is DONE**: `/map` renders the published MARC alignments with a line filter and a text equivalent, and Map is in the navigation. **A map-provider ADR on 2026-10-01 chose MapLibre GL JS** over ArcGIS, Mapbox, Leaflet, OpenLayers and self-hosted PMTiles, and **[WEB-MAP-6](tickets/WEB-MAP-6.md) is DONE**: `/map` now renders on MapLibre 6.11.2 over a no-key OpenFreeMap vector style, measured at 275 kB gzipped on the map route only, 15–20 tile requests per load and 0 on every other screen. Leaflet is no longer a dependency. Recommended next: **[WEB-MAP-3](tickets/WEB-MAP-3.md)**. A **live movement addendum** on
+[WEB-001](tickets/WEB-001.md) through [WEB-005](tickets/WEB-005.md), and [WEB-007](tickets/WEB-007.md) through [WEB-012](tickets/WEB-012.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. Every route is now a real screen reading the local backend through the typed client: `/` (Pulse), `/trains`, `/trains/[id]` and `/alerts`. No placeholder remains. Current ticket: none. **WEB-013 through WEB-015 are DONE**, and the backend delivered both map gates on 2026-09-30, so WEB-MAP-2 through WEB-MAP-5 are unblocked. **[WEB-MAP-2](tickets/WEB-MAP-2.md) is DONE**: `/map` renders the published MARC alignments with a line filter and a text equivalent, and Map is in the navigation. **A map-provider ADR on 2026-10-01 chose MapLibre GL JS** over ArcGIS, Mapbox, Leaflet, OpenLayers and self-hosted PMTiles, and **[WEB-MAP-6](tickets/WEB-MAP-6.md) is DONE**: `/map` now renders on MapLibre 6.11.2 over a no-key OpenFreeMap vector style, measured at 275 kB gzipped on the map route only, 15–20 tile requests per load and 0 on every other screen. Leaflet is no longer a dependency. **[WEB-MAP-3](tickets/WEB-MAP-3.md) is DONE**: `/map` draws train positions and stations over
+the alignments, current versus last-known by shape and label rather than colour, with a key and
+a text equivalent that matches the map. Measured live: 97 trains, 35 drawn, 8–9 current, 26
+last-known, 62 with no position. Movement is deliberately absent, because the trains list
+carries no `calculated` group. Recommended next: **[WEB-MAP-4](tickets/WEB-MAP-4.md)**. A **live movement addendum** on
 2026-10-02 extended the map plan with marker-update and animation semantics, folded the
 in-place update rules into WEB-MAP-3 and the follow rules into WEB-MAP-4, and added
 [WEB-MAP-7](tickets/WEB-MAP-7.md) for smooth transitions between observed positions; it opened
@@ -332,6 +336,16 @@ it.
 
 Do not collapse the three membership facts into one "active" flag; the backend separated them
 precisely because they disagree, and MARC-508 observed all three disagreement cases live.
+
+### Carried forward from WEB-MAP-3 (2026-10-02)
+
+The frontend types and parser now carry `membership` and `scheduled.shapeId`/`directionId`/
+`headsign`, and the **contract samples were re-captured** against the running backend because
+MARC-507/508 shipped after they were taken. Only the four samples whose bodies changed were
+rewritten; `no-geometry-endpoint` keeps its historical 404 on purpose.
+
+Tests must read the capture's own service date rather than a literal — two did not, and
+re-capturing broke them. If a sample is re-captured again, check for the same pattern.
 
 ### Carried forward from the live movement addendum (2026-10-02)
 

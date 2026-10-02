@@ -113,6 +113,10 @@ the package, so `scripts/copy-maplibre-worker.mjs` copies the pinned package's o
 `prebuild` and `prestart`. Both copies are gitignored. Omitting the shared file is a 404 and a
 blank map, because the worker imports it.
 
+Marker layers use the basemap style's own glyph stack (`Noto Sans Regular`). MapLibre's
+default font is not served by OpenFreeMap: asking for it 404s the glyph range and drops every
+label silently, which looks like working markers with no names.
+
 `npx playwright test` is bounded to four workers: each map load pulls the published geometry
 and the local backend runs a four-connection pool, so unbounded workers make the suite
 contend with itself rather than test anything. `tests/e2e/map.spec.ts` is additionally serial,

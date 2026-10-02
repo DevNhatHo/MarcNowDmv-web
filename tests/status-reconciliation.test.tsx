@@ -183,7 +183,8 @@ describe("the list and Pulse stay within what they can know", () => {
         {
           id: "a", scheduleVersion: "1", tripId: "T", routeId: "A", serviceDate: "20260930",
           status: "UNKNOWN",
-          scheduled: { provenance: "SCHEDULED", start: "2026-09-30T10:00:00Z", end: null },
+          scheduled: { provenance: "SCHEDULED", start: "2026-09-30T10:00:00Z", end: null,
+            shapeId: null, directionId: null, headsign: null },
           official: {
             source: "MARC_TRIP_UPDATES", observationId: null, sourceTimestamp: null,
             receivedAt: null, freshness: "FRESH", conflict: false,
@@ -195,6 +196,9 @@ describe("the list and Pulse stay within what they can know", () => {
             receivedAt: null, freshness: "UNAVAILABLE", conflict: false,
             provenance: "OFFICIAL_REALTIME", latitude: null, longitude: null,
             speedMetersPerSecond: null, bearingDegrees: null, vehicleId: null,
+          },
+          membership: {
+            scheduledActive: false, realtimeObserved: false, positionFresh: false,
           },
         },
       ],

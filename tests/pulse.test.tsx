@@ -6,7 +6,7 @@ import {
   describeLine,
   summarizeLines,
 } from "../lib/presentation/pulse";
-import type { Train } from "../lib/types/trains";
+import type { Train, TrainListPage } from "../lib/types/trains";
 import { capturedBody, mutableBody } from "./fixtures/captures";
 import { resetResources } from "../lib/refresh/store";
 
@@ -37,7 +37,8 @@ function train(routeId: string, status: string): Train {
   return {
     id: `${routeId}-${status}-${Math.random()}`,
     scheduleVersion: "1", tripId: "T", routeId, serviceDate: "20260930", status,
-    scheduled: { provenance: "SCHEDULED", start: "2026-09-30T10:00:00Z", end: null },
+    scheduled: { provenance: "SCHEDULED", start: "2026-09-30T10:00:00Z", end: null,
+            shapeId: null, directionId: null, headsign: null },
     official: { source: "MARC_TRIP_UPDATES", observationId: null, sourceTimestamp: null,
       receivedAt: null, freshness: "UNAVAILABLE", conflict: false,
       provenance: "OFFICIAL_REALTIME", status, delaySeconds: null, scheduleRelationship: null },
@@ -45,6 +46,7 @@ function train(routeId: string, status: string): Train {
       receivedAt: null, freshness: "UNAVAILABLE", conflict: false,
       provenance: "OFFICIAL_REALTIME", latitude: null, longitude: null,
       speedMetersPerSecond: null, bearingDegrees: null, vehicleId: null },
+    membership: { scheduledActive: false, realtimeObserved: false, positionFresh: false },
   };
 }
 
@@ -112,7 +114,11 @@ describe("pulse screen", () => {
     const lines = await screen.findByRole("list", { name: "MARC lines" });
     for (const link of within(lines).getAllByRole("link")) {
       const href = link.getAttribute("href") ?? "";
-      expect(href).toMatch(/^\/trains\?serviceDate=20260929&routeId=/);
+      // The capture's own date, not a literal, so re-capturing does not break this.
+      const serviceDate = (capturedBody("trains") as TrainListPage).serviceDate;
+      expect(href).toMatch(
+        new RegExp(`^/trains\\?serviceDate=${serviceDate}&routeId=`),
+      );
     }
   });
 

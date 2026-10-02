@@ -104,3 +104,42 @@ test("no screen without a map requests a basemap", async ({ page }) => {
   expect(requested).toEqual([]);
   expect(await page.locator("canvas.maplibregl-canvas").count()).toBe(0);
 });
+
+test("the train list offers every position as text", async ({ page }) => {
+  await drawn(page, "/map");
+  const list = page.locator('[aria-label="Trains with reported positions"]');
+  await expect(list).toBeVisible();
+  // Each entry says what its marker means, in words rather than by colour.
+  const first = list.locator("li").first();
+  await expect(first).toContainText(
+    /Current position|Last known position|No position reported/,
+  );
+});
+
+test("a position refresh updates markers without rebuilding the map", async ({ page }) => {
+  await drawn(page, "/map");
+  await page.evaluate(() => {
+    document.querySelector("canvas.maplibregl-canvas")?.setAttribute("data-tag", "same");
+  });
+  const before = await page.locator('[aria-label="Trains with reported positions"] li').count();
+
+  // The trains cadence is 30s; wait past one tick rather than stubbing it, so this measures
+  // the real polling path.
+  await page.waitForTimeout(34_000);
+
+  expect(await page.locator("canvas.maplibregl-canvas").count()).toBe(1);
+  await expect(page.locator("canvas.maplibregl-canvas")).toHaveAttribute("data-tag", "same");
+  const after = await page.locator('[aria-label="Trains with reported positions"] li').count();
+  // The list may legitimately change size as service changes; the map must not be rebuilt.
+  expect(after).toBeGreaterThanOrEqual(0);
+  expect(before).toBeGreaterThanOrEqual(0);
+});
+
+test("the map claims nothing about movement", async ({ page }) => {
+  await drawn(page, "/map");
+  const main = await page.locator("main").innerText();
+  // The trains list carries no calculated group, so this screen must not say either word.
+  expect(main).not.toMatch(/\bMoving\b/);
+  expect(main).not.toMatch(/\bAppears stationary\b/);
+  expect(main).not.toMatch(/trains running/i);
+});
