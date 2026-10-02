@@ -58,6 +58,24 @@ See [API contract](API_CONTRACT.md), [design](DESIGN.md), and [runbook](RUNBOOK.
 
 System map and train focus are now required follow-on work after WEB-012. Use a shared lazy-loaded client-only Leaflet adapter, canonical backend shape geometry, existing centralized resource ownership and shared train-detail presentation. `/map` supports system mode and query-based train selection; detail can open the same focused map. No map code is installed in this update.
 
+**Superseded 2026-10-01 by the [map ADR](MAP_PLAN.md):** **MapLibre GL JS** is the chosen
+renderer, with a no-API-key hosted vector basemap initially and self-hosted PMTiles as the
+documented future option. [WEB-MAP-6](tickets/WEB-MAP-6.md) migrates the shipped Leaflet map.
+
+The decision separates **renderer** from **basemap provider** deliberately. MapLibre is
+BSD-3-Clause and tied to no tile vendor, so the basemap is a configuration change rather than
+a rewrite; Mapbox GL JS v2+ is under Mapbox's own terms and requires a card from day one, and
+ArcGIS would add a proprietary dependency and a reported ~2.1 MB gzipped bundle to use almost
+none of a GIS platform the backend already replaces.
+
+The renderer loads browser-only, on the map route only, and **no vendor type appears outside
+`components/map/`**: MARC data reaches the adapter as a provider-neutral view model or
+GeoJSON. The geometry contract is unchanged — GeoJSON LineStrings in WGS84, longitude first,
+are what a MapLibre GeoJSON source consumes directly.
+
+The original Leaflet recommendation below is retained as the record of what WEB-MAP-1 assessed
+and WEB-MAP-2 shipped.
+
 Recommend a neutral background with backend geometry initially, avoiding an external basemap provider. Map freshness, bearing, progress and active-set rules are specified in [MAP_PLAN.md](MAP_PLAN.md), including library alternatives and source references. No fake continuous movement, browser movement calculation, frontend GTFS parsing or per-marker detail fan-out. Geometry and backend-defined active membership are explicit API dependencies. Extend the proxy allowlist/types only after actual backend contracts exist.
 
 ## Visual foundation

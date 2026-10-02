@@ -28,7 +28,13 @@ components/map/focus state and controls, app/map/page.tsx, shared detail present
 
 ## Implementation Notes
 
-Fetch only selected detail through existing resource ownership. Unknown/ambiguous route progress remains unknown; skipped candidate stays labeled. Stale position uses historical bearing and stops follow. Missing position centers route/system with explanation.
+**Map surface:** MapLibre GL JS from [WEB-MAP-6](WEB-MAP-6.md). Focus emphasises the
+selected train and its shape and de-emphasises the rest **within the existing layers**; do
+not add overlay layers per selection.
+
+Follow responds only to a **new fresh observation**. A stale position stops follow, and
+manual pan pauses it. Nothing interpolates between observations: a marker moves when a new
+position arrives and not otherwise.
 
 ## Acceptance Criteria
 

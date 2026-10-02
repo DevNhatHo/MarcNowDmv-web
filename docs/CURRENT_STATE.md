@@ -4,7 +4,7 @@ Updated: 2026-09-30 (America/New_York).
 
 ## Milestone and work status
 
-[WEB-001](tickets/WEB-001.md) through [WEB-005](tickets/WEB-005.md), and [WEB-007](tickets/WEB-007.md) through [WEB-012](tickets/WEB-012.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. Every route is now a real screen reading the local backend through the typed client: `/` (Pulse), `/trains`, `/trains/[id]` and `/alerts`. No placeholder remains. Current ticket: none. **WEB-013 through WEB-015 are DONE**, and the backend delivered both map gates on 2026-09-30, so WEB-MAP-2 through WEB-MAP-5 are unblocked. **[WEB-MAP-2](tickets/WEB-MAP-2.md) is DONE**: `/map` renders the published MARC alignments with a line filter and a text equivalent, and Map is in the navigation. Recommended next: **[WEB-MAP-3](tickets/WEB-MAP-3.md)**.
+[WEB-001](tickets/WEB-001.md) through [WEB-005](tickets/WEB-005.md), and [WEB-007](tickets/WEB-007.md) through [WEB-012](tickets/WEB-012.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. Every route is now a real screen reading the local backend through the typed client: `/` (Pulse), `/trains`, `/trains/[id]` and `/alerts`. No placeholder remains. Current ticket: none. **WEB-013 through WEB-015 are DONE**, and the backend delivered both map gates on 2026-09-30, so WEB-MAP-2 through WEB-MAP-5 are unblocked. **[WEB-MAP-2](tickets/WEB-MAP-2.md) is DONE**: `/map` renders the published MARC alignments with a line filter and a text equivalent, and Map is in the navigation. **A map-provider ADR on 2026-10-01 chose MapLibre GL JS** over ArcGIS, Mapbox, Leaflet, OpenLayers and self-hosted PMTiles, so the shipped Leaflet map is migrated by [WEB-MAP-6](tickets/WEB-MAP-6.md), which runs before WEB-MAP-3. Recommended next: **[WEB-MAP-6](tickets/WEB-MAP-6.md)**.
 
 Repository: `/home/nhat/marc-now-dmv-web`, main branch tracking `origin/main` at `git@github.com:DevNhatHo/MarcNowDmv-web.git`, configured on the user's instruction after WEB-003 and pushed through `c6b3006`. Earlier ticket records state that no remote existed, which was true when they were written. Backend `/home/nhat/MarcNowDmv` was unchanged; unrelated `.idea/` remains untouched. The backend, the full shell, the map and AWS remain outside WEB-001–003; API integration is now implemented as a boundary only, with no screen consuming it.
 
@@ -276,24 +276,48 @@ One flake is recorded in the WEB-015 outcome: two integration specs failed once 
 ingest loop was writing, and passed on rerun. It was left unfixed deliberately, because
 fixing what that ticket finds is outside its scope.
 
+## Map provider decided by ADR, 2026-10-01
+
+An Esri-first direction was drafted and then widened into an evidence-based comparison before
+anything was committed. The [ADR](MAP_PLAN.md) compares **MapLibre GL JS, Mapbox GL JS,
+ArcGIS Maps SDK, Leaflet, OpenLayers and MapLibre + self-hosted PMTiles**, and chooses
+**MapLibre GL JS** with a **no-API-key hosted vector basemap**, keeping PMTiles as the
+documented future option. [WEB-MAP-6](tickets/WEB-MAP-6.md) migrates the shipped Leaflet map
+and runs before WEB-MAP-3.
+
+The decision separates **renderer** from **basemap provider**. Licences were verified from
+the npm registry rather than assumed: MapLibre 6.11.2 is **BSD-3-Clause**, OpenLayers 10.10.0
+is BSD-2-Clause, and mapbox-gl 3.32.0 reports **"SEE LICENSE IN LICENSE.txt"** — not an OSI
+licence. MapLibre is tied to no tile vendor, so the basemap is a configuration change rather
+than a rewrite, and free providers exist that need **no API key and no credit card**, making
+development genuinely $0 with no billing relationship.
+
+Rejections, briefly. **ArcGIS** is the most capable platform and that is the problem: a
+proprietary dependency and a reported ~2.1 MB gzipped bundle to use almost none of a GIS
+platform the backend already replaces — though its billing safety is genuinely good, since
+with pay-as-you-go disabled, exceeding the 2M free tile tier disables service rather than
+charging. **Mapbox** is rejected on licence and lock-in, not capability, and requires a credit
+card from day one. **Leaflet** works and is shipped, but is raster-first. **OpenLayers** is
+capable and liberally licensed but larger and more GIS-oriented than this product needs.
+
+**No backend change is needed.** MARC-506 already serves GeoJSON LineStrings in WGS84,
+longitude first, which is exactly what a MapLibre GeoJSON source consumes; the Leaflet build's
+longitude/latitude swap simply disappears.
+
+The decision stays cheap to revisit because of one property that must be preserved: the vendor
+adapter lives only in `components/map/`, and MARC data reaches it as a provider-neutral view
+model or GeoJSON. WEB-MAP-2 proved it — Leaflet is confined to two files.
+
 ## Next session
 
-**No ticket is currently actionable.** WEB-001 through WEB-015 and WEB-MAP-1 are DONE;
-WEB-MAP-2 through WEB-MAP-5 are blocked on backend contracts that do not exist, and this
-repository owns presentation only.
+Read AGENTS.md, this file, [MAP_PLAN.md](MAP_PLAN.md) and
+[WEB-MAP-6](tickets/WEB-MAP-6.md), and inspect `git status` in both repositories.
 
-Read AGENTS.md, this file and the ticket index, and inspect `git status` in both repositories
-before starting anything.
+**Start WEB-MAP-6.** It is unblocked: the renderer is free and open source, the starting
+basemap needs no API key or account, and the backend geometry it draws is already delivered.
 
-What would move things forward, none of it authorized here:
+Record two measurements the ADR could not: the map-route bundle size MapLibre actually adds,
+and the tile requests one map load issues. Both belong in the ticket outcome so a later
+provider decision rests on numbers rather than on this plan's estimates.
 
-1. **Backend geometry (BACKEND-UI-03) and active membership (BACKEND-UI-02)** — the hard
-   gates on the map, and backend-repository work.
-2. **Carrying `headsign` on the train list response, or exposing each line's terminal** —
-   WEB-014 delivered the destination on detail but could not on the list, because the list
-   response carries no stop to anchor the stop-scoped departures read on. One probe showed a
-   single read at stop 11958 returns 91 trips across all three routes, so the data is cheap;
-   only the anchor is missing.
-3. **A weekday-peak verification pass**, repeating [WEB-015](tickets/WEB-015.md) at scale to
-   observe STATIONARY and mixed fresh/stale positions. Write it as a new ticket rather than
-   reopening WEB-015, whose evening pass is complete and recorded.
+Do not implement PMTiles. It is the documented escape hatch, not this ticket's scope.

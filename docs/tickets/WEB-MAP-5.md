@@ -28,7 +28,12 @@ app/trains/[id]/page.tsx, app/map/page.tsx, shared map/detail components, tests/
 
 ## Implementation Notes
 
-One identity/provenance/resource model serves both routes. Preserve working text detail when map library or geometry fails. No duplicate pollers or extra detail fetch per marker. Use actual backend data where available; label synthetic fresh scenarios.
+**Map surface:** MapLibre GL JS from [WEB-MAP-6](WEB-MAP-6.md).
+
+The accessibility requirement is the point of this ticket, not a footnote: no train
+information may be available **only** on the map. Identity, status, position age, next stop
+and movement state must appear in ordinary semantic markup beside it, and the existing list
+and detail screens must stay complete without the map.
 
 ## Acceptance Criteria
 

@@ -24,3 +24,7 @@ Map is now planned explicitly in WEB-MAP-1–5 after the core milestone; geometr
 [Map plan](MAP_PLAN.md): WEB-012 → WEB-MAP-1 (technology/contracts) → WEB-MAP-2 (canonical routes) → WEB-MAP-3 (active/current and last-known markers) → WEB-MAP-4 (focus/follow) → WEB-MAP-5 (shared detail/navigation and integration review).
 
 WEB-MAP-2 additionally requires delivered BACKEND-UI-03 geometry; WEB-MAP-3 requires delivered BACKEND-UI-02 active-set semantics. Both are separately proposed backend tasks, not authorization to implement backend changes. WEB-MAP-1 may document those blockers without pretending APIs exist. WEB-MAP-5 completes the map extension; WEB-012 still completes the original four-screen core. Missing display metadata uses safe fallbacks. First route-map demo is WEB-MAP-2; live/last-known system demo is WEB-MAP-3; integrated selected-train experience is WEB-MAP-5.
+
+## Map SDK
+
+**MapLibre GL JS** is the chosen renderer from 2026-10-01, with a no-API-key hosted vector basemap initially and self-hosted PMTiles as the documented future option; the ADR and the comparison against ArcGIS, Mapbox, Leaflet and OpenLayers are in [MAP_PLAN.md](MAP_PLAN.md), and [WEB-MAP-6](tickets/WEB-MAP-6.md) migrates the shipped Leaflet map. The renderer renders; the backend remains the source of all geometry, position, membership, movement and freshness.

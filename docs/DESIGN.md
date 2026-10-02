@@ -150,6 +150,26 @@ and announces politely. A link inside a sentence is exempt from the target rule,
 WCAG 2.5.5's inline exception. The standing record, including what is deliberately not
 claimed, is [docs/visual-review.md](visual-review.md).
 
+## Map rules (from WEB-MAP-6 onward)
+
+A quiet basemap with minimal road and POI detail; zoom and a return-to-system control only;
+no giant legend, no noisy popup, no floating panels. Five layers at most: basemap, routes,
+stations, active trains, selected train.
+
+A **fresh** position draws a current marker. A **stale** one draws a last-known marker,
+distinguished by **shape and label, never colour alone**, with its age — "Last known
+position · updated 7 min ago". A stale marker is never animated, never moved and never
+counted as a live train.
+
+`STATIONARY` with a fresh position reads "Appears stationary · 6 min", using the backend's
+duration. With a stale position the screen reads "Position stale" and makes **no movement
+claim**. These are different states and neither is derived from the other in the browser.
+
+Nothing may be available only on the map. A selected train's identity, status, position age,
+next stop and movement state also appear in ordinary semantic markup, and the list and detail
+screens stay complete without the map. Controls keep 44 px targets and visible focus, and the
+map degrades to its text equivalent when the renderer fails or no basemap is configured.
+
 ## Map extension
 
 Add Map navigation when WEB-MAP-2 delivers a usable route view; retain the existing Pulse/Trains/Alerts core. System mode answers “Where are the trains right now?” Focus mode emphasizes the selected train and its canonical shape, with persistent shared detail below the map on mobile. Current solid markers and historical outlined markers have explicit text labels; unknown position has a text-list fallback. Follow pauses on manual pan or stale observations. No continuous movement, excessive POIs/controls, giant popups or color-only trust states. See [MAP_PLAN.md](MAP_PLAN.md) for data gates and required map-specific visual scenarios.

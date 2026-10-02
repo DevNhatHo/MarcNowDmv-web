@@ -76,6 +76,27 @@ as retained data changes. Results and limitations are in
 ## Map
 
 `/map` draws the alignments `GET /api/v1/shapes` publishes, so it needs the backend running.
+
+### MapLibre, from WEB-MAP-6 onward
+
+The map moves to **MapLibre GL JS** (BSD-3-Clause), loaded browser-only on the map route, with
+a vector basemap from a provider that needs **no API key** — so there is normally no
+credential to set, no account to create and no billing relationship.
+
+If a provider requiring a key is adopted instead, set it in `.env.local` as a `NEXT_PUBLIC_*`
+variable, restrict it by referrer in the provider's console, and never commit a real value;
+`.env.example` carries an empty placeholder. A `NEXT_PUBLIC_` key is public by design.
+
+Cost is **$0** at development and early launch: the renderer is free and all cost is tiles.
+If tile costs or provider terms ever become a problem, the documented escape is a self-hosted
+PMTiles archive on object storage behind a CDN — a regional Mid-Atlantic extract rather than
+the planet, roughly $0.35/month in storage plus egress, with no tile server to run. See
+[MAP_PLAN.md](MAP_PLAN.md); do not implement it without a ticket.
+
+OpenStreetMap and provider attribution must stay visible on the map screen.
+
+With no key configured, `/map` degrades to its text equivalent rather than showing a broken
+basemap.
 Leaflet 1.9.4 is a runtime dependency, imported dynamically so it never reaches a server
 render; there is no tile provider and no API key. Geometry is read on the catalog cadence
 because it is immutable for a schedule version.

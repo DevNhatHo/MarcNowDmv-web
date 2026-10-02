@@ -119,3 +119,217 @@ theirs, and no map ticket may be cleared on synthetic geometry.
 the one thing this ticket must not produce is a picture that looks like MARC geometry but
 is not. The feasibility question it would have answered is settled by Leaflet's documented
 GeoJSON support and needs no invented data.
+
+## ADR: map rendering library and basemap source, 2026-10-01
+
+Supersedes the Leaflet recommendation in the WEB-MAP-1 assessment and the ArcGIS-only
+direction drafted earlier the same day. Both evaluations are kept below as the record.
+
+### The distinction that drives the decision
+
+**Rendering library** and **basemap/tile provider** are two choices, not one. A renderer tied
+to one vendor's tiles couples both; a vendor-neutral renderer lets the basemap change later
+without touching MARC train code. That property is worth more to this project than any
+feature difference, because the backend already owns all the geospatial intelligence and the
+frontend needs a renderer, not a GIS platform.
+
+### Candidates
+
+| | Licence (verified from the registry) | Basemap coupling | Free tier | Card required |
+|---|---|---|---|---|
+| **MapLibre GL JS** 6.11.2 | **BSD-3-Clause** | none — any compatible source | provider-dependent; no-key options exist | **no** |
+| Mapbox GL JS 3.32.0 | **"SEE LICENSE IN LICENSE.txt"** — not OSI | renderer bound to Mapbox terms | 50k map loads/month | **yes, from day one** |
+| ArcGIS Maps SDK | proprietary | Esri basemaps | 2M basemap tiles/month | no; exceeding disables service rather than billing |
+| Leaflet 1.9.4 | BSD-2-Clause | none | n/a | no |
+| OpenLayers 10.10.0 | BSD-2-Clause | none | n/a | no |
+| MapLibre + PMTiles | BSD-3 renderer, OSM data | self-hosted | n/a | no |
+
+### Decision
+
+**MapLibre GL JS**, with a **no-API-key hosted vector basemap** initially, and **PMTiles on
+object storage as the documented future option**.
+
+### Why
+
+The hypothesis held up. MARC Now DMV already owns route geometry, positions, membership,
+movement, next stop, progress, delay and freshness; what it needs is a modern vector renderer
+that draws GeoJSON well on a phone. Every candidate can draw a line — the decision turns on
+licence, coupling and cost risk, and MapLibre wins all three.
+
+Its licence is BSD-3-Clause, so the renderer itself is vendor-neutral and cannot be
+relicensed out from under the project — the exact thing that happened to Mapbox GL JS in
+December 2020 and produced MapLibre as the fork. It is tied to no tile provider, so the
+basemap is a configuration change rather than a rewrite. And free providers exist that need
+**no API key and no credit card**, which makes development genuinely $0 with no billing
+relationship at all.
+
+### Why not the others
+
+**ArcGIS** is the most capable GIS platform here and that is the problem: we would take on a
+proprietary dependency and a reported **~2.1 MB gzipped** bundle to use almost none of it,
+paying in weight and vendor dependency for services the backend already performs. Its billing
+safety is genuinely good — with pay-as-you-go disabled, exceeding the 2M free tile tier
+disables service rather than charging — but a renderer an order of magnitude smaller, with no
+account at all, is a better fit for "less, but better".
+
+**Mapbox GL JS** is rejected on licence and lock-in, not capability. Version 2+ is under
+Mapbox's own terms rather than an OSI licence, the renderer is bound to Mapbox services, and
+it **requires a credit card from day one** even for the free tier. MapLibre is its open fork
+and gives the same rendering model without any of that.
+
+**Leaflet** is what WEB-MAP-2 shipped and it works, but it is raster-first: no vector tiles,
+no style-driven basemap, no GPU rendering of many markers. The product wants a quiet modern
+vector basemap and smooth marker updates during polling, which Leaflet does not give without
+fighting it.
+
+**OpenLayers** is capable and liberally licensed, but its API surface is large and
+GIS-oriented, and its styling is less ergonomic for the restrained look this product wants.
+It would cost more code for no advantage here.
+
+### Basemap strategy
+
+Start with a hosted vector basemap that needs **no API key**, so there is no credential to
+manage and no account to create. If a chosen provider later requires a key, it goes in
+`NEXT_PUBLIC_MAPTILER_API_KEY` or similar, restricted by referrer, and the adapter changes in
+one place.
+
+The style must be quiet: minimal road detail, no POI clutter, muted colours, so the MARC
+alignment and train markers dominate. Attribution for OpenStreetMap data and the provider is
+required and always visible.
+
+### Expected cost
+
+| Stage | Cost |
+|---|---|
+| Development | **$0** — no-key provider, no account, no card |
+| Early launch | **$0** at realistic MARC volumes on a free tier |
+| Moderate usage | **$0–$30/month** on a paid tile plan, or roughly **$0.35/month storage plus CDN egress** on self-hosted PMTiles |
+
+No candidate's rendering library costs anything; all cost is tiles.
+
+### Vendor lock-in
+
+Low by construction. The renderer is BSD-3 and the basemap is a URL. Switching providers is a
+style-URL change; switching to self-hosted PMTiles adds a protocol registration and nothing
+else. No MARC train code touches a vendor type.
+
+### Future: PMTiles
+
+Credible, and worth keeping as the escape hatch. A single `.pmtiles` archive on object storage
+behind a CDN, read by range requests, with **no tile server to run**. A regional extract —
+the Mid-Atlantic rather than the planet — can be cut from Protomaps' daily builds with the
+`pmtiles` CLI; regional extracts are typically a few GB, costing roughly **$0.35/month** in
+storage plus CDN egress.
+
+The tradeoffs are operational, not technical: someone must regenerate the archive to keep the
+basemap fresh, own the storage and CDN, and carry the OSM attribution. **Do not implement it
+now.** It is the answer if tile costs or provider terms ever become a problem, and recording
+it is enough until then.
+
+### The architectural property that makes all of this cheap
+
+`components/map/` holds the vendor adapter and nothing else does. MARC data reaches it as a
+**provider-neutral view model or GeoJSON**; no Esri, Mapbox or MapLibre type appears anywhere
+else in the app. WEB-MAP-2 already proved this works — Leaflet lives in exactly two files, so
+replacing it is contained. That boundary is the reason this decision can be revisited later
+at low cost, and it must be preserved.
+
+## Earlier evaluation: ArcGIS, 2026-10-01 (retained as record; superseded by the ADR above)
+
+Direction change, recorded rather than rewritten over: WEB-MAP-1 assessed and WEB-MAP-2
+shipped **Leaflet 1.9.4**, and that work stands. ArcGIS Maps SDK for JavaScript is now the
+preferred implementation, and the existing map is migrated to it by
+[WEB-MAP-6](tickets/WEB-MAP-6.md) rather than being rebuilt from nothing.
+
+The swap is contained because WEB-MAP-1 insisted on an adapter boundary: Leaflet appears in
+exactly **two files**, `components/map/RouteMap.tsx` and its CSS module. Nothing else in the
+app imports a map library, and the screen, the data path, the text equivalent and the
+accessibility floor are all library-agnostic.
+
+### Division of responsibility, unchanged
+
+```
+MTA GTFS / GTFS-RT → Go backend → PostgreSQL/PostGIS → MARC Now DMV API → ArcGIS SDK → user
+```
+
+Esri **renders**. It does not decide anything. The backend remains the only source of route
+geometry, train positions, active membership, movement state, next stop, route progress,
+delay and freshness, and no MARC business rule moves into a map layer. In particular, a
+marker's appearance is chosen from backend fields; the map never infers that a train is
+stationary, late, active or anywhere.
+
+### How it is loaded, and why not the npm package
+
+**Load from the CDN with `$arcgis.import()`, on the map route only. Do not add
+`@arcgis/core` to the build.**
+
+This is the one place where the preference and this app's constraints genuinely conflict, so
+the reasoning is recorded. `@arcgis/core` is reported at roughly **2.1 MB gzipped**, against
+Leaflet's **~42 KB** — about fifty times larger — and it is widely reported not to tree-shake.
+This is a mobile-first commuter app whose entire design principle is "less, but better", and
+whose current map page loads in 2.2 s with 262 DOM nodes.
+
+Bundling the SDK would put megabytes into the build for every visitor, including the majority
+who never open the map. The CDN route keeps it off `/`, `/trains`, `/trains/[id]` and
+`/alerts` entirely, and `$arcgis.import()` is Esri's own recommendation for new CDN
+applications. The cost is a third-party script on the map route, which is acceptable for the
+one screen that needs it and must be stated in the privacy-facing documentation.
+
+If a future measurement shows the CDN approach unworkable, the fallback is a route-level
+dynamic import of `@arcgis/core` behind `next/dynamic` with `ssr: false` — still off the
+other screens, but far heavier. Measure before choosing it.
+
+### Geometry contract: unchanged, already suitable
+
+The backend serves **GeoJSON LineStrings in WGS84, longitude first** (MARC-506). That maps
+directly onto an Esri `Polyline`, whose `paths` take the same `[x, y]` ordering at
+`wkid: 4326`, so no backend change and no coordinate transformation is needed — the one
+existing longitude/latitude swap for Leaflet simply disappears.
+
+Station coordinates come from `/api/v1/stops`. Nothing parses `shapes.txt`, and no
+straight-line segment is ever substituted for missing geometry: a shape that cannot be drawn
+is reported as absent.
+
+### Layers
+
+Five, in order, and no more:
+
+1. Esri basemap, a quiet style with minimal road and POI detail
+2. MARC route shapes
+3. MARC stations
+4. Active trains
+5. The selected train and its emphasised route
+
+Train and station layers are **graphics layers updated in place**, not rebuilt each cycle.
+
+### Update flow
+
+| Data | Cadence | Why |
+|---|---|---|
+| Route geometry | once per schedule version, cached | immutable for a version; never refetched on a position tick |
+| Stations | catalog cadence | changes only on activation |
+| Train positions | the existing 30-second train cadence | one bounded list read, no per-train request |
+| Selected train detail | on selection only | one request, not a fan-out |
+
+The system map must never issue a request per train or per marker. Positions come from the
+single `/api/v1/trains` read the app already makes, which now carries `membership` and
+`scheduled.shapeId`.
+
+### Freshness, the hard rule
+
+A **fresh** Vehicle Position is drawn as a current marker. A **stale** one is drawn as a
+last-known marker, visually distinct by **shape and label, never by colour alone**, and
+labelled with its age — "Last known position · updated 7 min ago". A stale marker is never
+animated, never moved, and never counted as a live train.
+
+`STATIONARY` with a fresh position reads "Appears stationary · 6 min", using the backend's own
+duration. With a stale position the screen says "Position stale" and makes **no movement
+claim at all**. These are different states and the frontend never derives one from the other.
+
+### Accessibility
+
+A map is not an accessible way to convey position, so nothing may be available only on it.
+Every selected train's identity, status, position age, next stop and movement state must also
+appear in ordinary semantic markup beside the map, and the existing train list and detail
+screens remain complete without it. Map controls keep 44 px targets and visible focus, and
+the whole surface degrades to the text equivalent when the SDK fails to load.

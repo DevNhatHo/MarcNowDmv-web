@@ -28,7 +28,30 @@ components/map/TrainMarkers*, shared presentation/resource code, verified map-su
 
 ## Implementation Notes
 
-External gate: delivered BACKEND-UI-02 active inclusion/retention contract. Nullable coordinates omit geographic marker, not train accessibility. Current versus stale marker uses shape/text distinction. STATIONARY label requires fresh position plus backend state; duration never ticks upward locally.
+**Map surface:** MapLibre GL JS, delivered by [WEB-MAP-6](WEB-MAP-6.md), which must land
+first. Trains are a graphics layer **updated in place**, never rebuilt each polling cycle,
+and positions come from the single `/api/v1/trains` read the app already makes — never one
+request per train or per marker.
+
+**Membership:** the backend publishes `membership.scheduledActive`, `realtimeObserved` and
+`positionFresh` as three separate facts (MARC-508). Do **not** collapse them into one
+"active" flag in the client: the backend deliberately refused to, and live data shows them
+disagreeing — a train with `positionFresh: true` and `scheduledActive: false` is running
+late, not absent.
+
+**Freshness is the hard rule.** A fresh position draws a current marker; a stale one draws a
+last-known marker, distinguished by **shape and label, never colour alone**, with its age
+("Last known position · updated 7 min ago"). A stale marker is never animated or moved, and
+is never counted as a live train. `STATIONARY` with a fresh position reads "Appears
+stationary · 6 min" using the backend's duration; with a stale position the screen says
+"Position stale" and makes no movement claim. The frontend never infers one from the other.
+
+**Stations**, owed by WEB-MAP-2's record, belong here: coordinates come from
+`/api/v1/stops`, joined only on a matching schedule version.
+
+**Identity:** `scheduled.headsign`, `scheduled.directionId` and `scheduled.shapeId`
+(MARC-507) give a marker its label and its line without parsing the trip identifier. A train
+with no position gets no geographic marker and must remain reachable in the text list.
 
 ## Acceptance Criteria
 

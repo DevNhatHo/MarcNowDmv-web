@@ -10,6 +10,20 @@ These are frontend planning references, not allocated MARC ticket IDs. No backen
 | BACKEND-UI-04 | API documentation differs from current handlers | Use verified contract/captures in this repository. | Correct cursor names, calculated envelope placement, independent trend freshness, duration field and identity activation semantics; add contract examples/tests. |
 | BACKEND-UI-05 | Published field types and nullability are not documented | WEB-003 derived the wire types from the handler DTOs; the corrections are tabulated in API_CONTRACT.md. | Document `scheduleRelationship` as a nullable numeric enum, mark `officialStopUpdates[].stopId`/`.resolvedSequence`, the envelope `nextStop`/`nextUpdate` cursors, catalog `shortName`/`longName`/`name`/`wheelchairBoarding` nullable, guarantee `sourceHealth[].signals` is always an array rather than a nil slice, and state the cursor prerequisites (`serviceDate`+`version` for trains, `snapshot`+`version` for alerts, no `version` on detail). |
 
+## No backend gap blocks the map, 2026-10-01
+
+The map-provider decision needs **no backend change**, whichever renderer is chosen.
+MARC-506 already serves GeoJSON LineStrings in WGS84, longitude first, which is exactly what a
+MapLibre GeoJSON source consumes; the longitude/latitude swap the Leaflet build performed
+simply disappears.
+Station coordinates are already on `/api/v1/stops`, and `membership` plus
+`scheduled.shapeId`/`headsign`/`directionId` cover marker identity and selection.
+
+No new proposal is opened. The only outstanding backend *option*, recorded in MARC-506's
+outcome rather than as a gap, is deduplicating the 43 published alignments down to the 21
+distinct geometries, or offering a simplified variant — both measured, both deliberately
+deferred until a client shows the payload hurts.
+
 ## Delivered by the backend, 2026-09-30 — both map gates are now satisfied
 
 Verified live after backend commits `8a1bca5`, `744fb32` and `4c01a6f`:
