@@ -1,10 +1,15 @@
 # Frontend current state
 
-Updated: 2026-10-01 (America/New_York).
+Updated: 2026-10-02 (America/New_York).
 
 ## Milestone and work status
 
-[WEB-001](tickets/WEB-001.md) through [WEB-005](tickets/WEB-005.md), and [WEB-007](tickets/WEB-007.md) through [WEB-012](tickets/WEB-012.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. Every route is now a real screen reading the local backend through the typed client: `/` (Pulse), `/trains`, `/trains/[id]` and `/alerts`. No placeholder remains. Current ticket: none. **WEB-013 through WEB-015 are DONE**, and the backend delivered both map gates on 2026-09-30, so WEB-MAP-2 through WEB-MAP-5 are unblocked. **[WEB-MAP-2](tickets/WEB-MAP-2.md) is DONE**: `/map` renders the published MARC alignments with a line filter and a text equivalent, and Map is in the navigation. **A map-provider ADR on 2026-10-01 chose MapLibre GL JS** over ArcGIS, Mapbox, Leaflet, OpenLayers and self-hosted PMTiles, and **[WEB-MAP-6](tickets/WEB-MAP-6.md) is DONE**: `/map` now renders on MapLibre 6.11.2 over a no-key OpenFreeMap vector style, measured at 275 kB gzipped on the map route only, 15–20 tile requests per load and 0 on every other screen. Leaflet is no longer a dependency. Recommended next: **[WEB-MAP-3](tickets/WEB-MAP-3.md)**.
+[WEB-001](tickets/WEB-001.md) through [WEB-005](tickets/WEB-005.md), and [WEB-007](tickets/WEB-007.md) through [WEB-012](tickets/WEB-012.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. Every route is now a real screen reading the local backend through the typed client: `/` (Pulse), `/trains`, `/trains/[id]` and `/alerts`. No placeholder remains. Current ticket: none. **WEB-013 through WEB-015 are DONE**, and the backend delivered both map gates on 2026-09-30, so WEB-MAP-2 through WEB-MAP-5 are unblocked. **[WEB-MAP-2](tickets/WEB-MAP-2.md) is DONE**: `/map` renders the published MARC alignments with a line filter and a text equivalent, and Map is in the navigation. **A map-provider ADR on 2026-10-01 chose MapLibre GL JS** over ArcGIS, Mapbox, Leaflet, OpenLayers and self-hosted PMTiles, and **[WEB-MAP-6](tickets/WEB-MAP-6.md) is DONE**: `/map` now renders on MapLibre 6.11.2 over a no-key OpenFreeMap vector style, measured at 275 kB gzipped on the map route only, 15–20 tile requests per load and 0 on every other screen. Leaflet is no longer a dependency. Recommended next: **[WEB-MAP-3](tickets/WEB-MAP-3.md)**. A **live movement addendum** on
+2026-10-02 extended the map plan with marker-update and animation semantics, folded the
+in-place update rules into WEB-MAP-3 and the follow rules into WEB-MAP-4, and added
+[WEB-MAP-7](tickets/WEB-MAP-7.md) for smooth transitions between observed positions; it opened
+[BACKEND-UI-06](BACKEND_GAPS.md) for route progress on the trains list. No implementation was
+started.
 
 Repository: `/home/nhat/marc-now-dmv-web`, main branch tracking `origin/main` at `git@github.com:DevNhatHo/MarcNowDmv-web.git`, configured on the user's instruction after WEB-003 and pushed through `c6b3006`. Earlier ticket records state that no remote existed, which was true when they were written. Backend `/home/nhat/MarcNowDmv` was unchanged; unrelated `.idea/` remains untouched. The backend, the full shell, the map and AWS remain outside WEB-001–003; API integration is now implemented as a boundary only, with no screen consuming it.
 
@@ -327,6 +332,16 @@ it.
 
 Do not collapse the three membership facts into one "active" flag; the backend separated them
 precisely because they disagree, and MARC-508 observed all three disagreement cases live.
+
+### Carried forward from the live movement addendum (2026-10-02)
+
+WEB-MAP-3 now owns the in-place marker-update rules and WEB-MAP-4 the follow refinements, both
+folded in rather than fragmented into new tickets. Markers are keyed by the backend's train
+identity, never array order, and move only for a newer `position.sourceTimestamp`.
+
+Movement state is **not available on the system map** — `calculated` is deliberately absent
+from the trains list — so WEB-MAP-3 omits the claim rather than approximating it. That is the
+correct behaviour, not a shortfall.
 
 ### Carried forward from WEB-MAP-6
 

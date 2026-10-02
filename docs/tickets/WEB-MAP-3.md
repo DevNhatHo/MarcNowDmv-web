@@ -20,7 +20,7 @@ Render bounded backend-defined active train set and explicitly retained historic
 
 ## Out of Scope
 
-Frontend active-window heuristics, per-marker detail requests, interpolation, inferred stationary state and focus UI.
+Frontend active-window heuristics, per-marker detail requests, inferred stationary state and focus UI. **Interpolation between observations is deferred to [WEB-MAP-7](WEB-MAP-7.md)**, not forbidden outright: markers here move only when a new observation arrives, in a single step.
 
 ## Expected Files
 
@@ -32,6 +32,22 @@ components/map/TrainMarkers*, shared presentation/resource code, verified map-su
 first. Trains are a graphics layer **updated in place**, never rebuilt each polling cycle,
 and positions come from the single `/api/v1/trains` read the app already makes — never one
 request per train or per marker.
+
+**In-place update is the ticket, not a detail of it** — see the [live movement
+addendum](../MAP_PLAN.md). Trains go in their own GeoJSON source and layer, added once and
+updated with `setData`; a layer added or removed per train would undo what WEB-MAP-6
+measured. Route and station layers are not touched when a train position changes.
+
+**Marker identity is the backend's train identity**, never an array index or marker order:
+one train's new observation updates that train's graphic and leaves every other alone, and a
+train that leaves the response is removed. A marker moves only for a **newer**
+`position.sourceTimestamp`; an older or equal one never rewinds it. `position.observationId`
+names an observation but is a string and must not be ordered numerically.
+
+**Movement state is unavailable here, and that is correct.** `calculated` is deliberately
+absent from the trains list, so the system map cannot know MOVING, STATIONARY or UNKNOWN
+without the per-train reads this ticket forbids. Omit the claim; do not approximate it from
+coordinates, and do not let a marker that moved imply the backend called it moving.
 
 **Membership:** the backend publishes `membership.scheduledActive`, `realtimeObserved` and
 `positionFresh` as three separate facts (MARC-508). Do **not** collapse them into one
@@ -59,7 +75,7 @@ Fresh/stale/unknown/stationary are distinct; stale markers never count as live; 
 
 ## Tests Required
 
-Run all established checks; deterministic tests for mixed freshness, missing coordinates/bearing, stale stationary evidence, unknown enums, timestamp ordering, cache failure, membership expiry and pagination coverage. Assert zero continuous marker movement and no N+1.
+Run all established checks; deterministic tests for mixed freshness, missing coordinates/bearing, stale stationary evidence, unknown enums, timestamp ordering, cache failure, membership expiry and pagination coverage. Assert zero continuous marker movement, that an older or duplicate observation neither moves nor duplicates a marker, that a train leaving the response is removed, and no N+1.
 
 ## Manual Verification
 

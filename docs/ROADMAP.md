@@ -21,7 +21,7 @@ Map is now planned explicitly in WEB-MAP-1–5 after the core milestone; geometr
 
 ## Required map follow-on
 
-[Map plan](MAP_PLAN.md): WEB-012 → WEB-MAP-1 (technology/contracts) → WEB-MAP-2 (canonical routes) → WEB-MAP-3 (active/current and last-known markers) → WEB-MAP-4 (focus/follow) → WEB-MAP-5 (shared detail/navigation and integration review).
+[Map plan](MAP_PLAN.md): WEB-012 → WEB-MAP-1 (technology/contracts) → WEB-MAP-2 (canonical routes) → WEB-MAP-6 (MapLibre renderer, done) → WEB-MAP-3 (active/current and last-known markers) → WEB-MAP-4 (focus/follow) → WEB-MAP-7 (smooth transitions between observed positions) → WEB-MAP-5 (shared detail/navigation and integration review). WEB-MAP-7 comes from the **live movement addendum** of 2026-10-02: markers transition between two observed positions and stop, and never extrapolate past the newest one.
 
 WEB-MAP-2 additionally requires delivered BACKEND-UI-03 geometry; WEB-MAP-3 requires delivered BACKEND-UI-02 active-set semantics. Both are separately proposed backend tasks, not authorization to implement backend changes. WEB-MAP-1 may document those blockers without pretending APIs exist. WEB-MAP-5 completes the map extension; WEB-012 still completes the original four-screen core. Missing display metadata uses safe fallbacks. First route-map demo is WEB-MAP-2; live/last-known system demo is WEB-MAP-3; integrated selected-train experience is WEB-MAP-5.
 

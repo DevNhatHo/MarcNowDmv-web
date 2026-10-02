@@ -20,7 +20,7 @@ Add URL-backed selection, selected marker/shape emphasis, muted unrelated trains
 
 ## Out of Scope
 
-Separate train-detail business model, guessed direction/progress, continuous movement, geometry inference and detail-route embedding (WEB-MAP-5).
+Separate train-detail business model, guessed direction/progress, continuous movement, geometry inference, detail-route embedding (WEB-MAP-5) and smooth transitions between observations ([WEB-MAP-7](WEB-MAP-7.md)).
 
 ## Expected Files
 
@@ -33,8 +33,14 @@ selected train and its shape and de-emphasises the rest **within the existing la
 not add overlay layers per selection.
 
 Follow responds only to a **new fresh observation**. A stale position stops follow, and
-manual pan pauses it. Nothing interpolates between observations: a marker moves when a new
-position arrives and not otherwise.
+manual pan pauses it. Nothing interpolates between observations in this ticket: a marker
+moves when a new position arrives and not otherwise. [WEB-MAP-7](WEB-MAP-7.md) later adds a
+transition between those two positions; it does not change when or why follow reacts.
+
+**Do not fight the user's gestures** — see the [live movement addendum](../MAP_PLAN.md). A
+manual pan or zoom pauses forced recentering immediately, and resuming is a visible,
+deliberate control rather than a timeout that snatches the viewport back while someone is
+reading it.
 
 ## Acceptance Criteria
 

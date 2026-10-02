@@ -88,6 +88,19 @@ rather than stylistic:
 Measured: filtering a line costs **0–2 tile requests**, against the 15–20 a fresh map load
 issues.
 
+The same discipline governs **train markers** under the [live movement addendum](MAP_PLAN.md):
+trains are their own source and layer, keyed by the backend's train identity, updated with
+`setData` on the polling cadence. A marker moves only for a newer `position.sourceTimestamp`.
+
+The frontend's one addition to the data is a **presentation transition** between two positions
+the backend already published — bounded at both ends by real observations, stopped by stale
+data, absent under reduced motion, and never recorded or shown as an observation. It never
+extrapolates past the newest position. Route-aware motion reads `calculated.routeProgress`
+`fractionAlong` and samples the already-loaded alignment, which is rendering rather than map
+matching; because `calculated` is deliberately absent from the trains list, that is available
+for the focused train only, and the system map uses a straight transition. See
+[BACKEND-UI-06](BACKEND_GAPS.md).
+
 The original Leaflet recommendation below is retained as the record of what WEB-MAP-1 assessed
 and WEB-MAP-2 shipped.
 

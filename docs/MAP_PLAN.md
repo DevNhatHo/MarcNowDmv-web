@@ -47,7 +47,7 @@ BACKEND-UI proposals live in [BACKEND_GAPS.md](BACKEND_GAPS.md). They are not im
 - A solid current marker requires backend-fresh, valid Vehicle Position evidence and a response still trusted under the central refresh policy. Label current position and its age; an official status alone cannot make a coordinate live.
 - Stale/unavailable retained positions use an outlined/muted marker and explicit “Last known position” plus “Position stale · last updated X min ago” where a timestamp is known. Missing timestamp stays unknown. Symbol shape/text, not color alone, distinguish historical markers. Stale markers are not counted as live trains.
 - If movement is STATIONARY **and** position evidence remains fresh, show “MARC Now · Appears stationary · [backend duration]”. With stale GPS, prioritize last-known/stale wording; do not carry a stationary claim forward or extend duration using wall time.
-- New observations move the marker directly to their reported coordinates. No continuous motion, extrapolation, route snapping, invented bearing or simulated progress. Initial implementation has no interpolation. Any later transition must only connect known observations, remain visually qualified and honor reduced motion; it is not part of these tickets.
+- New observations move the marker directly to their reported coordinates. No continuous motion, extrapolation, route snapping, invented bearing or simulated progress. WEB-MAP-3 and WEB-MAP-4 have no interpolation. The later transition this bullet anticipated is now specified by the [live movement addendum](#addendum-live-train-movement-2026-10-02) and owned by [WEB-MAP-7](tickets/WEB-MAP-7.md), on exactly the terms stated here: it only connects known observations, stays visually qualified, honours reduced motion, and never extrapolates past the newest observation.
 - Keep per-source status independent. Cached-response failures use existing WEB-010 policy, remove current/live emphasis and do not retain animated movement. Out-of-order responses cannot rewind a marker. Membership disappearance follows the backend's explicit retention semantics, not a frontend guessed active window.
 - Share centralized 30-second train refresh/subscriptions, hidden-tab pause, cancellation, retry and bounded pagination. Immutable geometry can be cached by scheduleVersion/shapeId with bounded invalidation; do not download shapes on every position tick. A selected train adds at most its detail request, not a fan-out.
 
@@ -247,6 +247,125 @@ it is enough until then.
 else in the app. WEB-MAP-2 already proved this works — Leaflet lives in exactly two files, so
 replacing it is contained. That boundary is the reason this decision can be revisited later
 at low cost, and it must be preserved.
+
+## Addendum: live train movement, 2026-10-02
+
+Provider-independent. This extends the map tickets; it does not reopen the renderer decision
+or the evaluation below.
+
+**The rule this addendum exists to enforce:** smooth the transition *between two known
+positions*, but never let a marker keep driving down the track after the data stops. A moving
+marker must never imply more certainty than the observation behind it.
+
+```
+OFFICIAL POSITION A  →  presentation transition  →  OFFICIAL POSITION B  →  stop
+```
+
+never
+
+```
+OFFICIAL POSITION  →  estimated velocity  →  keep moving indefinitely
+```
+
+### What the backend owns, and what the frontend may do
+
+The backend remains authoritative for the latest Vehicle Position, freshness, movement state,
+route progress, stationary state, next stop and membership. The frontend renders known
+positions and **never invents one**.
+
+The only thing the frontend adds is a **presentation transition** between two positions the
+backend already published. Interpolated coordinates are never presented as an observation,
+never stored as one, and never fed back into any claim about the train. The endpoint of the
+transition is the official position; the path to it is animation.
+
+### Markers update in place, keyed by backend identity
+
+A new polling response updates the existing train graphics layer. It does not rebuild the
+map, the basemap, the route layers or the marker layer. WEB-MAP-6 measured what a rebuild
+costs — a full map load is 15–20 tile requests against 0–2 for a data update — and the same
+discipline applies to markers.
+
+Markers are keyed by the backend's **stable train identity**, never by array index or marker
+order. One train's new observation updates that train's graphic and nothing else; an
+unchanged train is not touched; a train that goes stale changes treatment in place; a train
+that leaves the response is removed.
+
+**Ordering.** A marker moves only for a *newer* observation. Compare `position.sourceTimestamp`;
+an older or equal timestamp never moves a marker backward. `position.observationId` identifies
+an observation but is a string and must not be ordered as a number.
+
+### What a stale, stationary or unknown train does
+
+These follow the existing hard rules and add one thing: **animation stops**.
+
+| Backend says | Marker behaviour |
+|---|---|
+| Position `STALE` | **Stop all animation.** Switch to last-known treatment with its age — "Last known position · updated 7 min ago". Never extrapolate; never leave a marker gliding. |
+| `STATIONARY`, position fresh | Stay in place, keep accepting observations, show the backend's own duration — "Appears stationary · 6 min". **No fake motion to make the map feel active.** |
+| Movement `UNKNOWN` | Coordinates may still update when a new official position arrives. The frontend does **not** infer MOVING or STATIONARY from the fact that it animated something. Movement state and coordinate updates are separate concepts. |
+
+### Route-aware transition, and what it actually requires
+
+Moving a marker along the GTFS alignment rather than across a straight geographic chord is
+preferred, and the contract mostly already supports it:
+`calculated.routeProgress` publishes `shapeId`, `fractionAlong`, `alongRouteMeters` and
+`shapeLengthMeters`, and the alignment itself is already loaded for the map.
+
+Sampling a published polyline at a published fraction is **rendering, not map matching**. The
+matching was done by the backend (MARC-502) against the full geometry; the frontend only reads
+the scalar it published. Nothing here re-derives a position.
+
+The constraint is where that data is available:
+
+| Surface | Route-aware transition | Why |
+|---|---|---|
+| **Focused train** | **Possible today, no backend change** | Focus already reads the detail endpoint, which carries `calculated` |
+| **System map** | **Not possible without a backend change** | `calculated` is deliberately absent from the trains list, and fetching it per train is the N+1 this project forbids |
+
+So the system map uses a straight transition between the two observed points, which this plan
+accepts as the initial implementation, and the focused train may use the route-aware one.
+Closing the system-map case is [BACKEND-UI-06](BACKEND_GAPS.md) — a proposal, not
+authorization, and not a reason to compute progress in the browser.
+
+Use `routeProgress.shapeId`, not `scheduled.shapeId`: they are allowed to disagree, and the
+fraction is only meaningful against the shape it was measured on. A `routeProgress.state`
+other than `MEASURED` falls back to the straight transition.
+
+### Follow, without fighting the user
+
+Follow is opt-in and responds only to a **new fresh observation**. Manual pan or zoom pauses
+forced recentering immediately, and there is a clear, visible way to resume. A stale position
+stops follow. The map never recentres on every minor update while the user is reading it.
+
+### Reduced motion
+
+Under `prefers-reduced-motion`, there is **no transition**: the marker moves directly to the
+new observation. Everything the animation conveys must remain available without it, which it
+is, because the animation conveys nothing the text does not.
+
+### Accessibility
+
+Marker movement is never the only way to learn something changed. The selected train's
+semantic UI updates its freshness, next stop, movement state and last-updated time regardless
+of what the map does. Announcements are reserved for **meaningful status changes** — fresh to
+stale, movement state changes, next stop changes — never for coordinate updates, which would
+make a screen reader narrate a train's GPS.
+
+### Cadence and efficiency — already satisfied, do not rebuild
+
+The shipped refresh layer already meets this addendum's requirements, and the live-movement
+work extends it rather than replacing it:
+
+* `lib/refresh/policy.ts` holds one centralized, configurable cadence per resource kind —
+  trains and detail at 30 s, alerts at 60 s, catalogs at 600 s — with failure backoff.
+* `lib/refresh/store.ts` already pauses while the tab is hidden and refreshes promptly on
+  `visibilitychange` and `focus`.
+* Geometry is already read on the **catalog** cadence, not the train cadence, so alignments
+  are not refetched every polling cycle.
+
+Frontend polling and backend ingestion are independent and will drift; nothing may assume they
+align. The frontend asks on its own cadence and renders whatever the backend's latest
+observation turns out to be.
 
 ## Earlier evaluation: ArcGIS, 2026-10-01 (retained as record; superseded by the ADR above)
 

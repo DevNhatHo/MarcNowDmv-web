@@ -71,7 +71,7 @@ Do not treat movement as severity of official service, or infer cause from stati
 | Semantic | Positive #17633b, information/focus #174ea6, warning #805600, critical #a52424, unknown #52606d. Text labels always accompany accents. |
 | Shape | 4px and 8px radii, 1px subtle border, no shadow by default. |
 | Width | Main content max 960px; detail reading column around 720px. |
-| Motion | No decorative motion; short disclosure/loading transitions only; disable nonessential transitions under reduced motion. |
+| Motion | No decorative motion; short disclosure/loading transitions only; disable nonessential transitions under reduced motion. The one substantive exception is a train marker's transition between two **observed** positions ([map plan](MAP_PLAN.md) live movement addendum): bounded at both ends by real data, stopped by stale data, and absent entirely under reduced motion. Motion never implies more certainty than the observation behind it. |
 
 Tokens live in app/globals.css; starter layout styles live in app/page.module.css. Names describe roles, not individual components. Text/semantic/focus tokens were measured on both canvas and surface in WEB-002; see the review below. No downloaded font, icon set or component library is installed. Future component combinations must be checked separately.
 

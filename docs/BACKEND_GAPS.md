@@ -10,6 +10,31 @@ These are frontend planning references, not allocated MARC ticket IDs. No backen
 | BACKEND-UI-04 | API documentation differs from current handlers | Use verified contract/captures in this repository. | Correct cursor names, calculated envelope placement, independent trend freshness, duration field and identity activation semantics; add contract examples/tests. |
 | BACKEND-UI-05 | Published field types and nullability are not documented | WEB-003 derived the wire types from the handler DTOs; the corrections are tabulated in API_CONTRACT.md. | Document `scheduleRelationship` as a nullable numeric enum, mark `officialStopUpdates[].stopId`/`.resolvedSequence`, the envelope `nextStop`/`nextUpdate` cursors, catalog `shortName`/`longName`/`name`/`wheelchairBoarding` nullable, guarantee `sourceHealth[].signals` is always an array rather than a nil slice, and state the cursor prerequisites (`serviceDate`+`version` for trains, `snapshot`+`version` for alerts, no `version` on detail). |
 
+## BACKEND-UI-06 — route progress on the trains list, 2026-10-02
+
+**Proposal, not authorization. No backend file was changed.**
+
+| Proposal | Missing capability | Frontend fallback | Follow-up acceptance |
+|---|---|---|---|
+| BACKEND-UI-06 | A bounded `fractionAlong`/`shapeId` per train on `/api/v1/trains`, so the system map can move a marker along the published alignment between two observations | The system map uses a **straight transition** between the two observed points, which [WEB-MAP-7](tickets/WEB-MAP-7.md) accepts as its initial implementation. The focused train uses route-aware motion from the detail endpoint it already reads. | Expose route progress on the list without per-train history scanning, or state that it cannot be bounded. Must keep `provenance: CALCULATED`, preserve the `MEASURED`/`AMBIGUOUS`/`OFF_ROUTE`/`UNKNOWN` states rather than collapsing them, and stay absent rather than guessed when progress was not measured. |
+
+Why this is a real gap and not an oversight: `calculated` is **deliberately** absent from the
+list. MARC-505 states that movement needs one run's position history, shape geometry, stop
+calls and delay history, and that doing it for 200 listed trains would be per-train history
+scanning — so the list was left unchanged on purpose. This proposal does not ask for that
+decision to be reversed; it asks whether the two scalars a map needs can be bounded
+separately, and accepts "no" as an answer.
+
+**What the frontend must not do meanwhile.** Not fetch detail per train — that is the N+1 both
+WEB-MAP-3 and the map plan forbid. Not re-derive progress in the browser from coordinates and
+geometry, which is the map matching the backend owns. Sampling a published polyline at a
+*published* fraction is rendering and remains allowed; computing that fraction is not.
+
+Movement state on the system map is the same shape of gap and is **already recorded** under
+BACKEND-UI-02, whose follow-up acceptance names an "optional movement summary". Until it
+exists, the system map omits the claim rather than approximating it: a marker that moved is
+not evidence the backend called the train moving.
+
 ## No backend gap blocks the map, 2026-10-01
 
 The map-provider decision needs **no backend change**, whichever renderer is chosen.
