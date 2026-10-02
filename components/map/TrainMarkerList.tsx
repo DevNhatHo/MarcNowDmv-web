@@ -24,12 +24,27 @@ export default function TrainMarkerList({
   trains,
   serviceDate,
   routeId,
+  selectedId,
 }: {
   trains: readonly MapTrain[];
   serviceDate: string;
   routeId: string | undefined;
+  /** The focused train, so the list marks it rather than leaving the map to say so alone. */
+  selectedId: string | null;
 }) {
   if (trains.length === 0) return null;
+
+  /*
+   * A drawn train's name focuses it **on this screen** rather than navigating away, so the
+   * list is the keyboard route into focus and the map is not the only way to select. The
+   * focus panel offers the full detail page for anyone who wants it.
+   */
+  const focusHref = (train: MapTrain) => {
+    const query = new URLSearchParams();
+    if (routeId !== undefined) query.set("routeId", routeId);
+    query.set("trainId", train.id);
+    return `/map?${query.toString()}`;
+  };
 
   const detailHref = (train: MapTrain) => {
     const query = new URLSearchParams({ serviceDate });
@@ -56,9 +71,16 @@ export default function TrainMarkerList({
         return (
           <li key={train.id} className={styles.item}>
             <p className={styles.identity}>
-              <Link className={styles.link} href={detailHref(train)}>
+              <Link
+                className={styles.link}
+                href={focusHref(train)}
+                aria-current={train.id === selectedId ? "true" : undefined}
+              >
                 {train.label}
               </Link>
+              {train.id === selectedId ? (
+                <span className={styles.focused}> · focused</span>
+              ) : null}
               {train.labelIsIdentifier ? (
                 <span className={styles.note}> (identifier; no destination published)</span>
               ) : null}

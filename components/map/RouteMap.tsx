@@ -5,7 +5,7 @@ import type { GeoJSONSource, Map as MapLibreMap } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Shape } from "../../lib/types/geometry";
 import type { MapStation, MapTrain } from "../../lib/presentation/markers";
-import { drawableTrains } from "../../lib/presentation/markers";
+import { drawableTrains, followTarget } from "../../lib/presentation/markers";
 import styles from "./RouteMap.module.css";
 
 /**
@@ -28,11 +28,20 @@ const trainLabelLayerId = "marc-trains-label";
 const empty = { type: "FeatureCollection", features: [] } as const;
 
 /**
+ * The viewer's own motion setting. A camera flight is motion like any other, so follow moves
+ * the map instantly when reduced motion is requested rather than gliding to the new position.
+ */
+function reducedMotion(): boolean {
+  if (typeof window === "undefined" || window.matchMedia === undefined) return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+/**
  * Current and last-known markers differ by **shape and label**, never by colour alone: a
  * filled disc for a position the backend calls fresh, a hollow ring for one it still holds
  * but does not. Colour reinforces the distinction; it never carries it.
  */
-function trainFeatures(trains: readonly MapTrain[]) {
+function trainFeatures(trains: readonly MapTrain[], selectedTrainId: string | null) {
   return {
     type: "FeatureCollection" as const,
     features: drawableTrains(trains).map((train) => ({
@@ -41,12 +50,16 @@ function trainFeatures(trains: readonly MapTrain[]) {
         type: "Point" as const,
         coordinates: [train.place!.longitude, train.place!.latitude],
       },
-      // The backend's own train identity, so MapLibre updates the right feature.
-      id: undefined,
       properties: {
+        // The backend's own train identity, so the right feature is updated and the right
+        // one is emphasised. Never an index.
         trainId: train.id,
         current: train.place!.trust === "CURRENT",
         label: train.label,
+        selected: train.id === selectedTrainId,
+        // Dimming is a property, not a paint change, so selection is a data update and no
+        // layer is added, removed or restyled when the selection changes.
+        dimmed: selectedTrainId !== null && train.id !== selectedTrainId,
       },
     })),
   };
@@ -88,6 +101,10 @@ export default function RouteMap({
   stations,
   trains,
   label,
+  selectedTrainId = null,
+  selectedShapeId = null,
+  follow = false,
+  onFollowInterrupted,
 }: {
   shapes: readonly Shape[];
   stations: readonly MapStation[];
@@ -98,9 +115,29 @@ export default function RouteMap({
   trains: readonly MapTrain[];
   /** Names what is drawn, for assistive technology and for the visible caption. */
   label: string;
+  /** The focused train, or null for the system view. Emphasis is data, never a new layer. */
+  selectedTrainId?: string | null;
+  /** The focused train's scheduled alignment, emphasised with it. */
+  selectedShapeId?: string | null;
+  /** Opt-in. The camera follows only a **new fresh observation**, and nothing else. */
+  follow?: boolean;
+  /** Called when the user pans or zooms, so the screen can pause forced recentring. */
+  onFollowInterrupted?: () => void;
 }) {
   const container = useRef<HTMLDivElement | null>(null);
   const map = useRef<MapLibreMap | null>(null);
+  /**
+   * The report the camera last followed. Follow reacts to a *new* observation only, so a
+   * re-render, a re-fetch that returns the same report, or an out-of-order older one must
+   * not move the camera.
+   */
+  const followedAt = useRef<number | null>(null);
+  // Kept in a ref so the map's gesture listeners, bound once at creation, always call the
+  // current callback without the map being torn down when the callback identity changes.
+  const interrupted = useRef(onFollowInterrupted);
+  useEffect(() => {
+    interrupted.current = onFollowInterrupted;
+  }, [onFollowInterrupted]);
   const [failed, setFailed] = useState(styleUrl === "");
   const [ready, setReady] = useState(false);
 
@@ -153,7 +190,13 @@ export default function RouteMap({
             type: "line",
             source: sourceId,
             layout: { "line-cap": "round", "line-join": "round" },
-            paint: { "line-color": "#174ea6", "line-width": 3, "line-opacity": 0.9 },
+            paint: {
+              "line-color": "#174ea6",
+              // Emphasis reads from feature properties, so focusing a train is a data
+              // update on the existing layer rather than a restyle or a new overlay.
+              "line-width": ["case", ["get", "selected"], 5, 3],
+              "line-opacity": ["case", ["get", "dimmed"], 0.25, 0.9],
+            },
           });
 
           // Stations sit above the alignment and below the trains, so a train is never
@@ -181,10 +224,12 @@ export default function RouteMap({
             filter: ["==", ["get", "current"], false],
             paint: {
               // A hollow ring: a different shape, not merely a different colour.
-              "circle-radius": 6,
+              "circle-radius": ["case", ["get", "selected"], 9, 6],
               "circle-color": "rgba(0,0,0,0)",
               "circle-stroke-color": "#805600",
-              "circle-stroke-width": 2,
+              "circle-stroke-width": ["case", ["get", "selected"], 3, 2],
+              "circle-opacity": ["case", ["get", "dimmed"], 0.35, 1],
+              "circle-stroke-opacity": ["case", ["get", "dimmed"], 0.35, 1],
             },
           });
           instance.addLayer({
@@ -193,10 +238,12 @@ export default function RouteMap({
             source: trainSourceId,
             filter: ["==", ["get", "current"], true],
             paint: {
-              "circle-radius": 6,
+              "circle-radius": ["case", ["get", "selected"], 9, 6],
               "circle-color": "#17633b",
               "circle-stroke-color": "#ffffff",
-              "circle-stroke-width": 2,
+              "circle-stroke-width": ["case", ["get", "selected"], 3, 2],
+              "circle-opacity": ["case", ["get", "dimmed"], 0.35, 1],
+              "circle-stroke-opacity": ["case", ["get", "dimmed"], 0.35, 1],
             },
           });
           instance.addLayer({
@@ -220,8 +267,22 @@ export default function RouteMap({
               "text-color": "#202124",
               "text-halo-color": "#ffffff",
               "text-halo-width": 1.5,
+              "text-opacity": ["case", ["get", "dimmed"], 0.4, 1],
             },
           });
+
+          /*
+           * The user's own gestures always win. A drag, a zoom or a rotate that came from a
+           * real input event pauses forced recentring at once; `easeTo` fires the same
+           * events without an `originalEvent`, so the camera never interrupts itself.
+           */
+          const yieldToUser = (event: { originalEvent?: unknown }) => {
+            if (event.originalEvent === undefined) return;
+            interrupted.current?.();
+          };
+          instance.on("dragstart", yieldToUser);
+          instance.on("zoomstart", yieldToUser);
+          instance.on("rotatestart", yieldToUser);
 
           map.current = instance;
           setReady(true);
@@ -273,7 +334,11 @@ export default function RouteMap({
         // The backend already publishes RFC 7946 geometry, longitude first, which is
         // exactly what a GeoJSON source consumes. Nothing is transformed.
         geometry: shape.geometry,
-        properties: { shapeId: shape.shapeId },
+        properties: {
+          shapeId: shape.shapeId,
+          selected: shape.shapeId === selectedShapeId,
+          dimmed: selectedShapeId !== null && shape.shapeId !== selectedShapeId,
+        },
       })),
     });
 
@@ -299,7 +364,7 @@ export default function RouteMap({
         { padding: 24, animate: false },
       );
     }
-  }, [shapes, ready]);
+  }, [shapes, selectedShapeId, ready]);
 
   // Stations change only when a schedule version is activated, so this effect almost never
   // runs; it is separate from the trains effect so a position tick cannot redraw stations.
@@ -317,8 +382,38 @@ export default function RouteMap({
     const instance = map.current;
     if (!ready || instance === null) return;
     const source = instance.getSource<GeoJSONSource>(trainSourceId);
-    source?.setData(trainFeatures(trains));
-  }, [trains, ready]);
+    source?.setData(trainFeatures(trains, selectedTrainId));
+  }, [trains, selectedTrainId, ready]);
+
+  /*
+   * Follow. Opt-in, and driven only by a **new fresh observation** of the selected train.
+   *
+   * A stale position stops it: the marker is where the train was last seen, and chasing that
+   * would present an old coordinate as somewhere worth looking. An older or repeated report
+   * moves nothing, so an out-of-order response cannot rewind the camera.
+   *
+   * Nothing is interpolated here. The camera moves when an observation arrives and at no
+   * other time; the transition between two observations is WEB-MAP-7's.
+   */
+  useEffect(() => {
+    const instance = map.current;
+    if (!ready || instance === null) return;
+    if (!follow || selectedTrainId === null) {
+      followedAt.current = null;
+      return;
+    }
+    const target = followTarget(
+      trains.find((candidate) => candidate.id === selectedTrainId),
+      followedAt.current,
+    );
+    if (target === null) return;
+    followedAt.current = target.reportedAt;
+    instance.easeTo({
+      center: target.center,
+      // Respect the viewer's own motion setting: a camera flight is motion like any other.
+      duration: reducedMotion() ? 0 : 600,
+    });
+  }, [trains, selectedTrainId, follow, ready]);
 
   if (failed) {
     return (

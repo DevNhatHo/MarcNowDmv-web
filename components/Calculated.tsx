@@ -7,6 +7,8 @@ import {
   durationLabel,
   movementLabel,
   nextStopLabel,
+  progressLabel,
+  progressText,
   trendChangeLabel,
   trendLabel,
   trendScopeLabel,
@@ -104,6 +106,33 @@ export function NextStopStatus({
       {call.state === "UNKNOWN" ? (
         <p className={styles.detail}>
           The next stop could not be calculated from the positions reported so far.
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+/**
+ * Measured progress along the scheduled route.
+ *
+ * `AMBIGUOUS` and `OFF_ROUTE` are stated as themselves rather than flattened into "unknown":
+ * a position that matched the line in more than one place and a position that did not match
+ * it at all are different facts, and neither becomes a precise progress. Nothing here is
+ * geometry to draw, and nothing is a prediction of where the train will be next.
+ */
+export function RouteProgressStatus({ calculated }: { calculated: Calculated }) {
+  const progress = calculated.routeProgress;
+  const label = progressLabel(progress.state);
+  const measured = progressText(progress);
+  return (
+    <div>
+      <Source>route progress</Source>
+      <p className={`${styles.headline} ${toneClass[label.tone]}`}>{label.text}</p>
+      {measured !== null ? <p className={styles.detail}>{measured}</p> : null}
+      {progress.state === "OFF_ROUTE" ? (
+        <p className={styles.detail}>
+          The reported position did not match the scheduled alignment. That can mean a
+          diversion, or simply an imprecise report; this service cannot tell which.
         </p>
       ) : null}
     </div>

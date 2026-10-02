@@ -102,6 +102,36 @@ for (const [name, path] of routes) {
   });
 }
 
+test("the focused map meets the accessibility floor", async ({ page }) => {
+  // Focus adds a panel, a toggle and two links to the map, none of which the plain /map
+  // check above can see.
+  await settled(page, "/map");
+  const first = page.locator('[aria-label="Trains with reported positions"] li a').first();
+  if ((await first.count()) === 0) test.skip(true, "no drawn trains right now");
+  await first.click();
+  await page.waitForURL(/trainId=/, { timeout: 30_000 });
+  await page.waitForTimeout(2500);
+  await expectNoAxeViolations(page);
+  expect(await undersizedControls(page)).toEqual([]);
+  expect(await page.getByRole("heading", { level: 1 }).count()).toBe(1);
+});
+
+test("focus can be entered and left from the keyboard alone", async ({ page }) => {
+  await settled(page, "/map");
+  const first = page.locator('[aria-label="Trains with reported positions"] li a').first();
+  if ((await first.count()) === 0) test.skip(true, "no drawn trains right now");
+  await first.focus();
+  await page.keyboard.press("Enter");
+  await page.waitForURL(/trainId=/, { timeout: 30_000 });
+  await expect(page.getByRole("region", { name: /Focused train/ })).toBeVisible();
+
+  const exit = page.getByRole("link", { name: "Exit focus" });
+  await exit.focus();
+  await page.keyboard.press("Enter");
+  await page.waitForURL((url) => !url.search.includes("trainId"), { timeout: 30_000 });
+  await expect(page.getByRole("region", { name: /Focused train/ })).toHaveCount(0);
+});
+
 test("train detail meets the accessibility floor", async ({ page }) => {
   await openDetail(page);
   await expectNoAxeViolations(page);

@@ -5,6 +5,7 @@ import MapScreen from "../components/map/MapScreen";
 import {
   currentCount,
   drawableTrains,
+  followTarget,
   mapStations,
   mapTrains,
   routeNameMap,
@@ -390,5 +391,83 @@ describe("the map screen's train list", () => {
     render(<MapScreen />);
     const list = await screen.findByRole("list", { name: "Trains with reported positions" });
     expect(within(list).queryByText(/On time/)).toBeNull();
+  });
+});
+
+describe("follow decisions", () => {
+  const fresh = () => mapTrains([synthetic()], names, now)[0];
+  const stale = () =>
+    mapTrains(
+      [
+        synthetic({
+          membership: { scheduledActive: true, realtimeObserved: true, positionFresh: false },
+        }),
+      ],
+      names,
+      now,
+    )[0];
+
+  it("follows the first fresh observation", () => {
+    const target = followTarget(fresh(), null);
+    expect(target?.center).toEqual([-76.6, 39.0]);
+  });
+
+  it("does not follow a last-known position", () => {
+    // The camera would be pointing at where the train was, as though that were live.
+    expect(followTarget(stale(), null)).toBeNull();
+  });
+
+  it("does not move for a repeated observation", () => {
+    const train = fresh();
+    const first = followTarget(train, null)!;
+    expect(followTarget(train, first.reportedAt)).toBeNull();
+  });
+
+  it("does not rewind for an out-of-order older observation", () => {
+    const older = mapTrains(
+      [
+        synthetic({
+          position: { ...synthetic().position, sourceTimestamp: "2026-10-02T11:00:00Z" },
+        }),
+      ],
+      names,
+      now,
+    )[0];
+    const newest = Date.parse("2026-10-02T11:59:30Z");
+    expect(followTarget(older, newest)).toBeNull();
+  });
+
+  it("follows a strictly newer observation", () => {
+    const newer = mapTrains(
+      [
+        synthetic({
+          position: { ...synthetic().position, sourceTimestamp: "2026-10-02T11:59:45Z" },
+        }),
+      ],
+      names,
+      now,
+    )[0];
+    const previous = Date.parse("2026-10-02T11:59:30Z");
+    expect(followTarget(newer, previous)).not.toBeNull();
+  });
+
+  it("moves nothing when the selected train has left the view", () => {
+    expect(followTarget(undefined, null)).toBeNull();
+  });
+
+  it("moves nothing when the train has no coordinate", () => {
+    const [none] = mapTrains(
+      [synthetic({ position: { ...synthetic().position, latitude: null, longitude: null } })],
+      names,
+      now,
+    );
+    expect(followTarget(none, null)).toBeNull();
+  });
+
+  it("never predicts a position past the newest observation", () => {
+    // The target is always a published coordinate, never an extrapolation from one.
+    const train = fresh();
+    const target = followTarget(train, null)!;
+    expect(target.center).toEqual([train.place!.longitude, train.place!.latitude]);
   });
 });

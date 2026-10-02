@@ -32,6 +32,11 @@ export interface MapTrain {
   /** True when `label` is the raw identifier, so the UI can say so rather than imply a name. */
   labelIsIdentifier: boolean;
   line: string | null;
+  /**
+   * The trip's *scheduled* shape, present whether or not the train is reporting, so a
+   * focused train's alignment can be emphasised even when it has no position.
+   */
+  shapeId: string | null;
   status: TrainStatus;
   /** The three facts, carried through intact. Never collapsed into one flag. */
   membership: TrainMembership;
@@ -88,6 +93,7 @@ export function mapTrains(
       label,
       labelIsIdentifier,
       line: routeNames.get(train.routeId) ?? null,
+      shapeId: train.scheduled.shapeId,
       status: train.status,
       membership: train.membership,
       place:
@@ -159,4 +165,39 @@ export function routeNameMap(routes: readonly Route[]): Map<string, string> {
     if (name !== null) names.set(route.id, name);
   }
   return names;
+}
+
+/** Where the camera should move to, and the report that justified it. */
+export interface FollowTarget {
+  center: [number, number];
+  reportedAt: number;
+}
+
+/**
+ * Whether follow should move the camera, and where to.
+ *
+ * The decision lives here rather than in the renderer because it is a judgement about
+ * evidence, not about drawing. Four things must all hold, and each refusal matters:
+ *
+ * - the train is still on this view — a selection that left the list moves nothing;
+ * - it has a position at all;
+ * - that position is **CURRENT** — chasing a last-known coordinate would point the camera at
+ *   where a train *was*, as though it were worth watching, and a stale position is not a
+ *   stopped train either way;
+ * - the report is strictly **newer** than the one last followed, so a re-render, a repeated
+ *   response or an out-of-order older one cannot move or rewind the camera.
+ *
+ * Nothing is interpolated. This answers "has a new observation arrived", not "where would
+ * the train be now" — the second question is one this product refuses to answer.
+ */
+export function followTarget(
+  train: MapTrain | undefined,
+  lastFollowedAt: number | null,
+): FollowTarget | null {
+  if (train === undefined) return null;
+  if (train.place === null || train.place.trust !== "CURRENT") return null;
+  const reportedAt = train.reportedAt;
+  if (reportedAt === null) return null;
+  if (lastFollowedAt !== null && reportedAt <= lastFollowedAt) return null;
+  return { center: [train.place.longitude, train.place.latitude], reportedAt };
 }

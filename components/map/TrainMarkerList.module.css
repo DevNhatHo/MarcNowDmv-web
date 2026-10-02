@@ -82,3 +82,10 @@
   color: var(--color-text-secondary);
   font-size: var(--text-small);
 }
+
+/* Says in words which train the map is emphasising, so focus is not conveyed by styling alone. */
+.focused {
+  color: var(--color-information);
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+}

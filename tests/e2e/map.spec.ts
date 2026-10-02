@@ -143,3 +143,45 @@ test("the map claims nothing about movement", async ({ page }) => {
   expect(main).not.toMatch(/\bAppears stationary\b/);
   expect(main).not.toMatch(/trains running/i);
 });
+
+test("focusing a train from the list is a shareable link, and Back leaves focus", async ({
+  page,
+}) => {
+  await drawn(page, "/map");
+  const first = page.locator('[aria-label="Trains with reported positions"] li a').first();
+  const name = (await first.innerText()).trim();
+  await first.click();
+  await page.waitForURL(/trainId=/, { timeout: 30_000 });
+
+  const panel = page.getByRole("region", { name: new RegExp(`Focused train`) });
+  await expect(panel).toBeVisible();
+  await expect(panel).toContainText(name);
+  // The canvas is not rebuilt by selecting: emphasis is a data update.
+  expect(await page.locator("canvas.maplibregl-canvas").count()).toBe(1);
+
+  await page.goBack();
+  await page.waitForTimeout(2000);
+  await expect(page.getByRole("region", { name: /Focused train/ })).toHaveCount(0);
+});
+
+test("exiting focus restores the system view and keeps the line filter", async ({ page }) => {
+  await drawn(page, "/map?routeId=11704");
+  const first = page.locator('[aria-label="Trains with reported positions"] li a').first();
+  if ((await first.count()) === 0) test.skip(true, "no drawn trains on this line right now");
+  await first.click();
+  await page.waitForURL(/trainId=/, { timeout: 30_000 });
+  await page.getByRole("link", { name: "Exit focus" }).click();
+  await page.waitForURL((url) => !url.search.includes("trainId"), { timeout: 30_000 });
+  expect(page.url()).toContain("routeId=11704");
+});
+
+test("focus states everything the emphasised marker shows, in text", async ({ page }) => {
+  await drawn(page, "/map");
+  await page.locator('[aria-label="Trains with reported positions"] li a').first().click();
+  await page.waitForURL(/trainId=/, { timeout: 30_000 });
+  const panel = page.getByRole("region", { name: /Focused train/ });
+  // Nothing is available only on the canvas.
+  await expect(panel).toContainText(/Current position|Last known position/);
+  await expect(panel).toContainText(/Official MTA/);
+  await expect(panel.getByRole("link", { name: "Open full detail" })).toBeVisible();
+});

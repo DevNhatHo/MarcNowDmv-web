@@ -24,6 +24,7 @@ import { ActionButton, LoadingRows, Notice, describeFailure } from "../Feedback"
 import { useSharedResource } from "../useSharedResource";
 import RouteMap from "./RouteMap";
 import TrainMarkerList from "./TrainMarkerList";
+import FocusSection from "./FocusSection";
 import styles from "./MapScreen.module.css";
 
 interface Loaded {
@@ -88,6 +89,22 @@ export default function MapScreen() {
   );
 
   /*
+   * Selection lives in the URL, so a focused train is a shareable link and the browser's own
+   * Back button leaves focus. Nothing about the selection is kept in component state that a
+   * reload would lose.
+   */
+  const selectedId = params.get("trainId");
+
+  const [follow, setFollow] = useState(false);
+  const [followPaused, setFollowPaused] = useState(false);
+
+  /*
+   * The viewer's gesture wins immediately and without argument. Stable identity, so the map's
+   * listeners can be bound once at creation and never cause a teardown.
+   */
+  const pauseFollow = useCallback(() => setFollowPaused(true), []);
+
+  /*
    * One evaluation clock for the whole render, taken from the response that produced these
    * trains rather than from the wall clock, so every "reported N min ago" on screen is aged
    * against the same instant the backend evaluated.
@@ -99,6 +116,23 @@ export default function MapScreen() {
     const now = Number.isNaN(evaluatedAt) ? new Date() : new Date(evaluatedAt);
     return mapTrains(data.data, routeNames, now);
   }, [trainResource.data, routeNames]);
+
+  const selectedTrain = useMemo(
+    () => trains.find((train) => train.id === selectedId) ?? null,
+    [trains, selectedId],
+  );
+
+  /*
+   * Leaving focus restores the system view with the line filter intact, so exiting does not
+   * also throw away the filter the reader chose.
+   */
+  const mapHref = (trainId: string | null) => {
+    const query = new URLSearchParams();
+    if (routeId !== undefined) query.set("routeId", routeId);
+    if (trainId !== null) query.set("trainId", trainId);
+    const search = query.toString();
+    return search === "" ? "/map" : `/map?${search}`;
+  };
 
   const setRoute = (value: string) => {
     router.replace(value === "" ? "/map" : `/map?routeId=${encodeURIComponent(value)}`);
@@ -186,7 +220,36 @@ export default function MapScreen() {
           stations={stations}
           trains={trains}
           label={drawn.label}
+          selectedTrainId={selectedId}
+          selectedShapeId={selectedTrain?.shapeId ?? null}
+          follow={follow && !followPaused}
+          onFollowInterrupted={pauseFollow}
         />
+      ) : null}
+
+      {selectedId !== null && selectedTrain !== null ? (
+        <FocusSection
+          id={selectedId}
+          train={selectedTrain}
+          stops={resource.data?.stops ?? []}
+          follow={follow}
+          onFollowChange={(next) => {
+            setFollow(next);
+            // Choosing to follow again is the deliberate resume the map plan requires.
+            setFollowPaused(false);
+          }}
+          followPaused={followPaused}
+          exitHref={mapHref(null)}
+          detailHref={`/trains/${encodeURIComponent(selectedId)}`}
+        />
+      ) : null}
+
+      {selectedId !== null && selectedTrain === null && trainResource.data ? (
+        <Notice title="That train is not on this view">
+          No train with that identifier is in the current service date and line filter. It may
+          have finished, or the filter may exclude it.{" "}
+          <Link href={mapHref(null)}>Exit focus</Link>.
+        </Notice>
       ) : null}
 
       {page && page.data.length > 0 ? (
@@ -209,6 +272,7 @@ export default function MapScreen() {
               trains={trains}
               serviceDate={trainResource.data?.serviceDate ?? ""}
               routeId={routeId}
+              selectedId={selectedId}
             />
           </section>
 

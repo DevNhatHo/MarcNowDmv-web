@@ -16,9 +16,16 @@ import type {
   NextStopState,
   ObservedMovement,
   OfficialDelayTrend,
+  ProgressState,
+  RouteProgress,
   TrendState,
 } from "../types/trains";
-import { movementStates, nextStopStates, trendStates } from "../types/trains";
+import {
+  movementStates,
+  nextStopStates,
+  progressStates,
+  trendStates,
+} from "../types/trains";
 import type { StatusLabel } from "./status";
 
 /** Prefix that marks a value as this service's calculation rather than the operator's. */
@@ -136,4 +143,43 @@ export function trendScopeLabel(
       : `at stop ${trend.stopSequence}'s ${event}`;
   }
   return "over an unrecognised series";
+}
+
+const progressLabels: Record<(typeof progressStates)[number], StatusLabel> = {
+  MEASURED: { text: "Progress along the route measured", tone: "information" },
+  AMBIGUOUS: { text: "Progress could not be placed on one point", tone: "unknown" },
+  OFF_ROUTE: { text: "Reported away from the scheduled route", tone: "warning" },
+  UNKNOWN: { text: "Progress unavailable", tone: "unknown" },
+};
+
+/**
+ * How far along its route the backend measured this train.
+ *
+ * `AMBIGUOUS` and `OFF_ROUTE` are kept distinct from `UNKNOWN` because they mean different
+ * things: the first is a measurement that matched more than one place on the line, the
+ * second a position that did not match the line at all. Neither becomes a precise progress.
+ */
+export function progressLabel(state: ProgressState): StatusLabel {
+  return isKnown(progressStates, state)
+    ? progressLabels[state]
+    : { text: "Progress unavailable", tone: "unknown" };
+}
+
+/**
+ * The measured distance along the route, in words, and only when it was actually measured.
+ *
+ * A fraction is shown beside it because a bare distance means little without the length of
+ * the line. Nothing is computed here that the backend did not publish: both numbers are its
+ * own, and an absent one is omitted rather than derived from the other.
+ */
+export function progressText(progress: RouteProgress): string | null {
+  if (progress.state !== "MEASURED") return null;
+  const along = progress.alongRouteMeters;
+  if (along === null) return null;
+  const distance =
+    along < 1000 ? `${Math.round(along)} m` : `${(along / 1000).toFixed(1)} km`;
+  const total = progress.shapeLengthMeters;
+  if (total === null || total <= 0) return `${distance} along the route`;
+  const percent = Math.round((progress.fractionAlong ?? along / total) * 100);
+  return `${distance} along a ${(total / 1000).toFixed(1)} km route · ${percent}%`;
 }

@@ -8,7 +8,11 @@ Updated: 2026-10-02 (America/New_York).
 the alignments, current versus last-known by shape and label rather than colour, with a key and
 a text equivalent that matches the map. Measured live: 97 trains, 35 drawn, 8–9 current, 26
 last-known, 62 with no position. Movement is deliberately absent, because the trains list
-carries no `calculated` group. Recommended next: **[WEB-MAP-4](tickets/WEB-MAP-4.md)**. A **live movement addendum** on
+carries no `calculated` group. **[WEB-MAP-4](tickets/WEB-MAP-4.md) is DONE**: selection lives in the URL, the selected train
+and its own alignment are emphasised as a data update rather than a new layer, and follow moves
+the camera only for a strictly newer fresh observation — never for a last-known position, a
+repeated response or an out-of-order older one. The viewer's own pan or zoom pauses recentring
+at once. Recommended next: **[WEB-MAP-7](tickets/WEB-MAP-7.md)**. A **live movement addendum** on
 2026-10-02 extended the map plan with marker-update and animation semantics, folded the
 in-place update rules into WEB-MAP-3 and the follow rules into WEB-MAP-4, and added
 [WEB-MAP-7](tickets/WEB-MAP-7.md) for smooth transitions between observed positions; it opened
