@@ -60,7 +60,8 @@ System map and train focus are now required follow-on work after WEB-012. Use a 
 
 **Superseded 2026-10-01 by the [map ADR](MAP_PLAN.md):** **MapLibre GL JS** is the chosen
 renderer, with a no-API-key hosted vector basemap initially and self-hosted PMTiles as the
-documented future option. [WEB-MAP-6](tickets/WEB-MAP-6.md) migrates the shipped Leaflet map.
+documented future option. [WEB-MAP-6](tickets/WEB-MAP-6.md) migrated the shipped Leaflet map
+and is done; Leaflet is no longer a dependency.
 
 The decision separates **renderer** from **basemap provider** deliberately. MapLibre is
 BSD-3-Clause and tied to no tile vendor, so the basemap is a configuration change rather than
@@ -72,6 +73,20 @@ The renderer loads browser-only, on the map route only, and **no vendor type app
 `components/map/`**: MARC data reaches the adapter as a provider-neutral view model or
 GeoJSON. The geometry contract is unchanged — GeoJSON LineStrings in WGS84, longitude first,
 are what a MapLibre GeoJSON source consumes directly.
+
+All alignments live in **one GeoJSON source behind one line layer**, so changing the line
+filter is a `setData` call. Two consequences shape the components, and both are load-bearing
+rather than stylistic:
+
+* `RouteMap` creates the map in an effect with **no data dependency** and applies geometry in
+  a second effect. Putting `shapes` on the creating effect destroys and rebuilds the map, its
+  style and its controls on every filter change.
+* `MapScreen` keeps the **last drawn geometry** on screen while the next line loads, because
+  the resource key changes with the filter and the gap would unmount the map. The label is
+  stored with the geometry it describes, so the map never names a line it is not drawing.
+
+Measured: filtering a line costs **0–2 tile requests**, against the 15–20 a fresh map load
+issues.
 
 The original Leaflet recommendation below is retained as the record of what WEB-MAP-1 assessed
 and WEB-MAP-2 shipped.

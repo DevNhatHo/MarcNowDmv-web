@@ -21,7 +21,6 @@
   background: var(--color-canvas);
 }
 
-/* Leaflet draws its own focus styling; this keeps ours visible on the container. */
 .canvas:focus-visible {
   outline: var(--focus-width) solid var(--color-focus);
   outline-offset: calc(var(--focus-offset) * -1);
@@ -55,18 +54,36 @@
 }
 
 /*
- * Leaflet ships 30px zoom buttons. The design plan requires 44px map controls, so they are
+ * MapLibre ships 29px zoom buttons. The design plan requires 44px map controls, so they are
  * resized here rather than exempted from the accessibility floor: a control that is hard to
  * hit on a phone is hard to hit whoever shipped it.
  */
-.frame :global(.leaflet-bar a) {
+.frame :global(.maplibregl-ctrl-group button) {
   inline-size: var(--target-min);
   block-size: var(--target-min);
-  line-height: var(--target-min);
-  font-size: var(--text-section);
 }
 
-.frame :global(.leaflet-bar a:focus-visible) {
+.frame :global(.maplibregl-ctrl-group button:focus-visible) {
   outline: var(--focus-width) solid var(--color-focus);
   outline-offset: calc(var(--focus-offset) * -1);
+}
+
+/* Attribution is a licensing obligation, so it stays legible rather than decorative. */
+.frame :global(.maplibregl-ctrl-attrib) {
+  font-size: var(--text-small);
+  display: flex;
+  align-items: center;
+  min-block-size: var(--target-min);
+}
+
+/*
+ * The attribution toggle is a <summary>, so the global 44px control floor stretches it from
+ * MapLibre's 24px. Its icon is a 24px background that would then tile into a second, clipped
+ * copy, so the target is kept at 44px and the icon is drawn once, centred.
+ */
+.frame :global(.maplibregl-ctrl-attrib-button) {
+  inline-size: var(--target-min);
+  block-size: var(--target-min);
+  background-repeat: no-repeat;
+  background-position: center;
 }

@@ -7,6 +7,9 @@ dist/
 *.tsbuildinfo
 playwright-report/
 test-results/
+# Copied from the pinned maplibre-gl package before dev and build.
+public/maplibre-gl-worker.mjs
+public/maplibre-gl-shared.mjs
 .DS_Store
 
 # Next regenerates this with dev/build-specific route type paths.

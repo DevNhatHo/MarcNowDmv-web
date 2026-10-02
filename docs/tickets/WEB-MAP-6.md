@@ -1,6 +1,6 @@
 # WEB-MAP-6 — Adopt MapLibre GL JS as the map renderer
 
-Status: NOT_STARTED
+Status: **DONE** (2026-10-01)
 
 Sequencing note: this runs **next, before [WEB-MAP-3](WEB-MAP-3.md)**, despite its number.
 WEB-MAP-1 and WEB-MAP-2 are DONE and are not reopened; renumbering them would break the
@@ -139,3 +139,80 @@ CURRENT_STATE.md, ARCHITECTURE.md, RUNBOOK.md and MAP_PLAN.md, and preserve unre
 One completed-ticket commit with a WEB-MAP-6 subject. If no suitable basemap provider can be
 used, record that as the blocker and leave IN_PROGRESS rather than making a completion commit
 or shipping a map with no basemap.
+
+## Outcome
+
+`/map` renders on MapLibre GL JS 6.11.2 (BSD-3-Clause) over OpenFreeMap's `positron` vector
+style. No API key, no account, no card, and **no backend change**: the published GeoJSON is
+longitude-first already, so the Leaflet build's coordinate swap simply disappeared. Leaflet
+and `@types/leaflet` are gone. The line filter, text equivalent, failure path and what the
+screen claims are all unchanged.
+
+### Measured
+
+| | Measured |
+|---|---|
+| Map-route bundle | **275 kB gzipped**, own chunk, requested on `/map` and on no other screen |
+| Basemap requests per load | **15** at 360×800 (726 kB), **20** at 1280×900 (647 kB) |
+| Basemap requests per line filter | **0–2** |
+| Basemap requests on `/`, `/trains`, `/alerts` | **0** |
+| Cost | **$0** |
+
+The ADR hedged MapLibre's weight as "between Leaflet's ~42 kB and ArcGIS's reported ~2.1 MB,
+to be stated from measurement". 275 kB is that number.
+
+### Checks actually executed
+
+`npx eslint .` clean, `npx tsc --noEmit` clean, `npx vitest run` **204 tests in 14 files, 0
+failures**, `npm run build` succeeded, `npx playwright test` **58 passed** across both required
+viewports. Rendered review at 360×800 and 1280×900 in `docs/reviews/WEB-MAP-6/`, including
+grayscale.
+
+### Three defects the rendered review caught, which the tests did not
+
+**The map was being destroyed and rebuilt on every line filter** — the thing this ticket's
+"one source, one layer" rule exists to prevent. Two causes, both invisible to a test that only
+checks what is drawn:
+
+* `RouteMap` created the map in an effect keyed on `shapes`, so new geometry tore the map
+  down. Creation now has no data dependency and geometry is applied in a second effect.
+* `MapScreen` unmounted `RouteMap` during the load, because the filter changes the resource
+  key and the next page starts undefined. It now keeps the last drawn geometry on screen,
+  **with the label stored alongside it**, so the map cannot name a line it is not drawing.
+
+Proven by measurement, not by inspection: filtering costs 0–2 tile requests instead of 15–20,
+and the live canvas element survives the filter. A new e2e test pins both.
+
+**The attribution icon was drawn twice.** The global 44 px control floor applies to
+`summary`, which stretched MapLibre's 24 px toggle, and its background icon tiled into a
+second copy clipped by the map frame. The target stays 44 px — the floor is not waived for a
+vendor's control — and the icon is now drawn once, centred.
+
+**The attribution credited every party twice.** A code comment asserted "the style itself
+carries none"; the provider's TileJSON in fact credits OpenFreeMap, OpenMapTiles and
+OpenStreetMap with the copyright link OSM requires. The custom text was removed and an e2e
+test now asserts OpenStreetMap is still named, so the obligation fails loudly rather than
+lapsing silently if a provider changes.
+
+### One accessibility helper was wrong, and was corrected rather than worked around
+
+`undersizedControls` exempted links inside a `<p>`, treating the attribution's three links as
+undersized standalone controls. A credit line of links separated by punctuation is prose by
+every measure except its markup, and WCAG 2.5.8 exempts targets in a block of text. The helper
+now recognises a run of text by the container's **own** text around the control, so a
+container holding only controls is still checked. The attribution links were not enlarged;
+the check was made to say what it meant.
+
+### Worker loading
+
+MapLibre v6 loads its tile-parsing worker from a URL that Turbopack cannot resolve from inside
+the package. `scripts/copy-maplibre-worker.mjs` copies the pinned package's own
+`maplibre-gl-worker.mjs` **and** `maplibre-gl-shared.mjs` into `public/` on `predev`,
+`prebuild` and `prestart`; the worker imports the shared file, so copying only the first is a
+404 and a blank map. Both copies are gitignored.
+
+### Not done, deliberately
+
+PMTiles, per the ticket. Station markers remain owed to WEB-MAP-3 by WEB-MAP-2's record.
+
+No blockers. Next: [WEB-MAP-3](WEB-MAP-3.md) — active train markers.

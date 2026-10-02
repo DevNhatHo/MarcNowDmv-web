@@ -15,8 +15,10 @@ import { expect, test, type Page } from "@playwright/test";
 
 async function settled(page: Page, path: string) {
   await page.goto(path);
-  await page.waitForLoadState("networkidle");
-  await page.waitForTimeout(1200);
+  // Not networkidle: a vector map streams tiles continuously, so the network never settles
+  // on /map.
+  await page.waitForLoadState("domcontentloaded");
+  await page.waitForTimeout(1500);
 }
 
 test("the backend is reachable through the same-origin proxy", async ({ request }) => {

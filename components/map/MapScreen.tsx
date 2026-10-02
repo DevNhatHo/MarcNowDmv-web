@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { fetchRoutes, fetchShapes, type BackendError } from "../../lib/api";
 import type { Route } from "../../lib/types/catalogs";
-import type { ShapePage } from "../../lib/types/geometry";
+import type { Shape, ShapePage } from "../../lib/types/geometry";
 import { ActionButton, LoadingRows, Notice, describeFailure } from "../Feedback";
 import { useSharedResource } from "../useSharedResource";
 import RouteMap from "./RouteMap";
@@ -52,6 +52,30 @@ export default function MapScreen() {
   };
 
   const selected = routeId === undefined ? null : (routeNames.get(routeId) ?? `Line ${routeId}`);
+
+  /*
+   * Changing the line changes the resource key, so the next page starts undefined. Rendering
+   * that gap would unmount the map and rebuild it — style, controls and tiles — on every
+   * filter change, which is exactly what one source and one layer exist to avoid. So the last
+   * drawn geometry stays on screen until the next arrives.
+   *
+   * The label is stored with the geometry it describes, never recomputed from the pending
+   * filter, so the map cannot name a line it is not currently drawing.
+   */
+  const [drawn, setDrawn] = useState<{ shapes: readonly Shape[]; label: string } | null>(null);
+  const [applied, setApplied] = useState<ShapePage | undefined>(undefined);
+  if (page !== undefined && page !== applied) {
+    // React's documented adjust-during-render pattern rather than an effect: this must be
+    // settled before the map renders, or the map would still see one frame of the gap and
+    // tear itself down.
+    setApplied(page);
+    if (page.data.length > 0) {
+      setDrawn({
+        shapes: page.data,
+        label: `Scheduled route alignments for ${selected ?? "all MARC lines"}`,
+      });
+    }
+  }
   const totalKm = useMemo(
     () => (page ? page.data.reduce((sum, shape) => sum + shape.lengthMeters, 0) / 1000 : 0),
     [page],
@@ -103,12 +127,12 @@ export default function MapScreen() {
         </Notice>
       ) : null}
 
+      {drawn && !(page && page.data.length === 0) ? (
+        <RouteMap shapes={drawn.shapes} label={drawn.label} />
+      ) : null}
+
       {page && page.data.length > 0 ? (
         <>
-          <RouteMap
-            shapes={page.data}
-            label={`Scheduled route alignments for ${selected ?? "all MARC lines"}`}
-          />
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Lines</h2>
             {/*

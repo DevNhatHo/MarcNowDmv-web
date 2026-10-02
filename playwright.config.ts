@@ -20,8 +20,8 @@ export default defineConfig({
   /*
    * The local backend runs a four-connection pool by design, and each map load pulls the
    * published geometry. Unbounded workers make the suite contend with itself rather than
-   * test anything: measured, a single map load is 2.2 s with 43 SVG paths and fewer DOM
-   * nodes than the trains list, so this bound is about the test harness, not the product.
+   * test anything: a map load pulls 543 kB of alignments plus its basemap tiles, so this
+   * bound is about the test harness, not the product.
    */
   workers: 4,
   forbidOnly: !!process.env.CI,

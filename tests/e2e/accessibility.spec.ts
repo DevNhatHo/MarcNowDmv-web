@@ -26,8 +26,10 @@ async function openDetail(page: Page) {
 
 async function settled(page: Page, path: string) {
   await page.goto(path);
-  await page.waitForLoadState("networkidle");
-  await page.waitForTimeout(1500);
+  // Not networkidle: a vector map streams tiles continuously, so the network never goes
+  // idle on /map. Waiting for the document plus a settle window works for every screen.
+  await page.waitForLoadState("domcontentloaded");
+  await page.waitForTimeout(2500);
 }
 
 async function expectNoAxeViolations(page: Page) {
@@ -38,8 +40,13 @@ async function expectNoAxeViolations(page: Page) {
 }
 
 /**
- * Standalone controls only. A link inside a sentence keeps its natural line height, which
+ * Standalone controls only. A link inside a run of text keeps its natural line height, which
  * is what WCAG's inline exception allows and what keeps body text readable.
+ *
+ * "A run of text" is the container's own text around the control, not the `<p>` tag: a map's
+ * attribution is a credit line of links separated by punctuation, which is prose by every
+ * measure except its markup. A container holding only controls has no text of its own and is
+ * still checked.
  */
 async function undersizedControls(page: Page) {
   return page.evaluate(() => {
@@ -49,10 +56,16 @@ async function undersizedControls(page: Page) {
       ),
     ];
     const insideSentence = (element: Element) => {
-      const paragraph = element.closest("p");
+      const container = element.closest("p") ?? element.parentElement;
+      if (container === null) return false;
+      const ownText = [...container.childNodes]
+        .filter((node) => node.nodeType === Node.TEXT_NODE)
+        .map((node) => node.textContent ?? "")
+        .join("")
+        .trim();
       return (
-        paragraph !== null &&
-        (paragraph.textContent ?? "").trim() !== (element.textContent ?? "").trim()
+        ownText !== "" &&
+        (container.textContent ?? "").trim() !== (element.textContent ?? "").trim()
       );
     };
     return controls

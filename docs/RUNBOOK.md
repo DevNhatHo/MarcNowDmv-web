@@ -97,13 +97,26 @@ OpenStreetMap and provider attribution must stay visible on the map screen.
 
 With no key configured, `/map` degrades to its text equivalent rather than showing a broken
 basemap.
-Leaflet 1.9.4 is a runtime dependency, imported dynamically so it never reaches a server
-render; there is no tile provider and no API key. Geometry is read on the catalog cadence
-because it is immutable for a schedule version.
+MapLibre GL JS 6.11.2 (BSD-3-Clause) is a runtime dependency, imported dynamically inside an
+effect so it never reaches a server render and loads only on `/map` — measured at **275 kB
+gzipped in its own chunk**, requested on `/map` and on no other screen. Geometry is read on
+the catalog cadence because it is immutable for a schedule version.
+
+The basemap is OpenFreeMap's `positron` vector style, which needs **no API key**. Attribution
+comes from the provider's own TileJSON, which credits OpenFreeMap, OpenMapTiles and
+OpenStreetMap with the copyright link; nothing is added on top of it, and an e2e test fails if
+OpenStreetMap stops being named.
+
+MapLibre v6 loads its tile-parsing worker from a URL that Turbopack cannot resolve from inside
+the package, so `scripts/copy-maplibre-worker.mjs` copies the pinned package's own
+`maplibre-gl-worker.mjs` **and** `maplibre-gl-shared.mjs` into `public/` on `predev`,
+`prebuild` and `prestart`. Both copies are gitignored. Omitting the shared file is a 404 and a
+blank map, because the worker imports it.
 
 `npx playwright test` is bounded to four workers: each map load pulls the published geometry
 and the local backend runs a four-connection pool, so unbounded workers make the suite
-contend with itself rather than test anything.
+contend with itself rather than test anything. `tests/e2e/map.spec.ts` is additionally serial,
+because every test in it loads a real vector map and its tiles.
 
 ## Live realtime data
 

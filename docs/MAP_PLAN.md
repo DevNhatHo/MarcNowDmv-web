@@ -213,6 +213,20 @@ Low by construction. The renderer is BSD-3 and the basemap is a URL. Switching p
 style-URL change; switching to self-hosted PMTiles adds a protocol registration and nothing
 else. No MARC train code touches a vendor type.
 
+### As implemented, measured (WEB-MAP-6, 2026-10-01)
+
+| | Measured |
+|---|---|
+| Renderer | MapLibre GL JS 6.11.2, BSD-3-Clause, **275 kB gzipped**, own chunk, requested on `/map` only |
+| Basemap | OpenFreeMap `positron`, no API key, no account, no card |
+| Tiles per map load | **15** at 360×800, **20** at 1280×900 (726 kB / 647 kB) |
+| Tiles per line filter | **0–2** — the map is not rebuilt |
+| Tiles on any other screen | **0** |
+| Attribution | from the provider's TileJSON: OpenFreeMap, OpenMapTiles, OpenStreetMap with its copyright link |
+
+The ADR's weight estimate was right to be hedged: MapLibre measured at 275 kB gzipped, between
+Leaflet's ~42 kB and `@arcgis/core`'s reported ~2.1 MB, as predicted.
+
 ### Future: PMTiles
 
 Credible, and worth keeping as the escape hatch. A single `.pmtiles` archive on object storage

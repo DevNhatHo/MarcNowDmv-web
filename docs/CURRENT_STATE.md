@@ -1,10 +1,10 @@
 # Frontend current state
 
-Updated: 2026-09-30 (America/New_York).
+Updated: 2026-10-01 (America/New_York).
 
 ## Milestone and work status
 
-[WEB-001](tickets/WEB-001.md) through [WEB-005](tickets/WEB-005.md), and [WEB-007](tickets/WEB-007.md) through [WEB-012](tickets/WEB-012.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. Every route is now a real screen reading the local backend through the typed client: `/` (Pulse), `/trains`, `/trains/[id]` and `/alerts`. No placeholder remains. Current ticket: none. **WEB-013 through WEB-015 are DONE**, and the backend delivered both map gates on 2026-09-30, so WEB-MAP-2 through WEB-MAP-5 are unblocked. **[WEB-MAP-2](tickets/WEB-MAP-2.md) is DONE**: `/map` renders the published MARC alignments with a line filter and a text equivalent, and Map is in the navigation. **A map-provider ADR on 2026-10-01 chose MapLibre GL JS** over ArcGIS, Mapbox, Leaflet, OpenLayers and self-hosted PMTiles, so the shipped Leaflet map is migrated by [WEB-MAP-6](tickets/WEB-MAP-6.md), which runs before WEB-MAP-3. Recommended next: **[WEB-MAP-6](tickets/WEB-MAP-6.md)**.
+[WEB-001](tickets/WEB-001.md) through [WEB-005](tickets/WEB-005.md), and [WEB-007](tickets/WEB-007.md) through [WEB-012](tickets/WEB-012.md) are DONE. The Next.js starter has shared design tokens, readable responsive typography, focus/reduced-motion defaults and a native preview disclosure, and now a complete typed API boundary with a same-origin backend proxy. Every route is now a real screen reading the local backend through the typed client: `/` (Pulse), `/trains`, `/trains/[id]` and `/alerts`. No placeholder remains. Current ticket: none. **WEB-013 through WEB-015 are DONE**, and the backend delivered both map gates on 2026-09-30, so WEB-MAP-2 through WEB-MAP-5 are unblocked. **[WEB-MAP-2](tickets/WEB-MAP-2.md) is DONE**: `/map` renders the published MARC alignments with a line filter and a text equivalent, and Map is in the navigation. **A map-provider ADR on 2026-10-01 chose MapLibre GL JS** over ArcGIS, Mapbox, Leaflet, OpenLayers and self-hosted PMTiles, and **[WEB-MAP-6](tickets/WEB-MAP-6.md) is DONE**: `/map` now renders on MapLibre 6.11.2 over a no-key OpenFreeMap vector style, measured at 275 kB gzipped on the map route only, 15–20 tile requests per load and 0 on every other screen. Leaflet is no longer a dependency. Recommended next: **[WEB-MAP-3](tickets/WEB-MAP-3.md)**.
 
 Repository: `/home/nhat/marc-now-dmv-web`, main branch tracking `origin/main` at `git@github.com:DevNhatHo/MarcNowDmv-web.git`, configured on the user's instruction after WEB-003 and pushed through `c6b3006`. Earlier ticket records state that no remote existed, which was true when they were written. Backend `/home/nhat/MarcNowDmv` was unchanged; unrelated `.idea/` remains untouched. The backend, the full shell, the map and AWS remain outside WEB-001–003; API integration is now implemented as a boundary only, with no screen consuming it.
 
@@ -282,8 +282,8 @@ An Esri-first direction was drafted and then widened into an evidence-based comp
 anything was committed. The [ADR](MAP_PLAN.md) compares **MapLibre GL JS, Mapbox GL JS,
 ArcGIS Maps SDK, Leaflet, OpenLayers and MapLibre + self-hosted PMTiles**, and chooses
 **MapLibre GL JS** with a **no-API-key hosted vector basemap**, keeping PMTiles as the
-documented future option. [WEB-MAP-6](tickets/WEB-MAP-6.md) migrates the shipped Leaflet map
-and runs before WEB-MAP-3.
+documented future option. [WEB-MAP-6](tickets/WEB-MAP-6.md) migrated the shipped Leaflet
+map and is done.
 
 The decision separates **renderer** from **basemap provider**. Licences were verified from
 the npm registry rather than assumed: MapLibre 6.11.2 is **BSD-3-Clause**, OpenLayers 10.10.0
@@ -306,18 +306,32 @@ longitude/latitude swap simply disappears.
 
 The decision stays cheap to revisit because of one property that must be preserved: the vendor
 adapter lives only in `components/map/`, and MARC data reaches it as a provider-neutral view
-model or GeoJSON. WEB-MAP-2 proved it — Leaflet is confined to two files.
+model or GeoJSON. WEB-MAP-2 proved it — Leaflet was confined to two files — and WEB-MAP-6
+then swapped the renderer by changing those same two files and nothing else.
 
 ## Next session
 
 Read AGENTS.md, this file, [MAP_PLAN.md](MAP_PLAN.md) and
-[WEB-MAP-6](tickets/WEB-MAP-6.md), and inspect `git status` in both repositories.
+[WEB-MAP-3](tickets/WEB-MAP-3.md), and inspect `git status` in both repositories.
 
-**Start WEB-MAP-6.** It is unblocked: the renderer is free and open source, the starting
-basemap needs no API key or account, and the backend geometry it draws is already delivered.
+**Start WEB-MAP-3** — active train markers with position trust. It is unblocked: the renderer
+is now MapLibre, so markers are written once; MARC-507 put `scheduled.shapeId`, `directionId`
+and `headsign` on every train; and MARC-508 put the three `membership` facts there. It also
+owes the **station markers** WEB-MAP-2 deferred.
 
-Record two measurements the ADR could not: the map-route bundle size MapLibre actually adds,
-and the tile requests one map load issues. Both belong in the ticket outcome so a later
-provider decision rests on numbers rather than on this plan's estimates.
+Two rules from the map plan bind it hardest. A stale position is drawn as a last-known marker,
+distinct by **shape and label, never by colour alone**, and is never animated, never moved and
+never counted as a live train. And nothing may be available only on the map — every marker's
+identity, status, position age and movement state must also appear in ordinary markup beside
+it.
 
-Do not implement PMTiles. It is the documented escape hatch, not this ticket's scope.
+Do not collapse the three membership facts into one "active" flag; the backend separated them
+precisely because they disagree, and MARC-508 observed all three disagreement cases live.
+
+### Carried forward from WEB-MAP-6
+
+The map must not be rebuilt by a data change. Markers belong in their own source and layer
+added once, updated with `setData` on the polling cadence — adding or removing a layer per
+train would undo what WEB-MAP-6 measured. Marker controls inherit the 44 px floor, and a
+rendered review at both viewports is required: WEB-MAP-6's three real defects were all found
+by looking at the screen, not by a passing test.
