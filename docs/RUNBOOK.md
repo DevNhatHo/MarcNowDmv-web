@@ -73,6 +73,17 @@ afterwards. The suite asserts behaviour, not particular trains or times, so it k
 as retained data changes. Results and limitations are in
 [the smoke record](reviews/WEB-012/README.md).
 
+## Map
+
+`/map` draws the alignments `GET /api/v1/shapes` publishes, so it needs the backend running.
+Leaflet 1.9.4 is a runtime dependency, imported dynamically so it never reaches a server
+render; there is no tile provider and no API key. Geometry is read on the catalog cadence
+because it is immutable for a schedule version.
+
+`npx playwright test` is bounded to four workers: each map load pulls the published geometry
+and the local backend runs a four-connection pool, so unbounded workers make the suite
+contend with itself rather than test anything.
+
 ## Live realtime data
 
 The API only reads the database; **nothing polls MTA unless the ingester runs**, and

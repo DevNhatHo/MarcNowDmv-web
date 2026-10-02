@@ -1,6 +1,6 @@
 # Frontend ticket index
 
-**The core local milestone is complete**: WEB-001 through WEB-012 are DONE (WEB-006 was merged into WEB-005), and WEB-013 through WEB-015 followed from findings made by running the app against the real backend. [WEB-MAP-1](WEB-MAP-1.md) is DONE. **The backend delivered both map gates on 2026-09-30** — see [backend proposals](../BACKEND_GAPS.md) — so WEB-MAP-2 through WEB-MAP-5 are unblocked. Recommended next: **[WEB-MAP-2](WEB-MAP-2.md)**. Resume IN_PROGRESS work before choosing a new ticket. Work is committed here and pushed to `origin/main`.
+**The core local milestone is complete**: WEB-001 through WEB-012 are DONE (WEB-006 was merged into WEB-005), and WEB-013 through WEB-015 followed from findings made by running the app against the real backend. [WEB-MAP-1](WEB-MAP-1.md) is DONE. **The backend delivered both map gates on 2026-09-30** — see [backend proposals](../BACKEND_GAPS.md) — so WEB-MAP-2 through WEB-MAP-5 are unblocked. Recommended next: **[WEB-MAP-3](WEB-MAP-3.md)**. Resume IN_PROGRESS work before choosing a new ticket. Work is committed here and pushed to `origin/main`.
 
 | Ticket | Title | Dependencies | Status |
 |---|---|---|---|
@@ -34,7 +34,7 @@ The original core tickets remain unchanged in order. [Map plan](../MAP_PLAN.md) 
 | Ticket | Title | Dependencies | Status |
 |---|---|---|---|
 | [WEB-MAP-1](WEB-MAP-1.md) | Map technology and data contract | WEB-012 | DONE |
-| [WEB-MAP-2](WEB-MAP-2.md) | Canonical MARC route rendering | WEB-MAP-1 + BACKEND-UI-03 (delivered) | NOT_STARTED |
+| [WEB-MAP-2](WEB-MAP-2.md) | Canonical MARC route rendering | WEB-MAP-1 + BACKEND-UI-03 (delivered) | DONE — stations owed to WEB-MAP-3 |
 | [WEB-MAP-3](WEB-MAP-3.md) | Active train markers with position trust | WEB-MAP-2 + BACKEND-UI-02 (delivered) | NOT_STARTED |
 | [WEB-MAP-4](WEB-MAP-4.md) | Train focus and observation-based follow | WEB-MAP-3 | NOT_STARTED |
 | [WEB-MAP-5](WEB-MAP-5.md) | Map and train-detail integration | WEB-MAP-4 | NOT_STARTED |

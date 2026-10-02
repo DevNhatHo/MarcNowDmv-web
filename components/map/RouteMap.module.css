@@ -1,0 +1,72 @@
+/*
+ * Map surface. A neutral background rather than a tile provider: MARC geometry on a plain
+ * canvas needs no API key, no per-view cost and no third-party request from a commuter's
+ * browser, and the question this answers — where does this line run — does not need streets
+ * underneath it.
+ */
+
+.frame {
+  position: relative;
+  block-size: 60vh;
+  min-block-size: 20rem;
+  border: var(--border-thin) solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.canvas {
+  block-size: 100%;
+  inline-size: 100%;
+  background: var(--color-canvas);
+}
+
+/* Leaflet draws its own focus styling; this keeps ours visible on the container. */
+.canvas:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: calc(var(--focus-offset) * -1);
+}
+
+.attribution {
+  margin-block-start: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--text-small);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin-block-start: var(--space-3);
+  font-size: var(--text-small);
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* A short line sample, not a colour chip alone: the label always accompanies it. */
+.swatch {
+  inline-size: 1.5rem;
+  block-size: 0;
+  border-block-start: 3px solid var(--color-information);
+}
+
+/*
+ * Leaflet ships 30px zoom buttons. The design plan requires 44px map controls, so they are
+ * resized here rather than exempted from the accessibility floor: a control that is hard to
+ * hit on a phone is hard to hit whoever shipped it.
+ */
+.frame :global(.leaflet-bar a) {
+  inline-size: var(--target-min);
+  block-size: var(--target-min);
+  line-height: var(--target-min);
+  font-size: var(--text-section);
+}
+
+.frame :global(.leaflet-bar a:focus-visible) {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: calc(var(--focus-offset) * -1);
+}

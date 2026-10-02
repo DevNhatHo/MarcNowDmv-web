@@ -24,6 +24,7 @@ import type {
 } from "../types/alerts";
 import type { CatalogPage, Route, Stop } from "../types/catalogs";
 import type { Departure, DeparturePage } from "../types/departures";
+import type { LineStringGeometry, Position, Shape, ShapePage } from "../types/geometry";
 import type {
   Calculated,
   CalculatedNextStop,
@@ -41,6 +42,7 @@ import type {
   TrainListPage,
   TrainPosition,
 } from "../types/trains";
+import { BackendError } from "./errors";
 import {
   enumText,
   flag,
@@ -587,6 +589,68 @@ export function parseDeparturePage(
     ),
     provenance: enumText(raw.provenance, `${path}.provenance`),
     data: list(raw.data, `${path}.data`, parseDeparture),
+    nextAfter: nullableText(raw.nextAfter, `${path}.nextAfter`),
+  };
+}
+
+/**
+ * A coordinate pair. Order is **longitude, latitude**; a transposed pair would place MARC in
+ * the Indian Ocean, so the structure is validated rather than assumed.
+ */
+function parseCoordinate(value: unknown, path: string): Position {
+  const pair = list(value, path, numeric);
+  if (pair.length < 2) {
+    throw new BackendError({
+      kind: "contract",
+      path,
+      detail: `expected a coordinate pair, received ${pair.length} values`,
+    });
+  }
+  return [pair[0], pair[1]];
+}
+
+function parseLineString(value: unknown, path: string): LineStringGeometry {
+  const raw = object(value, path);
+  const type = text(raw.type, `${path}.type`);
+  if (type !== "LineString") {
+    throw new BackendError({
+      kind: "contract",
+      path: `${path}.type`,
+      detail: `expected a LineString, received ${type}`,
+    });
+  }
+  const coordinates = list(raw.coordinates, `${path}.coordinates`, parseCoordinate);
+  // A line needs two points. One point is not a route, and drawing it would invent a
+  // segment that the feed does not contain.
+  if (coordinates.length < 2) {
+    throw new BackendError({
+      kind: "contract",
+      path: `${path}.coordinates`,
+      detail: `expected at least two positions, received ${coordinates.length}`,
+    });
+  }
+  return { type: "LineString", coordinates };
+}
+
+function parseShape(value: unknown, path: string): Shape {
+  const raw = object(value, path);
+  return {
+    shapeId: text(raw.shapeId, `${path}.shapeId`),
+    lengthMeters: numeric(raw.lengthMeters, `${path}.lengthMeters`),
+    pointCount: numeric(raw.pointCount, `${path}.pointCount`),
+    geometry: parseLineString(raw.geometry, `${path}.geometry`),
+  };
+}
+
+export function parseShapePage(value: unknown, path = "shapes"): ShapePage {
+  const raw = object(value, path);
+  return {
+    scheduleVersion: parseScheduleVersion(
+      raw.scheduleVersion,
+      `${path}.scheduleVersion`,
+    ),
+    provenance: enumText(raw.provenance, `${path}.provenance`),
+    data: list(raw.data, `${path}.data`, parseShape),
     nextAfter: nullableText(raw.nextAfter, `${path}.nextAfter`),
   };
 }

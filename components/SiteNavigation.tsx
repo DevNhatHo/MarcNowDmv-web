@@ -11,6 +11,7 @@ import styles from "./AppShell.module.css";
 const destinations = [
   { href: "/", label: "Pulse" },
   { href: "/trains", label: "Trains" },
+  { href: "/map", label: "Map" },
   { href: "/alerts", label: "Alerts" },
 ] as const;
 

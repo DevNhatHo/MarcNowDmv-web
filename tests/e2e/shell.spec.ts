@@ -10,6 +10,7 @@ import { expect, test } from "@playwright/test";
 const destinations = [
   { label: "Pulse", path: "/", heading: "MARC Pulse", title: "MARC Pulse · MARC Now DMV" },
   { label: "Trains", path: "/trains", heading: "Trains", title: "Trains · MARC Now DMV" },
+  { label: "Map", path: "/map", heading: "Map", title: "Map · MARC Now DMV" },
   { label: "Alerts", path: "/alerts", heading: "Alerts", title: "Alerts · MARC Now DMV" },
 ];
 

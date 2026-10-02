@@ -1,0 +1,19 @@
+{
+ "method": "GET",
+ "path": "/api/v1/shapes?limit=1",
+ "status": 200,
+ "headers": {"Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store"},
+ "body": {
+  "scheduleVersion": {"id": "1", "checksum": "e0d7d70270938ebfe2adcbe2fe779fbaf17c41a7c1a27a00fc72ba898e288ebc", "timezone": "America/New_York", "activatedAt": "2026-09-29T00:25:51.234457Z"},
+  "provenance": "SCHEDULED",
+  "data": [
+   {
+    "shapeId": "116473",
+    "lengthMeters": 54231.75,
+    "pointCount": 4,
+    "geometry": {"type": "LineString", "coordinates": [[-77.0, 39.0], [-76.95, 39.01], [-76.9, 39.02], [-76.85, 39.03]]}
+   }
+  ],
+  "nextAfter": "116473"
+ }
+}

@@ -12,6 +12,7 @@ import { expect, test, type Page } from "@playwright/test";
 const routes = [
   ["Pulse", "/"],
   ["Trains", "/trains"],
+  ["Map", "/map"],
   ["Alerts", "/alerts"],
 ] as const;
 

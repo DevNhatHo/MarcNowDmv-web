@@ -34,7 +34,7 @@ describe("application shell", () => {
     );
   });
 
-  it("links all three destinations from the header", () => {
+  it("links every destination from the header", () => {
     renderShell();
     const nav = screen.getByRole("navigation", { name: "Primary" });
     expect(
@@ -44,6 +44,8 @@ describe("application shell", () => {
     ).toEqual([
       ["Pulse", "/"],
       ["Trains", "/trains"],
+      // Map joined the navigation when WEB-MAP-2 delivered a usable route view.
+      ["Map", "/map"],
       ["Alerts", "/alerts"],
     ]);
   });

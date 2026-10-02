@@ -93,3 +93,4 @@ review.
 | WEB-013 | [reviews/WEB-013](reviews/WEB-013/README.md) |
 | WEB-014 | [reviews/WEB-014](reviews/WEB-014/README.md) |
 | WEB-015 | [reviews/WEB-015](reviews/WEB-015/README.md) |
+| WEB-MAP-2 | [reviews/WEB-MAP-2](reviews/WEB-MAP-2/README.md) |
