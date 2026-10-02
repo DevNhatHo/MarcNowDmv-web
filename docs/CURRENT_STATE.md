@@ -12,7 +12,11 @@ carries no `calculated` group. **[WEB-MAP-4](tickets/WEB-MAP-4.md) is DONE**: se
 and its own alignment are emphasised as a data update rather than a new layer, and follow moves
 the camera only for a strictly newer fresh observation — never for a last-known position, a
 repeated response or an out-of-order older one. The viewer's own pan or zoom pauses recentring
-at once. Recommended next: **[WEB-MAP-7](tickets/WEB-MAP-7.md)**. A **live movement addendum** on
+at once. **[WEB-MAP-7](tickets/WEB-MAP-7.md) is DONE**: markers transition between two observed
+positions and stop, never extrapolating past the newest one. Stale places rather than
+animates, repeated and out-of-order reports move nothing, reduced motion disables the
+transition, and the focused train follows its published alignment between two measured
+fractions. Recommended next: **[WEB-MAP-5](tickets/WEB-MAP-5.md)**, the last map ticket. A **live movement addendum** on
 2026-10-02 extended the map plan with marker-update and animation semantics, folded the
 in-place update rules into WEB-MAP-3 and the follow rules into WEB-MAP-4, and added
 [WEB-MAP-7](tickets/WEB-MAP-7.md) for smooth transitions between observed positions; it opened

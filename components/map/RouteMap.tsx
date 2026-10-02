@@ -6,6 +6,13 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import type { Shape } from "../../lib/types/geometry";
 import type { MapStation, MapTrain } from "../../lib/presentation/markers";
 import { drawableTrains, followTarget } from "../../lib/presentation/markers";
+import {
+  ease,
+  motionFor,
+  pointAlong,
+  type Point,
+  type Rendered,
+} from "../../lib/presentation/transition";
 import styles from "./RouteMap.module.css";
 
 /**
@@ -41,14 +48,22 @@ function reducedMotion(): boolean {
  * filled disc for a position the backend calls fresh, a hollow ring for one it still holds
  * but does not. Colour reinforces the distinction; it never carries it.
  */
-function trainFeatures(trains: readonly MapTrain[], selectedTrainId: string | null) {
+function trainFeatures(
+  trains: readonly MapTrain[],
+  selectedTrainId: string | null,
+  /** Where each marker is drawn right now, which during a transition is between reports. */
+  drawnAt: ReadonlyMap<string, Point>,
+) {
   return {
     type: "FeatureCollection" as const,
     features: drawableTrains(trains).map((train) => ({
       type: "Feature" as const,
       geometry: {
         type: "Point" as const,
-        coordinates: [train.place!.longitude, train.place!.latitude],
+        coordinates: drawnAt.get(train.id) ?? [
+          train.place!.longitude,
+          train.place!.latitude,
+        ],
       },
       properties: {
         // The backend's own train identity, so the right feature is updated and the right
@@ -105,6 +120,7 @@ export default function RouteMap({
   selectedShapeId = null,
   follow = false,
   onFollowInterrupted,
+  focusCourse = null,
 }: {
   shapes: readonly Shape[];
   stations: readonly MapStation[];
@@ -123,6 +139,12 @@ export default function RouteMap({
   follow?: boolean;
   /** Called when the user pans or zooms, so the screen can pause forced recentring. */
   onFollowInterrupted?: () => void;
+  /**
+   * The focused train's course along its published alignment between its previous and its
+   * newest measured progress, when the backend measured both. Supplied by the screen, which
+   * owns the contract reads; the renderer only draws along it.
+   */
+  focusCourse?: Point[] | null;
 }) {
   const container = useRef<HTMLDivElement | null>(null);
   const map = useRef<MapLibreMap | null>(null);
@@ -132,6 +154,9 @@ export default function RouteMap({
    * not move the camera.
    */
   const followedAt = useRef<number | null>(null);
+  /** Where each marker is drawn, and the report that put it there. */
+  const drawn = useRef(new Map<string, Rendered>());
+  const frame = useRef<number | null>(null);
   // Kept in a ref so the map's gesture listeners, bound once at creation, always call the
   // current callback without the map being torn down when the callback identity changes.
   const interrupted = useRef(onFollowInterrupted);
@@ -382,8 +407,97 @@ export default function RouteMap({
     const instance = map.current;
     if (!ready || instance === null) return;
     const source = instance.getSource<GeoJSONSource>(trainSourceId);
-    source?.setData(trainFeatures(trains, selectedTrainId));
-  }, [trains, selectedTrainId, ready]);
+    if (source === undefined) return;
+
+    const animate = !reducedMotion();
+    const started = performance.now();
+    // Shorter than the 30s polling cadence by a wide margin, so a transition always finishes
+    // before the next observation can arrive. Never scaled to distance: that would make a
+    // fast train look slow and read as a speed claim.
+    const duration = 900;
+
+    const courses = new Map<string, Point[]>();
+    const targets = new Map<
+      string,
+      { to: Point; reportedAt: number; from: number | null }
+    >();
+
+    for (const train of trains) {
+      const motion = motionFor(train, drawn.current.get(train.id), {
+        animate,
+        path: train.id === selectedTrainId ? (focusCourse ?? undefined) : undefined,
+      });
+      if (motion.kind === "hold") continue;
+      if (motion.kind === "place") {
+        drawn.current.set(train.id, { point: motion.to, reportedAt: motion.reportedAt });
+        continue;
+      }
+      courses.set(train.id, motion.path);
+      targets.set(train.id, {
+        to: motion.to,
+        reportedAt: motion.reportedAt,
+        // The report the marker is still *at* until it arrives. Holding this until the
+        // transition completes is what lets a poll arriving mid-flight resume the move
+        // instead of stranding the marker between two observations.
+        from: drawn.current.get(train.id)?.reportedAt ?? null,
+      });
+    }
+
+    // Markers for trains that left the response are dropped rather than retained as ghosts.
+    const present = new Set(trains.map((train) => train.id));
+    for (const id of [...drawn.current.keys()]) {
+      if (!present.has(id)) drawn.current.delete(id);
+    }
+
+    const points = () => {
+      const map_ = new Map<string, Point>();
+      for (const [id, rendered] of drawn.current) map_.set(id, rendered.point);
+      return map_;
+    };
+
+    if (courses.size === 0) {
+      source.setData(trainFeatures(trains, selectedTrainId, points()));
+      return;
+    }
+
+    /*
+     * The transition. It runs from the previous published position to the newest one and
+     * **stops there**. Nothing continues past the newest observation, whatever happens next:
+     * if no further report arrives, the marker simply stays where the last one put it.
+     */
+    const step = (at: number) => {
+      const t = Math.min(1, (at - started) / duration);
+      const eased = ease(t);
+      for (const [id, path] of courses) {
+        const target = targets.get(id)!;
+        // At t === 1 this is the published coordinate by identity, not by arithmetic.
+        const arrived = t >= 1;
+        const point = arrived ? target.to : pointAlong(path, eased);
+        // Only an arrived marker claims the new report. In flight it still carries the one
+        // it departed, so an effect re-run mid-transition resumes the move toward the newer
+        // observation rather than treating the marker as already there.
+        drawn.current.set(id, {
+          point,
+          reportedAt: arrived ? target.reportedAt : target.from,
+        });
+      }
+      source.setData(trainFeatures(trains, selectedTrainId, points()));
+      frame.current = t >= 1 ? null : requestAnimationFrame(step);
+    };
+
+    if (frame.current !== null) cancelAnimationFrame(frame.current);
+    frame.current = requestAnimationFrame(step);
+
+    return () => {
+      // A newer observation, a deselection or an unmount cancels the frame. Whatever was
+      // mid-flight is superseded by the next effect, which starts from where the marker is
+      // now and ends on the newer report, never between two of them.
+      if (frame.current !== null) {
+        cancelAnimationFrame(frame.current);
+        frame.current = null;
+      }
+    };
+  }, [trains, selectedTrainId, focusCourse, ready]);
 
   /*
    * Follow. Opt-in, and driven only by a **new fresh observation** of the selected train.

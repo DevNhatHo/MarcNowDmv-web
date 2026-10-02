@@ -1,6 +1,6 @@
 # WEB-MAP-7 — Smooth transitions between observed positions
 
-Status: NOT_STARTED
+Status: **DONE** (2026-10-02)
 
 Sequencing note: this runs **after [WEB-MAP-4](WEB-MAP-4.md) and before
 [WEB-MAP-5](WEB-MAP-5.md)**, despite its number, so WEB-MAP-5's integration review judges the
@@ -150,3 +150,87 @@ diff, update the ticket index, CURRENT_STATE.md, ARCHITECTURE.md, DESIGN.md and 
 preserve unrelated work. One completed-ticket commit with a WEB-MAP-7 subject. If the transition
 cannot be made to stop reliably at the newest observation, record that as a blocker and leave
 IN_PROGRESS rather than shipping a marker that keeps moving.
+
+## Outcome
+
+Markers transition between two observed positions and stop. The rule holds literally: every
+transition is bounded at both ends by a coordinate the backend published, and the marker stays
+where the newest report put it until a newer one exists.
+
+### Checks actually executed
+
+`npm run lint` clean, `npm run typecheck` clean, `npx vitest run` **268 tests in 17 files, 0
+failures**, `npm run build` succeeded, `npx playwright test` **78 passed** across both required
+viewports. Review evidence in `docs/reviews/WEB-MAP-7/`.
+
+### The refusals are the implementation
+
+`motionFor` is a pure function, and what it declines to do is the ticket:
+
+| Situation | Result |
+|---|---|
+| Stale position | **place**, never animate — a gliding last-known marker looks the most live while being the least true |
+| Repeated observation | **hold** |
+| Out-of-order older observation | **hold** — a marker can never move backward |
+| Reduced motion | **place** |
+| Same coordinate reported again | **place** — a stationary train gets no motion invented to make the map feel active |
+| No previous position | **place**, not flown in from nowhere |
+
+`pointAlong` returns the path's final point **by identity** at `t >= 1`, so a settled marker is
+on the published coordinate rather than a floating-point neighbour of it, and no fraction above
+1 can carry it further. Tests pin `pointAlong(path, 1.5)` and `pointAlong(path, 99)` to the
+endpoint.
+
+### Route-aware for the focused train, straight for the system map
+
+`routeCourse` reads the published alignment between the two fractions the backend measured.
+This is **rendering, not map matching**: MARC-502 did the matching against the full geometry
+and this only samples the line at the scalars it published. It uses `routeProgress.shapeId`,
+not `scheduled.shapeId`, because the two are allowed to disagree and a fraction only means
+something against the shape it was measured on. The endpoints are the train's own reported
+coordinates — the report is the fact, the alignment only the course between two facts.
+
+It is available for the **focused** train only, because `calculated` is deliberately absent
+from the trains list. The system map uses the straight transition this ticket accepts.
+Closing that is [BACKEND-UI-06](../BACKEND_GAPS.md); nothing is computed in the browser to
+work around it.
+
+### A defect found by reading the loop back, not by a test
+
+A poll arriving **mid-transition** would have stranded a marker between two observations. The
+in-flight marker was claiming the new report, so the next effect run saw "already there" and
+held, leaving it wherever the animation had reached.
+
+A marker now carries the report it **departed** until it arrives, so an interrupted transition
+resumes toward the newest observation and lands on it. That is the ticket's own requirement —
+"a transition interrupted by a newer observation ends at the newer one, never between" — and
+it was one re-read away from shipping broken. A test pins it.
+
+### Resource ownership moved, deliberately
+
+The focused train's detail read was lifted from the focus panel to the screen, because the
+route-aware course needs its measured progress and the renderer is the panel's sibling.
+`useSharedResource` now accepts a **null key**, meaning "nothing to read", so a screen can own
+a conditional resource without a conditional hook. With no selection nothing is requested,
+which the existing WEB-MAP-4 tests still assert.
+
+### Review evidence
+
+`SYNTHETIC-before-new-position`, `SYNTHETIC-mid-transition` and `SYNTHETIC-after-settled`
+capture one train receiving a newer position, with the mid shot taken **795 ms** into the
+900 ms transition and differing from both endpoints — so the marker was genuinely caught in
+flight rather than photographed after it landed.
+
+**The moved train is SYNTHETIC.** Its coordinate was shifted 0.25° west by a test intercept to
+force a visible transition. It is not an observed MARC movement and must not be read as one.
+The system, focused and reduced-motion captures are real.
+
+### Limitation
+
+The transition is a fixed 900 ms, chosen to finish well inside the 30 s polling cadence. It is
+deliberately not scaled to distance, which would read as a speed claim, but it also means a
+train that moved a long way covers it no faster than one that barely moved. That is a
+presentation choice, not a measurement, and the marker's position is never a claim between
+reports.
+
+No blockers. Next: [WEB-MAP-5](WEB-MAP-5.md) — map and train-detail integration.

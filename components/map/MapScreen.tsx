@@ -7,12 +7,13 @@ import {
   fetchRoutes,
   fetchShapes,
   fetchStops,
+  fetchTrainDetail,
   fetchTrains,
   type BackendError,
 } from "../../lib/api";
 import type { Route, Stop } from "../../lib/types/catalogs";
 import type { Shape, ShapePage } from "../../lib/types/geometry";
-import type { TrainListPage } from "../../lib/types/trains";
+import type { TrainDetail, TrainListPage } from "../../lib/types/trains";
 import {
   currentCount,
   mapStations,
@@ -20,11 +21,12 @@ import {
   routeNameMap,
   type MapTrain,
 } from "../../lib/presentation/markers";
+import { routeCourse, type Point } from "../../lib/presentation/transition";
 import { ActionButton, LoadingRows, Notice, describeFailure } from "../Feedback";
 import { useSharedResource } from "../useSharedResource";
 import RouteMap from "./RouteMap";
 import TrainMarkerList from "./TrainMarkerList";
-import FocusSection from "./FocusSection";
+import FocusPanel from "./FocusPanel";
 import styles from "./MapScreen.module.css";
 
 interface Loaded {
@@ -95,6 +97,21 @@ export default function MapScreen() {
    */
   const selectedId = params.get("trainId");
 
+  /*
+   * The focused train's detail. Owned here rather than by the panel, because the route-aware
+   * transition needs its measured progress and the renderer is a sibling of the panel. A null
+   * key means no selection, so nothing is requested while the system view is showing.
+   */
+  const loadFocus = useCallback(
+    (signal: AbortSignal) => fetchTrainDetail(selectedId ?? "", { limit: 200 }, { signal }),
+    [selectedId],
+  );
+  const focusResource = useSharedResource<TrainDetail>(
+    selectedId === null ? null : `map-focus:${selectedId}`,
+    "detail",
+    loadFocus,
+  );
+
   const [follow, setFollow] = useState(false);
   const [followPaused, setFollowPaused] = useState(false);
 
@@ -121,6 +138,63 @@ export default function MapScreen() {
     () => trains.find((train) => train.id === selectedId) ?? null,
     [trains, selectedId],
   );
+
+  /*
+   * The focused train's course along its own published alignment, between the progress the
+   * backend measured last time and the progress it measures now.
+   *
+   * This is **rendering, not map matching**. The backend measured both fractions against the
+   * full geometry in MARC-502; this reads the line it already published at the scalars it
+   * already published, and computes no position of its own. It is available for the focused
+   * train only, because `calculated` is deliberately absent from the trains list — the
+   * system map uses a straight transition, which the map plan accepts. Closing that is
+   * BACKEND-UI-06, and it must not be worked around in the browser.
+   *
+   * `routeProgress.shapeId` is used rather than `scheduled.shapeId`: they are allowed to
+   * disagree, and the fraction only means anything against the shape it was measured on.
+   */
+  /*
+   * The two measured fractions a route-aware course needs: the one the backend measured last
+   * time and the one it measures now. Adjusted during render rather than in an effect, so the
+   * course is settled before the renderer sees the new position.
+   */
+  const measured = focusResource.data?.calculated?.routeProgress ?? null;
+  const fractionNow =
+    measured !== null && measured.state === "MEASURED" ? measured.fractionAlong : null;
+  const [progressSeen, setProgressSeen] = useState<{
+    id: string;
+    previous: number | null;
+    current: number;
+  } | null>(null);
+  if (selectedId !== null && fractionNow !== null) {
+    if (progressSeen === null || progressSeen.id !== selectedId) {
+      // A newly focused train has no previous measurement, so its first move is straight.
+      setProgressSeen({ id: selectedId, previous: null, current: fractionNow });
+    } else if (progressSeen.current !== fractionNow) {
+      setProgressSeen({ id: selectedId, previous: progressSeen.current, current: fractionNow });
+    }
+  }
+
+  const focusCourse = useMemo<Point[] | null>(() => {
+    const train = selectedTrain;
+    if (train?.place == null || selectedId === null || measured === null) return null;
+    if (progressSeen === null || progressSeen.id !== selectedId) return null;
+    if (progressSeen.previous === null) return null;
+
+    const alignment = page?.data.find((shape) => shape.shapeId === measured.shapeId);
+    if (alignment === undefined) return null;
+
+    // The endpoints are the train's own reported coordinates; the alignment only supplies
+    // the course between them.
+    const to: Point = [train.place.longitude, train.place.latitude];
+    return routeCourse(
+      alignment.geometry.coordinates as Point[],
+      progressSeen.previous,
+      progressSeen.current,
+      to,
+      to,
+    );
+  }, [selectedTrain, selectedId, measured, progressSeen, page]);
 
   /*
    * Leaving focus restores the system view with the line filter intact, so exiting does not
@@ -224,16 +298,19 @@ export default function MapScreen() {
           selectedShapeId={selectedTrain?.shapeId ?? null}
           follow={follow && !followPaused}
           onFollowInterrupted={pauseFollow}
+          focusCourse={focusCourse}
         />
       ) : null}
 
       {selectedId !== null && selectedTrain !== null ? (
-        <FocusSection
-          id={selectedId}
+        <FocusPanel
           train={selectedTrain}
+          // A failed or in-flight detail read leaves the panel's own facts intact: identity,
+          // trust and official status come from the list and are unaffected by it.
+          detail={focusResource.data}
           stops={resource.data?.stops ?? []}
           follow={follow}
-          onFollowChange={(next) => {
+          onFollowChange={(next: boolean) => {
             setFollow(next);
             // Choosing to follow again is the deliberate resume the map plan requires.
             setFollowPaused(false);

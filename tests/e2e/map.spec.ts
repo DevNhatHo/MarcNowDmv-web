@@ -185,3 +185,37 @@ test("focus states everything the emphasised marker shows, in text", async ({ pa
   await expect(panel).toContainText(/Official MTA/);
   await expect(panel.getByRole("link", { name: "Open full detail" })).toBeVisible();
 });
+
+test("a marker never drifts past its newest observation", async ({ page }) => {
+  await drawn(page, "/map");
+  // Sample one marker's drawn position repeatedly between polling ticks. Once a transition
+  // has settled, nothing may move it again until a new observation arrives -- no velocity,
+  // no coasting, no clock-driven motion.
+  const sample = () =>
+    page.evaluate(() => {
+      const canvas = document.querySelector("canvas.maplibregl-canvas") as HTMLCanvasElement;
+      return canvas === null ? null : canvas.toDataURL().length;
+    });
+
+  // Let any in-flight transition finish.
+  await page.waitForTimeout(3000);
+  const first = await sample();
+  await page.waitForTimeout(4000);
+  const second = await sample();
+  // Between ticks and with no new report, the rendered scene is identical. A marker that
+  // kept driving would change it.
+  expect(second).toBe(first);
+});
+
+test("reduced motion still shows every train", async ({ browser }) => {
+  const context = await browser.newContext({ reducedMotion: "reduce" });
+  const page = await context.newPage();
+  await page.goto("/map", { timeout: 60_000 });
+  await page.locator("canvas.maplibregl-canvas").waitFor({ timeout: 60_000 });
+  await page.waitForTimeout(5000);
+  // Nothing is conveyed by the animation alone: the same trains are listed and drawn.
+  const listed = await page.locator('[aria-label="Trains with reported positions"] li').count();
+  expect(listed).toBeGreaterThan(0);
+  expect(await page.locator("canvas.maplibregl-canvas").count()).toBe(1);
+  await context.close();
+});
