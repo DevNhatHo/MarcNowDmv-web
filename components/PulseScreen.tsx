@@ -15,6 +15,10 @@ import {
 import { formatServiceDate } from "../lib/presentation/time";
 import { ActionButton, LoadingRows, Notice, describeFailure } from "./Feedback";
 import { useSharedResource } from "./useSharedResource";
+import { useWideViewport } from "./useWideViewport";
+import HomeMap from "./home/HomeMap";
+import HomeTrains from "./home/HomeTrains";
+import home from "./home/Home.module.css";
 import Freshness from "./Freshness";
 import styles from "./PulseScreen.module.css";
 
@@ -42,6 +46,12 @@ export default function PulseScreen() {
   const load = useCallback((signal: AbortSignal) => loadOverview(signal), []);
   const resource = useSharedResource<Overview>("pulse", "trains", load);
   const data = resource.data;
+  /*
+   * The desktop composition is additive. Narrow viewports render exactly what they rendered
+   * before, and the extra panels are not mounted at all rather than mounted and hidden, so a
+   * phone never pays for the map's geometry read.
+   */
+  const wide = useWideViewport();
 
   const names = useMemo(() => {
     const map = new Map<string, string>();
@@ -65,9 +75,12 @@ export default function PulseScreen() {
     "HEALTHY";
 
   return (
-    <div className={styles.screen}>
+    <div className={`${styles.screen} ${home.screenWide}`}>
       <p className={styles.question}>How is MARC running right now?</p>
       <h1 className={styles.title}>MARC Pulse</h1>
+
+      <div className={home.layout}>
+        <div>
 
       {data ? (
         <p className={styles.coverage}>
@@ -140,6 +153,26 @@ export default function PulseScreen() {
           </section>
         </>
       ) : null}
+        </div>
+
+        {/*
+          * The two added panels. Both are fed by the page this screen already fetched: the
+          * trains panel issues no request at all, and the map panel adds only the catalog-
+          * cadence geometry read any map needs. Neither duplicates a rule — the rows are the
+          * list's `TrainRow`, the markers are the map's own presentation, and selection and
+          * follow stay on `/map`.
+          */}
+        {wide && data ? (
+          <>
+            <HomeMap
+              trains={data.trains.data}
+              routes={data.routes}
+              evaluatedAt={data.trains.evaluatedAt}
+            />
+            <HomeTrains page={data.trains} routes={data.routes} />
+          </>
+        ) : null}
+      </div>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 # WEB-UI-07 — Desktop glanceable composition
 
-Status: NOT_STARTED
+Status: **DONE** (2026-10-03)
 
 Sequencing note: this runs **after [WEB-UI-05](WEB-UI-05.md) and before
 [WEB-UI-06](WEB-UI-06.md)**, so the review ticket judges the finished desktop rather than
@@ -95,3 +95,46 @@ equivalence is not being claimed. Apply the [DESIGN.md](../DESIGN.md) checklist.
 Acceptance criteria and all required checks actually pass, with the request-count comparison
 recorded. Update the ticket index and CURRENT_STATE.md. One completed-ticket commit with a
 WEB-UI-07 subject.
+
+## Outcome
+
+At desktop width `/` composes service status on the left, the map in the centre and trains on
+the right. Below 64rem it is byte-for-byte the screen it was.
+
+### Checks actually executed
+
+`npm run lint` clean, `npm run typecheck` clean, `npx vitest run` **329 tests in 22 files, 0
+failures**, `npm run build` succeeded, `npx playwright test` **84 passed, 4 skipped, 0 failed**.
+Rendered review in `docs/reviews/WEB-UI-07/`.
+
+### Requests, measured
+
+One read of each resource — trains, routes, alerts, shapes, stops — at desktop width, and
+**no shapes or stops at all** below the breakpoint. The trains panel issues nothing: it renders
+the page Pulse already fetched. No per-row or per-marker request exists.
+
+### Two defects the review caught
+
+**The map column collapsed to about ten pixels.** The Pulse screen is a 45rem reading column
+and three panes do not fit in it; the first capture shows "Open the full map" rendering one
+letter per line. The screen now widens to the viewport at desktop width. Measured: 528 px at
+1280 and 640 px at 1600.
+
+**The catalog was read twice** — the map panel fetched routes the screen already had, so
+composing two screens cost more than either of them. It now takes routes as a prop, and a test
+pins one catalog read.
+
+### Nothing duplicated
+
+Rows are the list's `TrainRow`, markers are the map's own presentation, and "relevant now" is
+the same `isRelevantNow` the list uses. Selection, focus and follow stay on `/map`. All four
+routes remain reachable and complete.
+
+### One behaviour change recorded rather than hidden
+
+`/` now loads a basemap at desktop width, so the e2e test asserting "no screen without a map
+requests a basemap" no longer covers it. The rule it protects is unchanged and is now stated
+precisely: `/trains` and `/alerts` must pull no map code or tiles at any width, and a new test
+asserts the home composition draws its map **only** at desktop width.
+
+No blockers. Next: [WEB-UI-08](WEB-UI-08.md) — Pulse service-state awareness.

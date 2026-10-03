@@ -1,0 +1,74 @@
+/*
+ * The desktop composition: status left, map centre and dominant, trains right.
+ *
+ * Progressive enhancement only. Below 64rem the panels are not rendered at all, so a phone
+ * never pays for the map's geometry read, and the Pulse screen keeps exactly the single-column
+ * form it already had.
+ */
+.layout {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.screenWide {
+  --home-width: min(84rem, calc(100vw - 2 * var(--gutter)));
+}
+
+/*
+ * The Pulse screen is a 45rem reading column, which three panes cannot fit in — the first
+ * attempt squeezed the map to about ten pixels wide. At desktop width the screen widens to
+ * the viewport instead, centred by a negative margin against its narrower parent.
+ */
+@media (min-width: 64rem) {
+  .screenWide {
+    max-inline-size: none;
+    inline-size: var(--home-width);
+    margin-inline: calc((100% - var(--home-width)) / 2);
+  }
+
+  .layout {
+    grid-template-columns: minmax(16rem, 20rem) minmax(0, 1fr) minmax(16rem, 21rem);
+    align-items: start;
+  }
+}
+
+.panelHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-block-end: var(--space-3);
+}
+
+.panelTitle {
+  margin: 0;
+  font-size: var(--text-section);
+}
+
+/* A standalone navigation target, so it carries the 44px floor itself. */
+.panelLink {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--target-min);
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+}
+
+.panelNote {
+  margin-block: 0 var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--text-small);
+}
+
+.mapPanel,
+.trainsPanel {
+  min-inline-size: 0;
+}
+
+.rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-block-start: var(--border-thin) solid var(--color-border);
+}

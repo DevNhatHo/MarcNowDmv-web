@@ -92,17 +92,46 @@ test("filtering a line updates the drawn data without rebuilding the map", async
 });
 
 test("no screen without a map requests a basemap", async ({ page }) => {
+  /*
+   * `/` is deliberately excluded since WEB-UI-07: at desktop width the home screen composes a
+   * map panel, so it loads a basemap by design. The rule being protected is unchanged —
+   * screens with no map must not pull map code or tiles — and `/trains` and `/alerts` have no
+   * map at any width.
+   */
   const requested: string[] = [];
   page.on("request", (request) => {
     if (tile.test(request.url())) requested.push(request.url());
   });
-  for (const path of ["/", "/trains", "/alerts"]) {
+  for (const path of ["/trains", "/alerts"]) {
     await page.goto(path, { timeout: 60_000 });
     await page.waitForLoadState("domcontentloaded");
     await page.waitForTimeout(2000);
   }
   expect(requested).toEqual([]);
   expect(await page.locator("canvas.maplibregl-canvas").count()).toBe(0);
+});
+
+test("the home composition draws its map only at desktop width", async ({ browser }) => {
+  // The panels are not rendered below the breakpoint, so a phone pulls no tiles for them.
+  const narrow = await browser.newContext({ viewport: { width: 360, height: 800 } });
+  const phone = await narrow.newPage();
+  const phoneTiles: string[] = [];
+  phone.on("request", (r) => {
+    if (tile.test(r.url())) phoneTiles.push(r.url());
+  });
+  await phone.goto("/", { timeout: 60_000 });
+  await phone.waitForLoadState("domcontentloaded");
+  await phone.waitForTimeout(4000);
+  expect(phoneTiles).toEqual([]);
+  expect(await phone.locator("canvas.maplibregl-canvas").count()).toBe(0);
+  await narrow.close();
+
+  const wide = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const desktop = await wide.newPage();
+  await desktop.goto("/", { timeout: 60_000 });
+  await desktop.locator("canvas.maplibregl-canvas").waitFor({ timeout: 60_000 });
+  expect(await desktop.locator("canvas.maplibregl-canvas").count()).toBe(1);
+  await wide.close();
 });
 
 test("the train list offers every position as text", async ({ page }) => {

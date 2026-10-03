@@ -104,3 +104,4 @@ review.
 | WEB-UI-03 | [reviews/WEB-UI-03](reviews/WEB-UI-03/README.md) — contains **SYNTHETIC** density fixtures; weekday capture pending |
 | WEB-UI-04 | [reviews/WEB-UI-04](reviews/WEB-UI-04/README.md) |
 | WEB-UI-05 | [reviews/WEB-UI-05](reviews/WEB-UI-05/README.md) |
+| WEB-UI-07 | [reviews/WEB-UI-07](reviews/WEB-UI-07/README.md) |
