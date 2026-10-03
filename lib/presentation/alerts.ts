@@ -128,3 +128,31 @@ export function periodLabel(
   if (start === null && end !== null) return `Until ${end}`;
   return `${start} to ${end}`;
 }
+
+/**
+ * A short scope line for an advisory's summary — the stations and lines the operator named.
+ *
+ * It comes from `informedEntity`, **never from the title**. The operator's titles read like
+ * "MARC Odenton Station update - Parking closure for Phase 1 of garage construction", and
+ * splitting that prose into a subject and a place would be inventing structure the feed did
+ * not publish. The selectors already say what the advisory applies to.
+ *
+ * Duplicates are collapsed and the list is capped, with the remainder counted rather than
+ * dropped silently, because an advisory naming eleven stops should not push its own title off
+ * the screen. The full list stays available in the expanded card.
+ */
+export function scopeSummary(
+  selectors: readonly AlertSelector[],
+  names: { routes: Map<string, string>; stops: Map<string, string> },
+  limit = 2,
+): string | null {
+  const seen: string[] = [];
+  for (const selector of selectors) {
+    const label = selectorLabel(selector, names);
+    if (label === "Scope not described") continue;
+    if (!seen.includes(label)) seen.push(label);
+  }
+  if (seen.length === 0) return null;
+  if (seen.length <= limit) return seen.join(" · ");
+  return `${seen.slice(0, limit).join(" · ")} and ${seen.length - limit} more`;
+}

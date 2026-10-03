@@ -1,6 +1,6 @@
 # WEB-UI-02 — Alerts: progressive disclosure
 
-Status: NOT_STARTED
+Status: **DONE** (2026-10-03)
 
 Sequencing note: this runs **before** the train and map tickets, against the suggested order,
 because it is the measured largest win in the app and is contained to two components.
@@ -100,3 +100,56 @@ height change. Apply the [DESIGN.md](../DESIGN.md) checklist.
 Acceptance criteria and all required checks actually pass, with the before/after heights
 recorded. Update the ticket index and CURRENT_STATE.md. One completed-ticket commit with a
 WEB-UI-02 subject.
+
+## Outcome
+
+An advisory is now a summary with the operator's full notice one action away.
+
+### The measurement
+
+Per-advisory height at 360×800, measured the same way before and after:
+**1,051 px → 246 px, a 77% reduction.** The feed carried 11 advisories then and 5 now, so
+only the per-advisory figure is comparable. Opening one adds about 850 px — paid by the reader
+who asked for it rather than by everyone on arrival.
+
+### Checks actually executed
+
+`npm run lint` clean, `npm run typecheck` clean, `npx vitest run` **294 tests in 19 files, 0
+failures**, `npm run build` succeeded, `npx playwright test` **80 passed, 4 skipped, 0 failed**.
+Rendered review in `docs/reviews/WEB-UI-02/`.
+
+### The title was not split, and the reference was still met
+
+The [reference](../design-reference/screens-desktop-and-mobile.png) shows "Parking closure" over
+"Odenton Station". The real title is *"MARC Odenton Station update - Parking closure for Phase 1
+of garage construction"*, and producing those two lines from it means parsing operator prose
+into fields the feed never published.
+
+The title therefore stays whole, and the scope line comes from `informedEntity`: in the capture
+**"ODENTON MARC sb · ODENTON MARC nb"**, resolved from stop ids `11985` and `11992`. A route
+selector renders as "PENN - WASHINGTON". The result looks close to the reference and claims
+nothing the operator did not publish.
+
+`scopeSummary` collapses duplicate selectors and counts the remainder past two, so an advisory
+naming eleven stops cannot push its own title off the screen; the full list stays in the body.
+
+### Nothing was hidden
+
+The full notice is in the document in both states — asserted by a test, and re-verified in the
+review pass. The preview is clamped by CSS rather than cut from the string, and is `aria-hidden`
+so the notice is not announced twice. The operator's link lives in the body, never the summary,
+so no control nests inside another.
+
+Effect is a quiet outlined chip rather than a filled severity colour: this feed's effects are
+mostly "Other effect", and colouring them would imply a severity ranking the operator never
+published.
+
+### Three existing tests failed, all correctly
+
+They asserted the old structure: the degraded wording changed, the notice now appears twice in
+the DOM, and the "no description" caveat is inside a collapsed disclosure. Each was updated to
+the new structure rather than loosened — the markup test now asserts **every** occurrence is
+escaped, which is stronger than the original.
+
+No blockers. Next: [WEB-UI-03](WEB-UI-03.md) — compact train rows and an honest Now.
+**It must be captured on a weekday**; today is a Saturday with 18 trains against a weekday's 97.

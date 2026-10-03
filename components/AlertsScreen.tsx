@@ -118,16 +118,22 @@ export default function AlertsScreen() {
         </p>
       ) : null}
 
-      {/* A degraded feed is still usable, so its content stays visible and labelled. */}
-      {page && feedState === "DEGRADED" ? (
+      {/*
+        * A degraded feed is still usable, so its content stays visible and labelled. The
+        * strip is compact but not quiet: this is a real limitation on what the list below can
+        * be trusted to contain, and it is marked by an icon, a rule and its wording as well
+        * as by colour.
+        */}
+      {page && (feedState === "DEGRADED" || feedState === "STALE") ? (
         <p className={styles.degraded}>
-          Alert source degraded. These advisories are what was last received and may be
-          incomplete.
-        </p>
-      ) : null}
-      {page && feedState === "STALE" ? (
-        <p className={styles.degraded}>
-          Alert information is out of date. These advisories are what was last received.
+          <span className={styles.degradedMark} aria-hidden="true">
+            !
+          </span>
+          <span>
+            {feedState === "DEGRADED"
+              ? "Alert data may be incomplete. The operator feed is degraded, so these advisories are what was last received."
+              : "Alert information is out of date. These advisories are what was last received."}
+          </span>
         </p>
       ) : null}
 

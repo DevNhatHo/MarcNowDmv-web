@@ -1,4 +1,5 @@
 import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import AlertsScreen from "../components/AlertsScreen";
 import {
@@ -6,6 +7,7 @@ import {
   effectLabel,
   periodLabel,
   preferredText,
+  scopeSummary,
   safeLink,
   selectorLabel,
 } from "../lib/presentation/alerts";
@@ -163,7 +165,13 @@ describe("alerts screen", () => {
     const { container } = render(<AlertsScreen />);
     await screen.findByRole("list", { name: "MARC advisories" });
     // The markup is visible as characters and produced no elements.
-    expect(screen.getByText(/<img src=x onerror=alert\(1\)> and <b>bold<\/b>/)).toBeVisible();
+    // The notice now appears twice in the document: a clamped preview in the summary, which
+    // is hidden from assistive technology, and the real text in the disclosure body. Both
+    // must be escaped, so this asserts every occurrence rather than picking one.
+    const occurrences = screen.getAllByText(
+      /<img src=x onerror=alert\(1\)> and <b>bold<\/b>/,
+    );
+    expect(occurrences.length).toBeGreaterThan(0);
     expect(container.querySelector("img")).toBeNull();
     expect(container.querySelector("b")).toBeNull();
   });
@@ -207,7 +215,7 @@ describe("alerts screen", () => {
   it("keeps a degraded feed's advisories visible and labelled, not offline", async () => {
     serve(withFeedState(mutableBody("alerts"), "DEGRADED"));
     render(<AlertsScreen />);
-    expect(await screen.findByText(/Alert source degraded/)).toBeVisible();
+    expect(await screen.findByText(/Alert data may be incomplete/)).toBeVisible();
     // The content is still shown; degraded is not the same as unavailable.
     expect(
       screen.getByRole("list", { name: "MARC advisories" }).querySelectorAll(":scope > li"),
@@ -233,7 +241,11 @@ describe("alerts screen", () => {
     serve(body);
     render(<AlertsScreen />);
     expect(await screen.findByText("Advisory published without a title")).toBeVisible();
-    expect(screen.getByText(/No description was published/)).toBeVisible();
+    // Inside the collapsed disclosure: present and reachable, not visible until opened.
+    const caveat = screen.getByText(/No description was published/);
+    expect(caveat).toBeInTheDocument();
+    await userEvent.click(screen.getByText("Advisory published without a title"));
+    expect(caveat).toBeVisible();
     expect(screen.getByText(/did not say what this advisory applies to/)).toBeVisible();
   });
 
@@ -293,5 +305,98 @@ describe("alerts screen", () => {
     render(<AlertsScreen />);
     expect(await screen.findByText("Realtime information is unavailable")).toBeVisible();
     expect(screen.getByRole("button", { name: "Try again" })).toBeVisible();
+  });
+});
+
+describe("the collapsed advisory", () => {
+  it("keeps the operator's title whole rather than splitting it into fields", async () => {
+    serve(capturedBody("alerts"));
+    render(<AlertsScreen />);
+    // The design reference shows a short subject over a station name. Producing that would
+    // mean parsing the operator's prose, so the title stays verbatim and the scope comes
+    // from informedEntity instead.
+    // The operator publishes two advisories under this same headline, which is why the
+    // suite already has a test about telling them apart. Every one of them keeps it whole.
+    const titles = await screen.findAllByText(
+      /MARC Odenton Station update - Parking closure for Phase 1 of garage construction/,
+    );
+    expect(titles.length).toBeGreaterThan(0);
+    for (const title of titles) expect(title.tagName).toBe("H2");
+  });
+
+  it("holds the full notice in the document while collapsed", async () => {
+    serve(capturedBody("alerts"));
+    const { container } = render(<AlertsScreen />);
+    await screen.findAllByRole("listitem");
+    const details = container.querySelector("details");
+    expect(details?.open).toBe(false);
+    // Disclosed, not withheld: a reader who opens it loses nothing, and a reader who does
+    // not is never shown a truncated string presented as the whole notice.
+    expect(container.textContent ?? "").toContain("overflow lot on the north side of Route");
+  });
+
+  it("opens to the operator's wording, and closes again", async () => {
+    serve(capturedBody("alerts"));
+    const { container } = render(<AlertsScreen />);
+    const first = (await screen.findAllByText(/Read more/))[0];
+    await userEvent.click(first);
+    expect(container.querySelector("details")?.open).toBe(true);
+    await userEvent.click(screen.getAllByText(/Show less/)[0]);
+    expect(container.querySelector("details")?.open).toBe(false);
+  });
+
+  it("describes scope from the operator's selectors, never from the title", async () => {
+    serve(capturedBody("alerts"));
+    render(<AlertsScreen />);
+    await screen.findAllByRole("listitem");
+    // The captured Odenton advisory names two stop ids and no route, so the summary scope
+    // must be built from those rather than from the words in the headline.
+    const summaries = screen.getAllByText(/^Stop \d+|·/);
+    expect(summaries.length).toBeGreaterThan(0);
+  });
+
+  it("keeps the operator's link out of the summary, so no control nests in another", async () => {
+    serve(capturedBody("alerts"));
+    const { container } = render(<AlertsScreen />);
+    await screen.findAllByRole("listitem");
+    for (const summary of container.querySelectorAll("summary")) {
+      expect(summary.querySelector("a")).toBeNull();
+      expect(summary.querySelector("button")).toBeNull();
+    }
+  });
+});
+
+describe("scope summaries", () => {
+  it("names the stops the operator listed", () => {
+    const stops = new Map([["11985", "ODENTON"], ["11992", "BOWIE STATE"]]);
+    expect(
+      scopeSummary(
+        [
+          { agencyId: null, routeId: null, routeType: null, stopId: "11985", directionId: null, trip: null },
+          { agencyId: null, routeId: null, routeType: null, stopId: "11992", directionId: null, trip: null },
+        ],
+        { routes: new Map(), stops },
+      ),
+    ).toBe("ODENTON · BOWIE STATE");
+  });
+
+  it("collapses duplicates rather than repeating a station", () => {
+    const stops = new Map([["11985", "ODENTON"]]);
+    const one = { agencyId: null, routeId: null, routeType: null, stopId: "11985", directionId: null, trip: null };
+    expect(scopeSummary([one, one, one], { routes: new Map(), stops })).toBe("ODENTON");
+  });
+
+  it("counts the remainder instead of letting scope push the title off screen", () => {
+    const stops = new Map([["1", "A"], ["2", "B"], ["3", "C"], ["4", "D"]]);
+    const sel = (id: string) => ({
+      agencyId: null, routeId: null, routeType: null, stopId: id, directionId: null, trip: null,
+    });
+    expect(
+      scopeSummary([sel("1"), sel("2"), sel("3"), sel("4")], { routes: new Map(), stops }),
+    ).toBe("A · B and 2 more");
+  });
+
+  it("is absent when the operator described no scope", () => {
+    expect(scopeSummary([], { routes: new Map(), stops: new Map() })).toBeNull();
   });
 });

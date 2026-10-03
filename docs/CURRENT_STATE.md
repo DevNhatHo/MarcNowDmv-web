@@ -24,8 +24,10 @@ asserts the screen stays complete. A **UI refinement milestone** was planned on 
 direction "less, but better" in [DESIGN.md](DESIGN.md). It refines the shipped UI and restarts
 nothing. **[WEB-UI-01](tickets/WEB-UI-01.md) is DONE**: the palette, shape tokens, a quiet refresh line
 and a mobile bottom navigation are in place, with no component edited to adopt the palette
-because only token *values* changed. **Recommended next: [WEB-UI-02](tickets/WEB-UI-02.md)** —
-alerts, the measured largest win. A **live movement addendum** on
+because only token *values* changed. **[WEB-UI-02](tickets/WEB-UI-02.md) is DONE**: an advisory is now a summary with the operator's
+full notice one action away, measured at **1,051 px → 246 px per advisory**. The scope line
+comes from `informedEntity`, not from parsing the operator's title.
+**Recommended next: [WEB-UI-03](tickets/WEB-UI-03.md)** — compact train rows and an honest Now. A **live movement addendum** on
 2026-10-02 extended the map plan with marker-update and animation semantics, folded the
 in-place update rules into WEB-MAP-3 and the follow rules into WEB-MAP-4, and added
 [WEB-MAP-7](tickets/WEB-MAP-7.md) for smooth transitions between observed positions; it opened
@@ -340,10 +342,25 @@ then swapped the renderer by changing those same two files and nothing else.
 Read AGENTS.md, this file, [DESIGN.md](DESIGN.md) and
 [WEB-UI-02](tickets/WEB-UI-02.md), and inspect `git status` in both repositories.
 
-**Start WEB-UI-02 — alerts: progressive disclosure.** It is the measured largest win in the app
-and is contained to two components: `/alerts` is 5,823 px for 11 advisories because the
-operator's `descriptionText` (1,059 chars on the Odenton advisory) renders inline against an
-80-char title.
+**Start WEB-UI-03 — compact train rows and an honest Now.** Rows are 113 px today and the list
+is the whole service date.
+
+**Capture it on a weekday.** Today is a Saturday with 18 trains against a weekday's 97, and row
+density is the thing being judged.
+
+### The design reference arrived (2026-10-03)
+
+The mockups are in [`design-reference/`](design-reference/) and everything in them is synthetic.
+[DESIGN.md](DESIGN.md) tabulates the seven points where following them literally would make the
+product lie — most importantly `Penn → Washington` on every row, a prominent `+8 min`, "5 trains
+active", and "Near Odenton, MD", which would be reverse geocoding the backend does not do.
+
+The reference's strongest idea is not visual: Pulse states for service ended, between trains and
+in service. [WEB-UI-08](tickets/WEB-UI-08.md) owns it.
+
+The feed publishes `color: FF8000` for **all three** routes, so the reference's per-line colours
+are not the operator's. Distinct colours may be assigned as ours, never presented as the
+operator's, and never the only way a line is identified.
 
 ### Carried forward from WEB-UI-01
 

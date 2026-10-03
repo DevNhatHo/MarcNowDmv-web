@@ -100,3 +100,4 @@ review.
 | WEB-MAP-7 | [reviews/WEB-MAP-7](reviews/WEB-MAP-7/README.md) — contains clearly labelled **SYNTHETIC** frames |
 | WEB-MAP-5 | [reviews/WEB-MAP-5](reviews/WEB-MAP-5/README.md) |
 | WEB-UI-01 | [reviews/WEB-UI-01](reviews/WEB-UI-01/README.md) |
+| WEB-UI-02 | [reviews/WEB-UI-02](reviews/WEB-UI-02/README.md) |

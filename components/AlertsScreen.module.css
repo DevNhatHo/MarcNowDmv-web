@@ -26,15 +26,34 @@
   font-size: var(--text-small);
 }
 
+/*
+ * A strip rather than a card. Compacting it must not make it look optional, so it keeps the
+ * warning colour, gains a leading mark and a rule, and still reads as a limitation in
+ * greyscale because the wording carries it.
+ */
 .degraded {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
   margin-block-end: var(--space-4);
-  padding: var(--space-3) var(--space-4);
-  border: var(--border-thin) solid var(--color-border);
-  border-radius: var(--radius-medium);
-  background: var(--color-surface);
+  padding-block: var(--space-2);
+  border-block-end: var(--border-thin) solid var(--color-border);
   color: var(--color-warning);
   font-size: var(--text-small);
   font-weight: var(--weight-medium);
+}
+
+.degradedMark {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  border: var(--border-thin) solid currentColor;
+  border-radius: 50%;
+  font-size: var(--text-small);
+  line-height: 1;
 }
 
 .scopeNote {
