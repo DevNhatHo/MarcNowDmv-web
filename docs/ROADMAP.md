@@ -28,3 +28,16 @@ WEB-MAP-2 additionally requires delivered BACKEND-UI-03 geometry; WEB-MAP-3 requ
 ## Map SDK
 
 **MapLibre GL JS** is the chosen renderer from 2026-10-01, with a no-API-key hosted vector basemap initially and self-hosted PMTiles as the documented future option; the ADR and the comparison against ArcGIS, Mapbox, Leaflet and OpenLayers are in [MAP_PLAN.md](MAP_PLAN.md), and [WEB-MAP-6](tickets/WEB-MAP-6.md) migrates the shipped Leaflet map. The renderer renders; the backend remains the source of all geometry, position, membership, movement and freshness.
+
+## UI refinement milestone (2026-10-03)
+
+After the map milestone, a preferred visual direction — **less, but better** — was set and
+planned as WEB-UI-01 to WEB-UI-06. It refines the shipped UI and restarts nothing; see
+[DESIGN.md](DESIGN.md) for the direction and the measured starting point, and the
+[ticket index](tickets/README.md) for the order.
+
+Order is WEB-UI-01 → WEB-UI-02 → WEB-UI-03 → WEB-UI-04 → WEB-UI-05 → WEB-UI-06, with **alerts
+brought forward** because it is the measured largest win and is contained to two components.
+
+Still outside this milestone, unchanged: authentication, accounts, notifications, analytics,
+historical intelligence, dark mode and AWS. Completing it does not authorize cloud deployment.

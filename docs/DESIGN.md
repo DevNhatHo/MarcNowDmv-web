@@ -183,3 +183,63 @@ Production Chrome review at 360×800 and 1280×900: no overflow, disclosure heig
 Measured contrast against canvas / surface: primary text 15.29 / 16.26, secondary/unknown 6.07 / 6.46, positive 6.85 / 7.28, information/focus 7.38 / 7.85, warning 6.08 / 6.46, critical 6.86 / 7.30. All tested text pairs exceed 4.5:1; the focus ring exceeds 3:1. The subtle border is decorative grouping, not the sole indication of an interactive control. Controls must retain text/affordances and visible focus; do not use that pale border alone to convey a required state.
 
 Native disclosure text and triangle convey interaction without relying on color. Unknown/stale wording stays distinct from healthy in the grayscale review. No shadow, status-color surfaces or decorative animation was added. This is not a full screen-reader/browser accessibility certification. [Evidence and review limitations](reviews/WEB-002/README.md).
+
+## Visual direction, 2026-10-03: less, but better
+
+A refinement direction, not a restart. The information architecture, the four screens and every
+data-trust rule stand; what changes is weight, density and when detail appears.
+
+MARC Now DMV should feel modern, calm, trustworthy and commuter-oriented. It should not read as
+an operations console: no dashboard chrome, no badge rows, no card for every value.
+
+### Palette
+
+Measured against `#FFFFFF` surface and `#F8FAFC` background; all clear WCAG AA for normal text.
+
+| Role | Value | On surface | On background |
+|---|---|---|---|
+| brand | `#155EEF` | 5.41 | 5.17 |
+| brand hover | `#0F4CCB` | 7.20 | 6.88 |
+| text | `#0F172A` | 17.85 | 17.06 |
+| text secondary | `#475569` | 7.58 | 7.24 |
+| muted / unknown | `#64748B` | 4.76 | 4.55 |
+| healthy | `#15803D` | 5.02 | 4.79 |
+| warning / degraded | `#B45309` | 5.02 | 4.80 |
+| delay / critical | `#B42318` | 6.57 | 6.28 |
+| border | `#E2E8F0` | 1.23 (non-text) | — |
+
+This palette is **uniformly lower contrast than the one it replaces** — brand falls from 7.85
+to 5.41 — so it is a deliberate softening that still clears AA, not an improvement in
+legibility. `muted` at 4.55 on the background is the tightest value in the set, and any later
+change to the background must re-run these figures.
+
+`muted` and `unknown` are the **same colour**, which is the clearest possible reason why an
+unknown or stale state must always say so in words.
+
+Colour carries meaning but never carries it alone, and ordinary states never get large red or
+orange surfaces.
+
+### Density and disclosure
+
+Prefer typography, spacing and separators over another bordered box. A card should represent a
+meaningful group, not a single value. Badges are for the rare, load-bearing fact — `Moving`,
+`+8 min`, `Modified service` — and never five in a row.
+
+Put technical and explanatory material behind progressive disclosure rather than deleting it.
+Everything this service refuses to claim must stay readable; it just stops competing with the
+status it qualifies.
+
+### Measured starting point, 360×800, 2026-10-03
+
+| Screen | Height | Note |
+|---|---|---|
+| Alerts | 5,823 px / 11 advisories | 1,051 px each; the operator's full notice renders inline |
+| Trains | 3,122 px / 18 rows | 113 px per row, and 18 is a **Saturday**; a weekday is 97 |
+| Pulse | 1,224 px | already the calmest screen; 3 bordered boxes |
+
+### What refinement may not do
+
+It may not add a request per row or per marker, collapse the three membership facts into one
+flag, merge a route name with a destination, parse an operator's prose into fields, or make a
+stale value read as current. Accuracy wins over elegance, every time.
+
