@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 
 import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -13,6 +14,7 @@ import {
   describeFailure,
 } from "./Feedback";
 import TrainRow from "./TrainRow";
+import { isRelevantNow, lineLabel, nowRuleText } from "../lib/presentation/trains";
 import { useSharedResource } from "./useSharedResource";
 import Freshness from "./Freshness";
 import styles from "./TrainListScreen.module.css";
@@ -43,6 +45,11 @@ export default function TrainListScreen() {
   const params = useSearchParams();
   const serviceDate = params.get("serviceDate") ?? undefined;
   const routeId = params.get("routeId") ?? undefined;
+  /*
+   * Today is the default, so nobody is silently shown a subset. Now is a filter over the
+   * whole page already fetched — it issues no request of its own and changes no cursor.
+   */
+  const showingNow = params.get("when") === "now";
   const [extra, setExtra] = useState<Train[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -122,12 +129,32 @@ export default function TrainListScreen() {
     // Names may only be joined when the catalog and the page share a schedule version.
     if (listing.data && listing.data.routesVersion === page?.scheduleVersion.id) {
       for (const route of listing.data.routes) {
-        const name = route.longName ?? route.shortName;
-        if (name !== null) names.set(route.id, name);
+        names.set(route.id, lineLabel(route, route.id));
       }
     }
     return names;
   }, [listing.data, page]);
+
+  const shown = useMemo(
+    () => (showingNow ? trains.filter(isRelevantNow) : trains),
+    [trains, showingNow],
+  );
+
+  /*
+   * When the operator is reporting nothing for any train on this date -- which is most of a
+   * weekend, and every night -- one identical sentence on every row is noise. It is said once
+   * above the list instead. The moment any train differs, every row states its own status
+   * again, so an absent line can never imply a status a row does not have.
+   */
+  const noneReported = shown.length > 0 && shown.every((train) => !train.membership.realtimeObserved);
+
+  const whenHref = (when: "now" | "today") => {
+    const query = new URLSearchParams(params.toString());
+    if (when === "now") query.set("when", "now");
+    else query.delete("when");
+    const search = query.toString();
+    return search === "" ? "/trains" : `/trains?${search}`;
+  };
 
   return (
     <div className={styles.screen}>
@@ -137,10 +164,37 @@ export default function TrainListScreen() {
           <h1 className={styles.title}>Trains</h1>
         </div>
       </div>
+      {page ? <p className={styles.scope}>{formatServiceDate(page.serviceDate)}</p> : null}
+
+      {/*
+        * Two views of the same fetched page. "Now" is a filter over published facts, never a
+        * claim that a train is running, and the rule it applied is stated below rather than
+        * left for a reader to guess.
+        */}
+      <nav className={styles.when} aria-label="Which trains to show">
+        <Link
+          href={whenHref("now")}
+          className={styles.whenOption}
+          aria-current={showingNow ? "true" : undefined}
+          data-current={showingNow ? "true" : undefined}
+        >
+          Now
+        </Link>
+        <Link
+          href={whenHref("today")}
+          className={styles.whenOption}
+          aria-current={showingNow ? undefined : "true"}
+          data-current={showingNow ? undefined : "true"}
+        >
+          Today
+        </Link>
+      </nav>
+
       {page ? (
         <p className={styles.scope}>
-          Every train scheduled for {formatServiceDate(page.serviceDate)}, including
-          services that have already finished. This is not a list of trains running now.
+          {showingNow
+            ? nowRuleText
+            : "Every train scheduled for this service date, including services that have already finished. This is not a list of trains running now."}
         </p>
       ) : null}
 
@@ -192,6 +246,14 @@ export default function TrainListScreen() {
 
       {listing.error ? <ListFailure error={listing.error} onRetry={listing.refresh} /> : null}
 
+      {page && shown.length === 0 && trains.length > 0 && showingNow ? (
+        <Notice title="No trains are scheduled or reporting right now">
+          Nothing on this service date is inside its scheduled window or still reporting a
+          position. That is not a statement about whether trains are running.{" "}
+          <Link href={whenHref("today")}>See the whole service date</Link>.
+        </Notice>
+      ) : null}
+
       {page && trains.length === 0 ? (
         <Notice title="No scheduled trains">
           No scheduled trains for {formatServiceDate(page.serviceDate)}
@@ -199,14 +261,19 @@ export default function TrainListScreen() {
         </Notice>
       ) : null}
 
-      {trains.length > 0 && page ? (
+      {shown.length > 0 && page ? (
         <>
+          {noneReported ? (
+            <p className={styles.caveat}>
+              The operator is publishing no realtime report for any train on this date.
+            </p>
+          ) : null}
           <ul className={styles.list} aria-label="Scheduled trains">
             <TrainRows
-              trains={trains}
+              showStatus={!noneReported}
+              trains={shown}
               lineNames={lineNames}
               timeZone={page.scheduleVersion.timezone}
-              loadedAt={listing.loadedAt ?? new Date(page.evaluatedAt)}
               serviceDate={page.serviceDate}
               routeId={routeId}
             />
@@ -259,16 +326,16 @@ function TrainRows({
   trains,
   lineNames,
   timeZone,
-  loadedAt,
   serviceDate,
   routeId,
+  showStatus,
 }: {
   trains: Train[];
   lineNames: Map<string, string>;
   timeZone: string;
-  loadedAt: Date;
   serviceDate: string;
   routeId: string | undefined;
+  showStatus: boolean;
 }) {
   // The filters travel with the link so detail can offer an exact way back.
   const back = new URLSearchParams({ serviceDate });
@@ -281,7 +348,7 @@ function TrainRows({
           train={train}
           lineName={lineNames.get(train.routeId) ?? null}
           timeZone={timeZone}
-          loadedAt={loadedAt}
+          showStatus={showStatus}
           href={`/trains/${encodeURIComponent(train.id)}?${back}`}
         />
       ))}

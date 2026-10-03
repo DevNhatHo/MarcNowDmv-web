@@ -27,7 +27,10 @@ and a mobile bottom navigation are in place, with no component edited to adopt t
 because only token *values* changed. **[WEB-UI-02](tickets/WEB-UI-02.md) is DONE**: an advisory is now a summary with the operator's
 full notice one action away, measured at **1,051 px → 246 px per advisory**. The scope line
 comes from `informedEntity`, not from parsing the operator's title.
-**Recommended next: [WEB-UI-03](tickets/WEB-UI-03.md)** — compact train rows and an honest Now. A **live movement addendum** on
+**[WEB-UI-03](tickets/WEB-UI-03.md) is DONE**: rows are 113 px → 99 px, or **74 px** when the
+operator reports nothing for anyone and the identical status sentence is said once for the list.
+`Now` is a stated filter over published facts, never a status.
+**Recommended next: [WEB-UI-04](tickets/WEB-UI-04.md)** — Train Quick Look. A **live movement addendum** on
 2026-10-02 extended the map plan with marker-update and animation semantics, folded the
 in-place update rules into WEB-MAP-3 and the follow rules into WEB-MAP-4, and added
 [WEB-MAP-7](tickets/WEB-MAP-7.md) for smooth transitions between observed positions; it opened
@@ -342,11 +345,19 @@ then swapped the renderer by changing those same two files and nothing else.
 Read AGENTS.md, this file, [DESIGN.md](DESIGN.md) and
 [WEB-UI-02](tickets/WEB-UI-02.md), and inspect `git status` in both repositories.
 
-**Start WEB-UI-03 — compact train rows and an honest Now.** Rows are 113 px today and the list
-is the whole service date.
+**Start WEB-UI-04 — Train Quick Look.** WEB-UI-03 built the affordance it attaches to: each row
+is one link with no nested control.
 
-**Capture it on a weekday.** Today is a Saturday with 18 trains against a weekday's 97, and row
-density is the thing being judged.
+### An open follow-up: weekday density capture
+
+WEB-UI-03 shipped with **PENDING LIVE WEEKDAY DENSITY VERIFICATION** recorded in its review. Row
+height, wrapping, overflow and greyscale at 97 rows are verified from a labelled SYNTHETIC
+fixture, and every behaviour against today's real 18-train Saturday data. What remains is a
+judgement about scanning 97 *real* rows on a weekday. **Correctness does not depend on it**, and
+it was recorded as a follow-up rather than a gate because the ticket's Definition of Done asks
+for measured heights and the documented Now rule, not a weekday screenshot.
+
+The same applies to WEB-UI-05, which judges markers at weekday volume.
 
 ### The design reference arrived (2026-10-03)
 

@@ -277,6 +277,21 @@ genuine product improvement and not merely visual — at 01:40 on 2026-10-03 the
 sleeping railway. Both the state and the next scheduled departure are honest: they come from the
 timetable, not from inference. [WEB-UI-08](tickets/WEB-UI-08.md) owns it.
 
+### The train-row rule
+
+A list row carries: scheduled time, identifier, **line and destination as separate facts**, and
+a status. Rows are separated by rules, never wrapped one card each — a weekday list is 97 of
+them.
+
+A sentence identical on every row is said **once for the list** instead, and only while it
+applies to every row; the moment one differs, every row states its own again, so an absent line
+can never imply a status a row does not have. Measured: this is 74 px per row against 99 px.
+
+The line is the operator's `longName`, shortened ("PENN - WASHINGTON" → "Penn Line"), because
+`shortName` is `"MARC"` on every route. The destination is `scheduled.headsign`. **They are
+never joined into a journey**: on 2026-10-03, 9 of 18 trains on `PENN - WASHINGTON` were headed
+to Baltimore.
+
 ### What refinement may not do
 
 It may not add a request per row or per marker, collapse the three membership facts into one

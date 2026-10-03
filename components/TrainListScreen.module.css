@@ -58,18 +58,74 @@
   font-size: var(--text-small);
 }
 
+/*
+ * Rows separated by rules rather than gaps between cards. At 97 rows on a weekday the gap
+ * alone added hundreds of pixels of nothing.
+ */
 .list {
-  display: grid;
-  gap: var(--space-2);
   margin: 0;
   padding: 0;
   list-style: none;
+  border-block-start: var(--border-thin) solid var(--color-border);
 }
 
 .more { margin-block-start: var(--space-6); }
 
 .partial {
   margin-block-start: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--text-small);
+}
+
+/*
+ * Two views of the same page. Links rather than buttons, because each is a URL a reader can
+ * share and the browser's Back button should move between them.
+ */
+.when {
+  display: inline-flex;
+  gap: var(--space-1);
+  margin-block-end: var(--space-3);
+  padding: var(--space-1);
+  border: var(--border-thin) solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface);
+}
+
+.whenOption {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 5rem;
+  min-block-size: var(--target-min);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-small);
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+}
+
+.whenOption:hover {
+  text-decoration: underline;
+}
+
+/*
+ * The selected view is marked by fill, weight and aria-current together, so it survives
+ * greyscale rather than relying on the accent.
+ */
+.whenOption[data-current="true"] {
+  background: var(--color-information);
+  color: var(--color-surface);
+  font-weight: var(--weight-strong);
+}
+
+.whenOption:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+
+/* Said once for the list, rather than repeated identically on every row. */
+.caveat {
+  margin-block: 0 var(--space-2);
   color: var(--color-text-secondary);
   font-size: var(--text-small);
 }

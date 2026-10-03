@@ -1,39 +1,58 @@
-/* One train in the list. A row, not a card: whitespace and a rule do the grouping. */
+/*
+ * One train as a row, not a card. A weekday list is 97 of these, so the grouping is a rule
+ * and some whitespace rather than a bordered box per train.
+ */
 
 .list {
-  display: grid;
-  gap: var(--space-2);
   margin: 0;
   padding: 0;
   list-style: none;
+  border-block-start: var(--border-thin) solid var(--color-border);
+}
+
+.item {
+  border-block-end: var(--border-thin) solid var(--color-border);
 }
 
 .row {
-  display: block;
-  padding: var(--space-3) var(--space-4);
-  border: var(--border-thin) solid var(--color-border);
-  border-radius: var(--radius-medium);
-  background: var(--color-surface);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  gap: var(--space-1) var(--space-3);
+  /* Comfortably over the 44px floor while staying compact at 97 rows. */
+  padding: var(--space-3) var(--space-2);
   color: inherit;
   text-decoration: none;
+}
+
+.row:hover {
+  background: var(--color-surface);
 }
 
 .row:hover .identity {
   text-decoration: underline;
 }
 
-.heading {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--space-1) var(--space-3);
+.row:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: calc(var(--focus-offset) * -1);
+  border-radius: var(--radius-small);
 }
 
-/* Times line up column-wise between rows. */
+/* Times line up column-wise between rows, which is most of what makes a list scannable. */
 .time {
-  font-size: var(--text-section);
+  font-size: var(--text-body);
   font-weight: var(--weight-strong);
   font-variant-numeric: tabular-nums;
+  /* Fixed column so the identities below each other align too. */
+  min-inline-size: 3.5rem;
+}
+
+.body {
+  display: grid;
+  gap: var(--space-1);
+  /* Lets a long headsign or identifier wrap instead of widening the row. */
+  min-inline-size: 0;
 }
 
 .identity {
@@ -41,17 +60,27 @@
   font-weight: var(--weight-medium);
 }
 
-.line {
+.where {
   color: var(--color-text-secondary);
   font-size: var(--text-small);
+}
+
+/* The booked destination, which is a different fact from the line it runs on. */
+.destination {
+  color: var(--color-text);
 }
 
 .status {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: var(--space-1) var(--space-3);
-  margin-block-start: var(--space-2);
+  gap: var(--space-1) var(--space-2);
+  font-size: var(--text-small);
+}
+
+.mark {
+  font-size: 0.6rem;
+  line-height: 1.4;
 }
 
 .statusText {
@@ -65,8 +94,14 @@
 .unknown { color: var(--color-unknown); }
 
 /* Delay figures align with each other for the same reason the times do. */
-.meta {
+.delay {
   font-variant-numeric: tabular-nums;
   color: var(--color-text-secondary);
-  font-size: var(--text-small);
+}
+
+.chevron {
+  align-self: center;
+  color: var(--color-text-secondary);
+  font-size: var(--text-section);
+  line-height: 1;
 }

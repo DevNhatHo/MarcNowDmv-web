@@ -299,3 +299,40 @@ export function marcShapedStopDelaysWithoutTripStatus(): Record<string, unknown>
   }));
   return body;
 }
+
+/**
+ * A SYNTHETIC weekday-sized train list, for density work only.
+ *
+ * MARC runs about 97 trains on a weekday and 18 on a Saturday. Density is the thing WEB-UI-03
+ * is judged on, and waiting for a weekday to *build* it would be silly — so this inflates a
+ * captured page to weekday size by repeating its rows on a synthetic clock.
+ *
+ * **Every row here is SYNTHETIC.** The times are generated, the identifiers are suffixed, and
+ * none of it was observed on any MARC service. It must never be presented as live service, and
+ * any screenshot taken from it must say so.
+ */
+export function syntheticWeekdayList(
+  captured: Record<string, unknown>,
+  count = 97,
+): Record<string, unknown> {
+  const page = structuredClone(captured) as {
+    data: Record<string, unknown>[];
+    nextAfter: string | null;
+  };
+  const template = page.data;
+  const rows: Record<string, unknown>[] = [];
+  for (let index = 0; index < count; index += 1) {
+    const row = structuredClone(template[index % template.length]);
+    const scheduled = row.scheduled as Record<string, unknown>;
+    // 05:00 onward, five minutes apart, so the list reads like a timetable.
+    const minutes = 5 * 60 + index * 5;
+    const start = new Date(Date.UTC(2026, 9, 2, Math.floor(minutes / 60), minutes % 60));
+    scheduled.start = start.toISOString();
+    row.id = `SYNTHETIC-${index}`;
+    row.tripId = `SYNTHETIC${index}`;
+    rows.push(row);
+  }
+  page.data = rows;
+  page.nextAfter = null;
+  return page as unknown as Record<string, unknown>;
+}

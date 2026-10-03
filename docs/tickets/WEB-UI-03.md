@@ -1,6 +1,6 @@
 # WEB-UI-03 — Compact train rows, and an honest Now
 
-Status: NOT_STARTED
+Status: **DONE** (2026-10-03)
 
 ## Goal
 
@@ -124,3 +124,77 @@ capture shows far fewer trains than a weekday. Apply the [DESIGN.md](../DESIGN.m
 Acceptance criteria and all required checks actually pass, with the measured heights recorded
 and the Now rule documented. Update the ticket index and CURRENT_STATE.md. One completed-ticket
 commit with a WEB-UI-03 subject.
+
+## Outcome
+
+Rows are compact and separated by rules, the destination is the operator's headsign, and
+`Now` is a stated filter over published facts rather than an invented status.
+
+### Checks actually executed
+
+`npm run lint` clean, `npm run typecheck` clean, `npx vitest run` **311 tests in 20 files, 0
+failures**, `npm run build` succeeded, `npx playwright test` **80 passed, 4 skipped, 0 failed**.
+Rendered review in `docs/reviews/WEB-UI-03/`.
+
+### Measured
+
+| | Mean row | 97-row page |
+|---|---|---|
+| Before | **113 px** | — |
+| Rows differ in realtime | **99 px** | 10,438 px |
+| Operator reports nothing for anyone | **74 px** | 8,063 px |
+
+Zero horizontal overflow at either viewport, including a 60-character unbroken identifier,
+which wraps inside the row.
+
+The second figure is the one worth noting: the identical "Realtime status unavailable" sentence
+is said **once above the list** when it applies to every train, and per-row the moment any train
+differs — so an absent line can never imply a status a row does not have. That is what takes
+74 px, which is the density the design reference shows.
+
+### Line and destination stay separate, and the capture proves why
+
+The reference renders every row as "Penn → Washington". Today's real list, in
+`mobile-today-real.png`:
+
+```
+07:10  Train675   Penn Line · to WASHINGTON
+08:55  Train476   Penn Line · to BALTIMORE
+```
+
+Both on `PENN - WASHINGTON`. The reference's rendering would have mislabelled the 08:55. The
+line comes from the route name — shortened from the operator's own `longName`, because
+`shortName` is `"MARC"` on all three routes — and the destination from `scheduled.headsign`.
+
+### Now, as specified
+
+`isRelevantNow` = `scheduledActive || positionFresh`, both published facts, documented in
+`lib/presentation/trains.ts` with the reason each half is needed. It is a **filter**, never a
+stored flag and never rendered as "running"; the screen states the rule it applied. `Today` is
+the default, so nobody is shown a subset silently, and `Now` filters the page already fetched —
+a test asserts it issues no additional request.
+
+Deliberately compatible with [WEB-UI-08](WEB-UI-08.md): the predicate and the service-window
+facts live in the presentation layer, so service-ended, between-trains and in-service states can
+be built on the same primitives without unpicking this.
+
+### Quick Look is not here
+
+It is [WEB-UI-04](WEB-UI-04.md) and this ticket lists it out of scope. What was built is the
+affordance it attaches to: the whole row is one link, and a test asserts exactly one control per
+row with none nested. No Quick Look screenshots exist, because no Quick Look exists.
+
+### Two existing tests failed, both correctly
+
+One asserted the old "Official · " wording, now "Official MTA · " to match the convention used
+elsewhere. The other collected **every** link on the screen and so swallowed the new Now/Today
+views; it is now scoped to the list, which is what it meant.
+
+### Weekday density verification: PENDING
+
+Recorded in the review README as a follow-up design check, **not** a completion gate. Row
+height, wrapping, overflow and greyscale at 97 rows are verified from a clearly labelled
+SYNTHETIC fixture; every behaviour is verified against today's real 18-train data. What remains
+is a judgement about scanning 97 *real* rows, and correctness does not depend on it.
+
+No blockers. Next: [WEB-UI-04](WEB-UI-04.md) — Train Quick Look.

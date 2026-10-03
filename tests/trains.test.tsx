@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import TrainListScreen from "../components/TrainListScreen";
@@ -97,8 +97,8 @@ describe("train list", () => {
     withZero.freshness = "FRESH";
     serve(listRoutes(page));
     render(<TrainListScreen />);
-    expect(await screen.findByText(/Official · No delay$/)).toBeVisible();
-    expect(screen.queryByText(/Official · No delay reported/)).toBeNull();
+    expect(await screen.findByText(/Official MTA · No delay$/)).toBeVisible();
+    expect(screen.queryByText(/Official MTA · No delay reported/)).toBeNull();
   });
 
   it("links every row to a detail route carrying the active filters", async () => {
@@ -108,7 +108,11 @@ describe("train list", () => {
     });
     serve(listRoutes());
     render(<TrainListScreen />);
-    const links = await screen.findAllByRole("link");
+    // Scoped to the list: the screen also carries the Now/Today views, which are links to
+    // this same screen rather than to a train.
+    const list = await screen.findByRole("list", { name: "Scheduled trains" });
+    const links = within(list).getAllByRole("link");
+    expect(links.length).toBeGreaterThan(0);
     for (const link of links) {
       const href = link.getAttribute("href") ?? "";
       expect(href).toMatch(/^\/trains\/[^?]+\?/);

@@ -101,3 +101,4 @@ review.
 | WEB-MAP-5 | [reviews/WEB-MAP-5](reviews/WEB-MAP-5/README.md) |
 | WEB-UI-01 | [reviews/WEB-UI-01](reviews/WEB-UI-01/README.md) |
 | WEB-UI-02 | [reviews/WEB-UI-02](reviews/WEB-UI-02/README.md) |
+| WEB-UI-03 | [reviews/WEB-UI-03](reviews/WEB-UI-03/README.md) — contains **SYNTHETIC** density fixtures; weekday capture pending |
