@@ -1,6 +1,6 @@
 # WEB-UI-08 — Pulse service-state awareness
 
-Status: NOT_STARTED
+Status: **DONE** (2026-10-03)
 
 ## Goal
 
@@ -87,3 +87,40 @@ time they were taken. Apply the [DESIGN.md](../DESIGN.md) checklist.
 Acceptance criteria and all required checks actually pass, with the observed times recorded.
 Update the ticket index and CURRENT_STATE.md. One completed-ticket commit with a WEB-UI-08
 subject.
+
+## Outcome
+
+Pulse leads with what the railway is doing: in service, between trains, ended, or nothing
+scheduled — all derived from the timetable and the backend's own `membership` facts.
+
+### Checks actually executed
+
+`npm run lint` clean, `npm run typecheck` clean, `npx vitest run` **340 tests in 23 files, 0
+failures**, `npm run build` succeeded, `npx playwright test` **84 passed, 4 skipped, 0 failed**.
+Rendered review in `docs/reviews/WEB-UI-08/`, with the three forced states clearly labelled
+SYNTHETIC.
+
+### No active count, deliberately
+
+The reference shows "5 trains active (now or recently)". That is the boolean MARC-508 refused
+to publish. Each tile names its own fact instead — **Scheduled today**, **Reporting a current
+position**, **With a delay the operator published** — and the in-service headline carries no
+number at all, which a test pins by asserting it contains no digit.
+
+Real data reads `18 · 1 · 0`. The zero is correct: MDOT publishes no trip-level delay, and a
+tile that looked broken at zero would have been the easy mistake.
+
+### Timezone, handled by not handling it
+
+`scheduled.start` and `end` are absolute instants the backend already resolved in the schedule
+version's timezone, so a service date crossing midnight needs no special case — a test covers
+01:40 with a run from the previous evening and one still ahead. The clock is the response's own
+`evaluatedAt`, so the state and the data describe one instant.
+
+### The late-train case again
+
+A train reporting a fresh position **outside** its scheduled window keeps the state at
+in-service. Calling that "ended" would hide the train a commuter most wants, and it is the same
+MARC-508 observation that shaped the Now filter.
+
+No blockers. Next: [WEB-UI-06](WEB-UI-06.md) — the cross-device review that closes the milestone.

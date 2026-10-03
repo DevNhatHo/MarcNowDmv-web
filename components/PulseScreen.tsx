@@ -17,6 +17,7 @@ import { ActionButton, LoadingRows, Notice, describeFailure } from "./Feedback";
 import { useSharedResource } from "./useSharedResource";
 import { useWideViewport } from "./useWideViewport";
 import HomeMap from "./home/HomeMap";
+import ServiceState from "./home/ServiceState";
 import HomeTrains from "./home/HomeTrains";
 import home from "./home/Home.module.css";
 import Freshness from "./Freshness";
@@ -108,6 +109,13 @@ export default function PulseScreen() {
       {resource.error ? (
         <OverviewFailure error={resource.error} onRetry={resource.refresh} />
       ) : null}
+
+      {/*
+        * What the railway is doing, before anything else. At 01:40 this screen said "0 of 18
+        * trains report a current position", which is true and reads like a broken service
+        * rather than a sleeping railway.
+        */}
+      {data ? <ServiceState page={data.trains} lineNames={names} /> : null}
 
       {data ? (
         <>

@@ -105,3 +105,4 @@ review.
 | WEB-UI-04 | [reviews/WEB-UI-04](reviews/WEB-UI-04/README.md) |
 | WEB-UI-05 | [reviews/WEB-UI-05](reviews/WEB-UI-05/README.md) |
 | WEB-UI-07 | [reviews/WEB-UI-07](reviews/WEB-UI-07/README.md) |
+| WEB-UI-08 | [reviews/WEB-UI-08](reviews/WEB-UI-08/README.md) — contains clearly labelled **SYNTHETIC** state fixtures |

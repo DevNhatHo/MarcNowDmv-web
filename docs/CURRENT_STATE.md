@@ -38,7 +38,9 @@ filter is a row of chips, and the geometry statistics are behind a closed disclo
 sits beneath the map rather than over it, because the OSM attribution is there.
 **[WEB-UI-07](tickets/WEB-UI-07.md) is DONE**: `/` composes status, map and trains at desktop
 width, each resource read exactly once, and renders nothing extra below 64rem.
-**Recommended next: [WEB-UI-08](tickets/WEB-UI-08.md)** — Pulse service-state awareness. A **live movement addendum** on
+**[WEB-UI-08](tickets/WEB-UI-08.md) is DONE**: Pulse leads with in service / between trains /
+ended, from the timetable and `membership`. No "active" count exists; each tile names its own
+fact. **Recommended next: [WEB-UI-06](tickets/WEB-UI-06.md)**, the last UI ticket. A **live movement addendum** on
 2026-10-02 extended the map plan with marker-update and animation semantics, folded the
 in-place update rules into WEB-MAP-3 and the follow rules into WEB-MAP-4, and added
 [WEB-MAP-7](tickets/WEB-MAP-7.md) for smooth transitions between observed positions; it opened
@@ -353,9 +355,8 @@ then swapped the renderer by changing those same two files and nothing else.
 Read AGENTS.md, this file, [DESIGN.md](DESIGN.md) and
 [WEB-UI-02](tickets/WEB-UI-02.md), and inspect `git status` in both repositories.
 
-**Start WEB-UI-08 — Pulse service-state awareness.** It is the design reference's strongest
-idea and is not visual: at 01:40 today the app said "0 of 18 trains report a current position",
-which is true and reads like a broken app rather than a sleeping railway.
+**Start WEB-UI-06 — Pulse hierarchy and cross-device review.** The remaining Pulse work is
+small: the uncertainty explanation moves behind a `Why?` disclosure. The bulk is the review.
 
 ### An open follow-up: weekday density capture
 
