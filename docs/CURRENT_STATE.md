@@ -30,7 +30,10 @@ comes from `informedEntity`, not from parsing the operator's title.
 **[WEB-UI-03](tickets/WEB-UI-03.md) is DONE**: rows are 113 px → 99 px, or **74 px** when the
 operator reports nothing for anyone and the identical status sentence is said once for the list.
 `Now` is a stated filter over published facts, never a status.
-**Recommended next: [WEB-UI-04](tickets/WEB-UI-04.md)** — Train Quick Look. A **live movement addendum** on
+**[WEB-UI-04](tickets/WEB-UI-04.md) is DONE**: a native `<dialog>` preview, a bottom sheet on a
+phone and a centred panel on desktop, rendering **one** `TrainFacts` component shared with the
+map's focus panel. 0 detail requests before opening, 1 after.
+**Recommended next: [WEB-UI-05](tickets/WEB-UI-05.md)** — map layout and selected-train sheet. A **live movement addendum** on
 2026-10-02 extended the map plan with marker-update and animation semantics, folded the
 in-place update rules into WEB-MAP-3 and the follow rules into WEB-MAP-4, and added
 [WEB-MAP-7](tickets/WEB-MAP-7.md) for smooth transitions between observed positions; it opened
@@ -345,8 +348,9 @@ then swapped the renderer by changing those same two files and nothing else.
 Read AGENTS.md, this file, [DESIGN.md](DESIGN.md) and
 [WEB-UI-02](tickets/WEB-UI-02.md), and inspect `git status` in both repositories.
 
-**Start WEB-UI-04 — Train Quick Look.** WEB-UI-03 built the affordance it attaches to: each row
-is one link with no nested control.
+**Start WEB-UI-05 — map layout and selected-train sheet.** Its selected-train sheet must render
+the same `TrainFacts` component the quick look and the map focus panel already share; a third
+implementation of a train's facts is the defect to avoid.
 
 ### An open follow-up: weekday density capture
 

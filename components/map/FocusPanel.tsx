@@ -4,12 +4,7 @@ import Link from "next/link";
 import type { MapTrain } from "../../lib/presentation/markers";
 import type { TrainDetail } from "../../lib/types/trains";
 import type { Stop } from "../../lib/types/catalogs";
-import { trainStatusLabel } from "../../lib/presentation/status";
-import {
-  MovementStatus,
-  NextStopStatus,
-  RouteProgressStatus,
-} from "../Calculated";
+import TrainFacts from "../TrainFacts";
 import { ActionButton } from "../Feedback";
 import styles from "./FocusPanel.module.css";
 
@@ -46,12 +41,6 @@ export default function FocusPanel({
   exitHref: string;
   detailHref: string;
 }) {
-  const stopNames = new Map<string, string>();
-  for (const stop of stops) {
-    if (stop.name !== null) stopNames.set(stop.id, stop.name);
-  }
-
-  const status = trainStatusLabel(train.status);
   const trust = train.place?.trust ?? null;
   const canFollow = trust === "CURRENT";
 
@@ -62,23 +51,7 @@ export default function FocusPanel({
         {train.line === null ? null : <p className={styles.line}>{train.line}</p>}
       </div>
 
-      <p className={styles.trust}>
-        {trust === "CURRENT" ? (
-          <span className={styles.current}>Current position</span>
-        ) : trust === "LAST_KNOWN" ? (
-          <span className={styles.lastKnown}>Last known position</span>
-        ) : (
-          <span className={styles.absent}>No position reported</span>
-        )}
-        {train.reportedText === null ? null : <span> · {train.reportedText}</span>}
-      </p>
-
-      <p className={styles.official}>
-        Official MTA · {status.text}
-        {train.bearingDegrees === null ? null : (
-          <span> · Reported heading {train.bearingDegrees}°</span>
-        )}
-      </p>
+      <TrainFacts train={train} detail={detail} stops={stops} />
 
       {/*
         * Follow is opt-in and only ever reacts to a new fresh observation. It is offered
@@ -108,27 +81,11 @@ export default function FocusPanel({
 
       {!canFollow && trust === "LAST_KNOWN" ? (
         <p className={styles.note}>
-          Following is unavailable while the position is out of date. The marker shows where
-          this train was last reported, which is not a claim about where it is now, and not a
-          claim that it has stopped.
+          Following is unavailable while the position is out of date. What that position means
+          is stated above; this only explains why the camera will not chase it.
         </p>
       ) : null}
 
-      {detail === null ? (
-        <p className={styles.note}>
-          Movement, next stop and route progress are still loading for this train.
-        </p>
-      ) : detail.calculated === null ? (
-        <p className={styles.note}>
-          This deployment published no calculated movement for this train.
-        </p>
-      ) : (
-        <div className={styles.calculated}>
-          <MovementStatus calculated={detail.calculated} />
-          <NextStopStatus calculated={detail.calculated} stopNames={stopNames} />
-          <RouteProgressStatus calculated={detail.calculated} />
-        </div>
-      )}
     </section>
   );
 }

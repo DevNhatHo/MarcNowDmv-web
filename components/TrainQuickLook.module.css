@@ -1,0 +1,108 @@
+/*
+ * One dialog, two shapes. A sheet rising from the bottom where a thumb is, a compact centred
+ * panel where a pointer is.
+ */
+.dialog {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  max-inline-size: 100%;
+  max-block-size: 100%;
+}
+
+.dialog::backdrop {
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.sheet {
+  display: grid;
+  gap: var(--space-3);
+  inline-size: 100vw;
+  max-block-size: 85vh;
+  overflow-y: auto;
+  padding: var(--space-4);
+  /* Clears the fixed bottom navigation and the home indicator beneath it. */
+  padding-block-end: calc(var(--space-4) + var(--target-min) + env(safe-area-inset-bottom, 0px));
+  border-start-start-radius: var(--radius-large);
+  border-start-end-radius: var(--radius-large);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+}
+
+/* Mobile: pinned to the bottom edge. */
+.dialog {
+  position: fixed;
+  inset-block-end: 0;
+  inset-inline: 0;
+  inset-block-start: auto;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--text-section);
+}
+
+.line {
+  margin: var(--space-1) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-small);
+}
+
+.close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  inline-size: var(--target-min);
+  min-block-size: var(--target-min);
+  border-radius: var(--radius-small);
+  color: var(--color-text-secondary);
+  font-size: var(--text-section);
+  text-decoration: none;
+}
+
+.close:hover {
+  color: var(--color-text);
+}
+
+.details {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: var(--target-min);
+  padding-inline: var(--space-4);
+  border-radius: var(--radius-medium);
+  background: var(--color-information);
+  color: var(--color-surface);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+}
+
+.details:hover {
+  background: var(--color-information-strong);
+}
+
+@media (min-width: 48rem) {
+  /* Desktop: a compact centred panel rather than a full-width sheet. */
+  .dialog {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+
+  .sheet {
+    inline-size: min(26rem, calc(100vw - var(--space-8)));
+    max-block-size: min(80vh, 44rem);
+    padding-block-end: var(--space-4);
+    border-radius: var(--radius-large);
+  }
+}

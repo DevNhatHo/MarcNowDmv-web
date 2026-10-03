@@ -1,6 +1,6 @@
 # WEB-UI-04 — Train Quick Look
 
-Status: NOT_STARTED
+Status: **DONE** (2026-10-03)
 
 ## Goal
 
@@ -105,3 +105,46 @@ checklist.
 Acceptance criteria and all required checks actually pass, with request counts recorded and any
 added dependency's bundle cost measured. Update the ticket index and CURRENT_STATE.md. One
 completed-ticket commit with a WEB-UI-04 subject.
+
+## Outcome
+
+A contextual preview opens from a train row and from a map selection, rendering **one
+component** in both places.
+
+### Checks actually executed
+
+`npm run lint` clean, `npm run typecheck` clean, `npx vitest run` **322 tests in 21 files, 0
+failures**, `npm run build` succeeded, `npx playwright test` **82 passed, 4 skipped, 0 failed**.
+Rendered review in `docs/reviews/WEB-UI-04/`.
+
+### The request rule, measured
+
+**0** detail requests before a preview is opened; **1** after. The component is mounted only
+while a preview is open, so closing stops the read and its polling. Station names are read on
+the catalog cadence under a shared key, so a list nobody previews pays nothing and several
+previews read it once.
+
+### One pattern, and no dependency
+
+A native `<dialog>` opened with `showModal()` — a bottom sheet on a phone, a centred panel on a
+wide screen. Chosen over an anchored popover because the element gives focus trapping, Escape, a
+backdrop and focus return for free. **No component library was added**, so there is no bundle
+cost to report.
+
+Dismissal is URL-backed: Escape and a backdrop click both route through the same close link, so
+the dialog and the URL cannot disagree, and Back closes it. Verified in the review pass.
+
+### A drift the review caught
+
+The quick look said **"Penn Line"** and the map's focus panel said **"PENN - WASHINGTON"** — one
+fact, two labels, on screens a reader moves between. The marker presentation now uses the same
+`lineLabel`, and the captures show identical wording on both surfaces.
+
+### The row's single interaction
+
+A row now opens its preview rather than navigating away, which is what the design reference
+shows and what keeps one control per row. The preview carries "View train details". Four tests
+across three suites were updated to the new two-step journey — each was asserting the old flow,
+not a broken one.
+
+No blockers. Next: [WEB-UI-05](WEB-UI-05.md) — map layout and selected-train sheet.

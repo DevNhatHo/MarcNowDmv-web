@@ -14,6 +14,8 @@ import {
   describeFailure,
 } from "./Feedback";
 import TrainRow from "./TrainRow";
+import TrainQuickLook from "./TrainQuickLook";
+import { mapTrains } from "../lib/presentation/markers";
 import { isRelevantNow, lineLabel, nowRuleText } from "../lib/presentation/trains";
 import { useSharedResource } from "./useSharedResource";
 import Freshness from "./Freshness";
@@ -50,6 +52,11 @@ export default function TrainListScreen() {
    * whole page already fetched — it issues no request of its own and changes no cursor.
    */
   const showingNow = params.get("when") === "now";
+  /*
+   * The open preview, in the URL. A quick look is therefore a shareable link, the browser's
+   * Back button closes it, and a reload reopens exactly what was open.
+   */
+  const previewId = params.get("preview");
   const [extra, setExtra] = useState<Train[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -147,6 +154,36 @@ export default function TrainListScreen() {
    * again, so an absent line can never imply a status a row does not have.
    */
   const noneReported = shown.length > 0 && shown.every((train) => !train.membership.realtimeObserved);
+
+  /*
+   * The previewed train, as the same view model the map's markers use, so the quick look and
+   * the map's focus panel describe a train identically. Built from the page already fetched —
+   * opening a preview costs one detail request and nothing else.
+   */
+  const previewTrain = useMemo(() => {
+    if (previewId === null || page === undefined) return null;
+    const found = trains.find((train) => train.id === previewId);
+    if (found === undefined) return null;
+    const at = Date.parse(page.evaluatedAt);
+    return (
+      mapTrains([found], lineNames, Number.isNaN(at) ? new Date() : new Date(at))[0] ?? null
+    );
+  }, [previewId, trains, lineNames, page]);
+
+  const detailBack = useMemo(() => {
+    const query = new URLSearchParams({ serviceDate: page?.serviceDate ?? "" });
+    if (routeId !== undefined) query.set("routeId", routeId);
+    return query.toString();
+  }, [page, routeId]);
+
+  /** A row opens its preview; the preview itself links on to the full page. */
+  const previewHref = (trainId: string | null) => {
+    const query = new URLSearchParams(params.toString());
+    if (trainId === null) query.delete("preview");
+    else query.set("preview", trainId);
+    const search = query.toString();
+    return search === "" ? "/trains" : `/trains?${search}`;
+  };
 
   const whenHref = (when: "now" | "today") => {
     const query = new URLSearchParams(params.toString());
@@ -261,6 +298,14 @@ export default function TrainListScreen() {
         </Notice>
       ) : null}
 
+      {previewTrain !== null && page ? (
+        <TrainQuickLook
+          train={previewTrain}
+          closeHref={previewHref(null)}
+          detailHref={`/trains/${encodeURIComponent(previewTrain.id)}?${detailBack}`}
+        />
+      ) : null}
+
       {shown.length > 0 && page ? (
         <>
           {noneReported ? (
@@ -271,6 +316,7 @@ export default function TrainListScreen() {
           <ul className={styles.list} aria-label="Scheduled trains">
             <TrainRows
               showStatus={!noneReported}
+              previewHref={previewHref}
               trains={shown}
               lineNames={lineNames}
               timeZone={page.scheduleVersion.timezone}
@@ -329,6 +375,7 @@ function TrainRows({
   serviceDate,
   routeId,
   showStatus,
+  previewHref,
 }: {
   trains: Train[];
   lineNames: Map<string, string>;
@@ -336,6 +383,7 @@ function TrainRows({
   serviceDate: string;
   routeId: string | undefined;
   showStatus: boolean;
+  previewHref: (trainId: string) => string;
 }) {
   // The filters travel with the link so detail can offer an exact way back.
   const back = new URLSearchParams({ serviceDate });
@@ -349,7 +397,7 @@ function TrainRows({
           lineName={lineNames.get(train.routeId) ?? null}
           timeZone={timeZone}
           showStatus={showStatus}
-          href={`/trains/${encodeURIComponent(train.id)}?${back}`}
+          href={previewHref(train.id)}
         />
       ))}
     </>

@@ -276,8 +276,14 @@ test("system map to focus to detail and back, keeping the line filter", async ({
 
 test("the train list leads to detail and on to the system map", async ({ page }) => {
   await page.goto("/trains", { timeout: 60_000 });
+  // A row opens the quick look; the preview carries the link on to the full page.
   await page.locator("main ul li a").first().waitFor({ timeout: 30_000 });
   await page.locator("main ul li a").first().click();
+  await page.waitForURL(/preview=/, { timeout: 30_000 });
+  await page
+    .getByRole("dialog", { name: /Quick look at/ })
+    .getByRole("link", { name: /View train details/ })
+    .click();
   await page.waitForURL(/\/trains\/.+/, { timeout: 30_000 });
 
   const toMap = page.getByRole("link", { name: /See this train on the system map/ });
@@ -294,6 +300,11 @@ test("train detail stays complete and says everything without its map", async ({
   await page.goto("/trains", { timeout: 60_000 });
   await page.locator("main ul li a").first().waitFor({ timeout: 30_000 });
   await page.locator("main ul li a").first().click();
+  await page.waitForURL(/preview=/, { timeout: 30_000 });
+  await page
+    .getByRole("dialog", { name: /Quick look at/ })
+    .getByRole("link", { name: /View train details/ })
+    .click();
   await page.waitForURL(/\/trains\/.+/, { timeout: 30_000 });
   await page.waitForTimeout(2500);
 

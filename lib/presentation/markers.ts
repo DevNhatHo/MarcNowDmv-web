@@ -14,6 +14,7 @@ import type { Route } from "../types/catalogs";
 import type { Stop } from "../types/catalogs";
 import type { Train, TrainMembership, TrainStatus } from "../types/trains";
 import { describeAge } from "./time";
+import { lineLabel } from "./trains";
 
 /**
  * How much a drawn coordinate may be trusted. These are the two the backend can justify:
@@ -157,12 +158,17 @@ export function mapStations(stops: readonly Stop[]): MapStation[] {
   return stations;
 }
 
-/** Route display names by id, for labelling a marker's line without parsing an identifier. */
+/**
+ * Route display names by id, for labelling a marker's line without parsing an identifier.
+ *
+ * Uses the same `lineLabel` the train list uses, so a train is not called "Penn Line" in one
+ * place and "PENN - WASHINGTON" in another. Two surfaces naming the same fact differently is
+ * the drift the shared presentation exists to prevent.
+ */
 export function routeNameMap(routes: readonly Route[]): Map<string, string> {
   const names = new Map<string, string>();
   for (const route of routes) {
-    const name = route.longName ?? route.shortName;
-    if (name !== null) names.set(route.id, name);
+    names.set(route.id, lineLabel(route, route.id));
   }
   return names;
 }

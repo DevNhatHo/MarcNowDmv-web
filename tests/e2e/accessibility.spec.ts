@@ -19,8 +19,14 @@ const routes = [
 async function openDetail(page: Page) {
   await page.goto("/trains");
   await page.locator("main ul li a").first().waitFor({ timeout: 20_000 });
+  // A row opens the quick look; the preview carries the link on to the full page.
   await page.locator("main ul li a").first().click();
-  await page.waitForURL(/\/trains\/.+/);
+  await page.waitForURL(/preview=/, { timeout: 30_000 });
+  await page
+    .getByRole("dialog", { name: /Quick look at/ })
+    .getByRole("link", { name: /View train details/ })
+    .click();
+  await page.waitForURL(/\/trains\/.+/, { timeout: 30_000 });
   await page.waitForTimeout(1500);
 }
 
@@ -130,6 +136,23 @@ test("focus can be entered and left from the keyboard alone", async ({ page }) =
   await page.keyboard.press("Enter");
   await page.waitForURL((url) => !url.search.includes("trainId"), { timeout: 30_000 });
   await expect(page.getByRole("region", { name: /Focused train/ })).toHaveCount(0);
+});
+
+test("the quick look meets the accessibility floor", async ({ page }) => {
+  // A modal dialog adds a focus trap, a backdrop and an Escape route that the plain list
+  // check cannot see.
+  await page.goto("/trains");
+  await page.locator("main ul li a").first().waitFor({ timeout: 20_000 });
+  await page.locator("main ul li a").first().click();
+  await page.waitForURL(/preview=/, { timeout: 30_000 });
+  await page.waitForTimeout(2000);
+  await expectNoAxeViolations(page);
+  expect(await undersizedControls(page)).toEqual([]);
+
+  // Escape dismisses it and the URL stops claiming a preview is open.
+  await page.keyboard.press("Escape");
+  await page.waitForURL((url) => !url.search.includes("preview="), { timeout: 30_000 });
+  await expect(page.getByRole("dialog")).toHaveCount(0);
 });
 
 test("train detail meets the accessibility floor", async ({ page }) => {

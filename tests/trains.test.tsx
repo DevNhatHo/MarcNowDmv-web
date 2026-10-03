@@ -101,21 +101,22 @@ describe("train list", () => {
     expect(screen.queryByText(/Official MTA · No delay reported/)).toBeNull();
   });
 
-  it("links every row to a detail route carrying the active filters", async () => {
+  it("opens a preview from each row, keeping the active filters", async () => {
     navigation.params = new URLSearchParams({
       serviceDate: capturedServiceDate,
       routeId: "11007",
     });
     serve(listRoutes());
     render(<TrainListScreen />);
-    // Scoped to the list: the screen also carries the Now/Today views, which are links to
-    // this same screen rather than to a train.
+    // A row opens the contextual preview rather than navigating away; the preview itself
+    // carries the link on to the full page. One interaction per row, and it is URL-backed.
     const list = await screen.findByRole("list", { name: "Scheduled trains" });
     const links = within(list).getAllByRole("link");
     expect(links.length).toBeGreaterThan(0);
     for (const link of links) {
       const href = link.getAttribute("href") ?? "";
-      expect(href).toMatch(/^\/trains\/[^?]+\?/);
+      expect(href).toMatch(/^\/trains\?/);
+      expect(href).toContain("preview=");
       expect(href).toContain(`serviceDate=${capturedServiceDate}`);
       expect(href).toContain("routeId=11007");
     }

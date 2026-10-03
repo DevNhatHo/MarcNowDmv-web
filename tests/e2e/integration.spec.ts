@@ -107,8 +107,7 @@ test("filters survive navigation and the back link restores them", async ({ page
   await page.waitForURL(/\/trains\?serviceDate=/);
   const listUrl = page.url();
 
-  await page.getByRole("list", { name: "Scheduled trains" }).locator("a").first().click();
-  await page.waitForURL(/\/trains\/.+/);
+  await openDetailFromList(page);
   const back = page.getByRole("link", { name: "Back to trains" });
   await expect(back).toBeVisible();
   await back.click();
@@ -116,10 +115,25 @@ test("filters survive navigation and the back link restores them", async ({ page
   expect(new URL(page.url()).search).toBe(new URL(listUrl).search);
 });
 
+/**
+ * List row -> quick look -> full train page.
+ *
+ * A row opens the contextual preview rather than navigating away, so reaching detail from the
+ * list is two deliberate steps. This mirrors the journey a reader actually takes.
+ */
+async function openDetailFromList(page: Page) {
+  await page.getByRole("list", { name: "Scheduled trains" }).locator("a").first().click();
+  await page.waitForURL(/preview=/, { timeout: 30_000 });
+  await page
+    .getByRole("dialog", { name: /Quick look at/ })
+    .getByRole("link", { name: /View train details/ })
+    .click();
+  await page.waitForURL(/\/trains\/.+/, { timeout: 30_000 });
+}
+
 test("train detail separates scheduled, official and calculated information", async ({ page }) => {
   await settled(page, "/trains");
-  await page.getByRole("list", { name: "Scheduled trains" }).locator("a").first().click();
-  await page.waitForURL(/\/trains\/.+/);
+  await openDetailFromList(page);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
   // Each provenance names its own source, and neither borrows the other's authority.
