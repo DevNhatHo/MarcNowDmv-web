@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import {
   fetchRoutes,
   fetchShapes,
@@ -22,6 +22,7 @@ import {
   type MapTrain,
 } from "../../lib/presentation/markers";
 import { routeCourse, type Point } from "../../lib/presentation/transition";
+import { lineLabel } from "../../lib/presentation/trains";
 import { ActionButton, LoadingRows, Notice, describeFailure } from "../Feedback";
 import { useSharedResource } from "../useSharedResource";
 import RouteMap from "./RouteMap";
@@ -60,7 +61,6 @@ async function loadTrains(
 }
 
 export default function MapScreen() {
-  const router = useRouter();
   const params = useSearchParams();
   const routeId = params.get("routeId") ?? undefined;
   const load = useCallback(
@@ -208,6 +208,15 @@ export default function MapScreen() {
     return search === "" ? "/map" : `/map?${search}`;
   };
 
+  /** Filtering a line keeps the focused train if there is one. */
+  const lineHref = (route: string | undefined) => {
+    const query = new URLSearchParams();
+    if (route !== undefined) query.set("routeId", route);
+    if (selectedId !== null) query.set("trainId", selectedId);
+    const search = query.toString();
+    return search === "" ? "/map" : `/map?${search}`;
+  };
+
   /** Full detail, carrying the context needed to come back to this focused map. */
   const detailHref = (trainId: string) => {
     const query = new URLSearchParams({ from: "map" });
@@ -215,9 +224,6 @@ export default function MapScreen() {
     return `/trains/${encodeURIComponent(trainId)}?${query.toString()}`;
   };
 
-  const setRoute = (value: string) => {
-    router.replace(value === "" ? "/map" : `/map?routeId=${encodeURIComponent(value)}`);
-  };
 
   const selected = routeId === undefined ? null : (routeNames.get(routeId) ?? `Line ${routeId}`);
 
@@ -258,26 +264,32 @@ export default function MapScreen() {
         run, not where any train is now.
       </p>
 
-      <div className={styles.controls}>
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor="routeId">
-            Line
-          </label>
-          <select
-            id="routeId"
-            className={styles.control}
-            value={routeId ?? ""}
-            onChange={(event) => setRoute(event.target.value)}
+      {/*
+        * Line filters as compact chips rather than a labelled form above the map. A radiogroup
+        * of links: each is a shareable URL, Back moves between them, and the current one is
+        * marked by fill, weight and aria-current together rather than by colour alone.
+        */}
+      <nav className={styles.lines} aria-label="Filter the map by line">
+        <Link
+          href={lineHref(undefined)}
+          className={styles.lineChip}
+          aria-current={routeId === undefined ? "true" : undefined}
+          data-current={routeId === undefined ? "true" : undefined}
+        >
+          All lines
+        </Link>
+        {(resource.data?.routes ?? []).map((route) => (
+          <Link
+            key={route.id}
+            href={lineHref(route.id)}
+            className={styles.lineChip}
+            aria-current={routeId === route.id ? "true" : undefined}
+            data-current={routeId === route.id ? "true" : undefined}
           >
-            <option value="">All lines</option>
-            {(resource.data?.routes ?? []).map((route) => (
-              <option key={route.id} value={route.id}>
-                {route.longName ?? route.shortName ?? route.id}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
+            {lineLabel(route, route.id)}
+          </Link>
+        ))}
+      </nav>
 
       {resource.loading && !page ? (
         <LoadingRows count={2} label="Loading route geometry" />
@@ -381,16 +393,21 @@ export default function MapScreen() {
                 </li>
               ))}
             </ul>
-            <p className={styles.note}>
-              {page.data.length === 1
-                ? `One alignment is drawn, from schedule version ${page.scheduleVersion.id}.`
-                : `${page.data.length} alignments are drawn, totalling ${totalKm.toFixed(0)} km, from schedule version ${page.scheduleVersion.id}.`}{" "}
-              A line publishes a separate alignment for each direction and variant, so the
-              total counts the same track more than once and is not the length of the
-              network.
-            </p>
             <details className={styles.disclosure}>
-              <summary className={styles.summary}>Alignment details</summary>
+              <summary className={styles.summary}>Map data details</summary>
+              {/*
+                * Secondary, not deleted. The sentence about the total stays with the number
+                * it qualifies: 43 alignments totalling 3,467 km counts the same track many
+                * times, and a bare figure would restate the misreading it exists to prevent.
+                */}
+              <p className={styles.note}>
+                {page.data.length === 1
+                  ? `One alignment is drawn, from schedule version ${page.scheduleVersion.id}.`
+                  : `${page.data.length} alignments are drawn, totalling ${totalKm.toFixed(0)} km, from schedule version ${page.scheduleVersion.id}.`}{" "}
+                A line publishes a separate alignment for each direction and variant, so the
+                total counts the same track more than once and is not the length of the
+                network.
+              </p>
               <ul className={styles.alignments} aria-label="Route alignments">
                 {page.data.map((shape) => (
                   <li key={shape.shapeId}>

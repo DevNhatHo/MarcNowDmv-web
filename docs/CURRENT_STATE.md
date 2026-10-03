@@ -33,7 +33,10 @@ operator reports nothing for anyone and the identical status sentence is said on
 **[WEB-UI-04](tickets/WEB-UI-04.md) is DONE**: a native `<dialog>` preview, a bottom sheet on a
 phone and a centred panel on desktop, rendering **one** `TrainFacts` component shared with the
 map's focus panel. 0 detail requests before opening, 1 after.
-**Recommended next: [WEB-UI-05](tickets/WEB-UI-05.md)** — map layout and selected-train sheet. A **live movement addendum** on
+**[WEB-UI-05](tickets/WEB-UI-05.md) is DONE**: the map takes 72% of the viewport, the line
+filter is a row of chips, and the geometry statistics are behind a closed disclosure. The sheet
+sits beneath the map rather than over it, because the OSM attribution is there.
+**Recommended next: [WEB-UI-07](tickets/WEB-UI-07.md)** — desktop glanceable composition. A **live movement addendum** on
 2026-10-02 extended the map plan with marker-update and animation semantics, folded the
 in-place update rules into WEB-MAP-3 and the follow rules into WEB-MAP-4, and added
 [WEB-MAP-7](tickets/WEB-MAP-7.md) for smooth transitions between observed positions; it opened
@@ -348,9 +351,9 @@ then swapped the renderer by changing those same two files and nothing else.
 Read AGENTS.md, this file, [DESIGN.md](DESIGN.md) and
 [WEB-UI-02](tickets/WEB-UI-02.md), and inspect `git status` in both repositories.
 
-**Start WEB-UI-05 — map layout and selected-train sheet.** Its selected-train sheet must render
-the same `TrainFacts` component the quick look and the map focus panel already share; a third
-implementation of a train's facts is the defect to avoid.
+**Start WEB-UI-07 — desktop glanceable composition.** It composes existing components fed by the
+existing shared store; a test must assert it issues no more requests than the screens it
+composes, and no logic may be duplicated.
 
 ### An open follow-up: weekday density capture
 

@@ -1,9 +1,21 @@
+/*
+ * A sheet attached to the bottom of the map rather than floating over it.
+ *
+ * The design reference shows the sheet overlapping the map's lower edge. It is **not** done
+ * that way here, deliberately: the OpenStreetMap and provider attribution lives at the bottom
+ * of the map frame, and covering it is a licensing problem rather than a layout preference.
+ * Lifting the sheet with a shadow and a rounded top reads as attached without hiding anything.
+ */
 .panel {
-  margin-block-start: var(--space-3);
+  margin-block-start: calc(var(--space-2) * -1);
   padding: var(--space-4);
   border: var(--border-thin) solid var(--color-border);
-  border-radius: var(--radius-medium);
+  border-start-start-radius: var(--radius-large);
+  border-start-end-radius: var(--radius-large);
+  border-end-start-radius: var(--radius-large);
+  border-end-end-radius: var(--radius-large);
   background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
 }
 
 .header {

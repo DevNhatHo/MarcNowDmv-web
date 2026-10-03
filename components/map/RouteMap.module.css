@@ -5,12 +5,16 @@
  * underneath it.
  */
 
+/*
+ * The map is the point of this screen, so it takes most of the viewport. Bounded above so a
+ * very tall window does not leave the legend and the text equivalent below the fold entirely.
+ */
 .frame {
   position: relative;
-  block-size: 60vh;
-  min-block-size: 20rem;
+  block-size: min(72vh, 46rem);
+  min-block-size: 22rem;
   border: var(--border-thin) solid var(--color-border);
-  border-radius: var(--radius-medium);
+  border-radius: var(--radius-large);
   background: var(--color-surface);
   overflow: hidden;
 }

@@ -1,6 +1,6 @@
 # Frontend ticket index
 
-**The core local milestone is complete**: WEB-001 through WEB-012 are DONE (WEB-006 was merged into WEB-005), and WEB-013 through WEB-015 followed from findings made by running the app against the real backend. [WEB-MAP-1](WEB-MAP-1.md), [WEB-MAP-2](WEB-MAP-2.md), [WEB-MAP-6](WEB-MAP-6.md), [WEB-MAP-3](WEB-MAP-3.md), [WEB-MAP-4](WEB-MAP-4.md) and [WEB-MAP-7](WEB-MAP-7.md) are DONE. **The backend delivered both map gates on 2026-09-30** — see [backend proposals](../BACKEND_GAPS.md) — so WEB-MAP-3 through WEB-MAP-5 are unblocked, and a [live movement addendum](../MAP_PLAN.md) on 2026-10-02 added WEB-MAP-7. The renderer is now MapLibre GL JS, so the marker work is written once. **The map milestone is complete**: WEB-MAP-1 through WEB-MAP-7 are all DONE. A **UI refinement milestone** (WEB-UI-01 to WEB-UI-06) was planned on 2026-10-03; **WEB-UI-01 to WEB-UI-04 are DONE**; recommended next is **[WEB-UI-05](WEB-UI-05.md)**. Remaining data work is recorded as [backend proposals](../BACKEND_GAPS.md). Resume IN_PROGRESS work before choosing a new ticket. Work is committed here and pushed to `origin/main`.
+**The core local milestone is complete**: WEB-001 through WEB-012 are DONE (WEB-006 was merged into WEB-005), and WEB-013 through WEB-015 followed from findings made by running the app against the real backend. [WEB-MAP-1](WEB-MAP-1.md), [WEB-MAP-2](WEB-MAP-2.md), [WEB-MAP-6](WEB-MAP-6.md), [WEB-MAP-3](WEB-MAP-3.md), [WEB-MAP-4](WEB-MAP-4.md) and [WEB-MAP-7](WEB-MAP-7.md) are DONE. **The backend delivered both map gates on 2026-09-30** — see [backend proposals](../BACKEND_GAPS.md) — so WEB-MAP-3 through WEB-MAP-5 are unblocked, and a [live movement addendum](../MAP_PLAN.md) on 2026-10-02 added WEB-MAP-7. The renderer is now MapLibre GL JS, so the marker work is written once. **The map milestone is complete**: WEB-MAP-1 through WEB-MAP-7 are all DONE. A **UI refinement milestone** (WEB-UI-01 to WEB-UI-06) was planned on 2026-10-03; **WEB-UI-01 to WEB-UI-05 are DONE**; recommended next is **[WEB-UI-07](WEB-UI-07.md)**. Remaining data work is recorded as [backend proposals](../BACKEND_GAPS.md). Resume IN_PROGRESS work before choosing a new ticket. Work is committed here and pushed to `origin/main`.
 
 | Ticket | Title | Dependencies | Status |
 |---|---|---|---|
@@ -58,8 +58,8 @@ of 1,051 px each, because the operator's full notice renders inline.
 | [WEB-UI-02](WEB-UI-02.md) | Alerts: progressive disclosure | WEB-UI-01 (done) | DONE |
 | [WEB-UI-03](WEB-UI-03.md) | Compact train rows, and an honest Now | WEB-UI-01 (done) | DONE — weekday density capture pending |
 | [WEB-UI-04](WEB-UI-04.md) | Train Quick Look | WEB-UI-03 (done) | DONE |
-| [WEB-UI-05](WEB-UI-05.md) | Map layout and selected-train sheet | WEB-UI-01 (done) | **NEXT** |
-| [WEB-UI-07](WEB-UI-07.md) | Desktop glanceable composition | WEB-UI-02, 03, 05 | NOT_STARTED |
+| [WEB-UI-05](WEB-UI-05.md) | Map layout and selected-train sheet | WEB-UI-01 (done) | DONE |
+| [WEB-UI-07](WEB-UI-07.md) | Desktop glanceable composition | WEB-UI-02, 03, 05 (done) | **NEXT** |
 | [WEB-UI-08](WEB-UI-08.md) | Pulse service-state awareness | WEB-UI-01 (done) | NOT_STARTED |
 | [WEB-UI-06](WEB-UI-06.md) | Pulse hierarchy and cross-device review | WEB-UI-01…05, 07, 08 | NOT_STARTED |
 

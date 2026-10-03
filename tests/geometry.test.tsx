@@ -1,4 +1,5 @@
 import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import MapScreen from "../components/map/MapScreen";
 import { fetchShapes } from "../lib/api/geometry";
@@ -135,10 +136,13 @@ describe("map screen", () => {
     // The text equivalent of the map is the set of lines, which is what a commuter can use.
     const lines = screen.getByRole("list", { name: "MARC lines" });
     expect(within(lines).getAllByRole("listitem").length).toBeGreaterThan(0);
-    expect(screen.getByText(/One alignment is drawn, from schedule version 1/)).toBeVisible();
-    // Raw shape identifiers stay available but inside a closed disclosure.
-    const details = screen.getByText("Alignment details").closest("details");
+    // Geometry statistics are secondary now: present, reachable, and behind a closed
+    // disclosure rather than competing with the map.
+    const details = screen.getByText("Map data details").closest("details");
     expect(details?.open).toBe(false);
+    expect(
+      screen.getByText(/One alignment is drawn, from schedule version 1/),
+    ).toBeInTheDocument();
     expect(details?.textContent).toContain("Shape 116473");
     expect(details?.textContent).toContain("54.2 km");
   });
@@ -157,9 +161,14 @@ describe("map screen", () => {
     render(<MapScreen />);
     await screen.findByTestId("map");
     // Several alignments per line cover the same track, so the sum is not a network length.
-    expect(
-      screen.getByText(/counts the same track more than once and is not the length of the/),
-    ).toBeVisible();
+    // It stays with the figure it qualifies, inside the Map data details disclosure, and is
+    // visible the moment that is opened.
+    const caveat = screen.getByText(
+      /counts the same track more than once and is not the length of the/,
+    );
+    expect(caveat).toBeInTheDocument();
+    await userEvent.click(screen.getByText("Map data details"));
+    expect(caveat).toBeVisible();
   });
 
   it("reads geometry once, on the catalog cadence, not per refresh tick", async () => {

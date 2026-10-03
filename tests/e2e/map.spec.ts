@@ -81,9 +81,9 @@ test("filtering a line updates the drawn data without rebuilding the map", async
   await page.evaluate(() => {
     document.querySelector("canvas.maplibregl-canvas")?.setAttribute("data-tag", "same");
   });
-  const select = page.locator("main select");
-  const line = (await select.locator("option").nth(1).getAttribute("value")) ?? "";
-  await select.selectOption(line);
+  // The line filter is a chip, not a select, since WEB-UI-05.
+  const chips = page.getByRole("navigation", { name: "Filter the map by line" });
+  await chips.getByRole("link").nth(1).click();
   await page.waitForURL(/routeId=/, { timeout: 30_000 });
   await page.waitForTimeout(3000);
 

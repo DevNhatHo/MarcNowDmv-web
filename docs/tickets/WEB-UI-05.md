@@ -1,6 +1,6 @@
 # WEB-UI-05 — Map layout and selected-train sheet
 
-Status: NOT_STARTED
+Status: **DONE** (2026-10-03)
 
 ## Goal
 
@@ -96,3 +96,39 @@ a stale selected train, and greyscale. Apply the [DESIGN.md](../DESIGN.md) check
 Acceptance criteria and all required checks actually pass, with the existing map suite green
 and unmodified. Update the ticket index, CURRENT_STATE.md and MAP_PLAN.md if layout rules
 change. One completed-ticket commit with a WEB-UI-05 subject.
+
+## Outcome
+
+The map takes **72% of the viewport** at both widths, up from 60vh behind a labelled form. The
+line filter is a row of chips above it, and the geometry statistics are behind a closed
+`Map data details` disclosure.
+
+### Checks actually executed
+
+`npm run lint` clean, `npm run typecheck` clean, `npx vitest run` **322 tests in 21 files, 0
+failures**, `npm run build` succeeded, `npx playwright test` **82 passed, 4 skipped, 0 failed**.
+Rendered review in `docs/reviews/WEB-UI-05/`.
+
+### The reference was not followed on one point, deliberately
+
+It shows the selected-train sheet **overlapping** the map's lower edge. The OSM and provider
+attribution lives there, and covering it is a licensing problem rather than a layout
+preference. The sheet is attached directly beneath the map with a rounded top and a light
+shadow instead. Measured with the sheet open and the attribution scrolled into view:
+**visible, covered by neither the sheet nor the bottom navigation**, at both widths.
+
+### Nothing in the renderer moved
+
+Sources, layers, follow rules and transition rules are untouched, and the existing map suite
+passes unmodified except for one test that drove the old `<select>` and now clicks a chip — the
+same assertion about the same behaviour. The sheet renders the same `TrainFacts` as the quick
+look, so there is no third description of a train.
+
+### The statistics are secondary, not gone
+
+`Map data details` is closed by default and keeps the sentence explaining that 43 alignments
+totalling 3,467 km counts the same track many times. Compacting that into a bare number would
+restate the misreading it was written to prevent. Two tests were updated to assert it is
+present and reachable rather than visible.
+
+No blockers. Next: [WEB-UI-07](WEB-UI-07.md) — desktop glanceable composition.
