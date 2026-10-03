@@ -40,7 +40,9 @@ sits beneath the map rather than over it, because the OSM attribution is there.
 width, each resource read exactly once, and renders nothing extra below 64rem.
 **[WEB-UI-08](tickets/WEB-UI-08.md) is DONE**: Pulse leads with in service / between trains /
 ended, from the timetable and `membership`. No "active" count exists; each tile names its own
-fact. **Recommended next: [WEB-UI-06](tickets/WEB-UI-06.md)**, the last UI ticket. A **live movement addendum** on
+fact. **[WEB-UI-06](tickets/WEB-UI-06.md) is DONE**, and with it **the whole UI refinement
+milestone**: WEB-UI-01 to WEB-UI-08. Measured across three widths: 0 horizontal overflow,
+exactly one `h1`, and 0 overflow at 200% text on every screen. **No frontend ticket is open.** A **live movement addendum** on
 2026-10-02 extended the map plan with marker-update and animation semantics, folded the
 in-place update rules into WEB-MAP-3 and the follow rules into WEB-MAP-4, and added
 [WEB-MAP-7](tickets/WEB-MAP-7.md) for smooth transitions between observed positions; it opened
@@ -352,64 +354,33 @@ then swapped the renderer by changing those same two files and nothing else.
 
 ## Next session
 
-Read AGENTS.md, this file, [DESIGN.md](DESIGN.md) and
-[WEB-UI-02](tickets/WEB-UI-02.md), and inspect `git status` in both repositories.
+Read AGENTS.md, this file and [DESIGN.md](DESIGN.md), and inspect `git status` in both
+repositories.
 
-**Start WEB-UI-06 — Pulse hierarchy and cross-device review.** The remaining Pulse work is
-small: the uncertainty explanation moves behind a `Why?` disclosure. The bulk is the review.
+**No frontend ticket is open.** Three milestones are complete and verified against the live
+backend: the four-screen core (WEB-001–WEB-015), the map (WEB-MAP-1–WEB-MAP-7) and the UI
+refinement (WEB-UI-01–WEB-UI-08).
 
-### An open follow-up: weekday density capture
+### Open follow-ups, recorded rather than ticketed
 
-WEB-UI-03 shipped with **PENDING LIVE WEEKDAY DENSITY VERIFICATION** recorded in its review. Row
-height, wrapping, overflow and greyscale at 97 rows are verified from a labelled SYNTHETIC
-fixture, and every behaviour against today's real 18-train Saturday data. What remains is a
-judgement about scanning 97 *real* rows on a weekday. **Correctness does not depend on it**, and
-it was recorded as a follow-up rather than a gate because the ticket's Definition of Done asks
-for measured heights and the documented Now rule, not a weekday screenshot.
+**PENDING LIVE WEEKDAY DENSITY VERIFICATION.** Every UI capture was taken on Saturday
+2026-10-03, with 18 scheduled trains against a weekday's 97 and almost nothing reporting a
+fresh position. Density at weekday volume is verified from a clearly labelled SYNTHETIC fixture
+in `docs/reviews/WEB-UI-03/`; legibility at 97 **real** rows is not. **Correctness does not
+depend on it** — every data-trust rule is covered by deterministic tests. Also outstanding: a
+fresh-position capture of the quick look and map sheet, and an overnight capture of the real
+service-ended state.
 
-The same applies to WEB-UI-05, which judges markers at weekday volume.
-
-### The design reference arrived (2026-10-03)
-
-The mockups are in [`design-reference/`](design-reference/) and everything in them is synthetic.
-[DESIGN.md](DESIGN.md) tabulates the seven points where following them literally would make the
-product lie — most importantly `Penn → Washington` on every row, a prominent `+8 min`, "5 trains
-active", and "Near Odenton, MD", which would be reverse geocoding the backend does not do.
-
-The reference's strongest idea is not visual: Pulse states for service ended, between trains and
-in service. [WEB-UI-08](tickets/WEB-UI-08.md) owns it.
-
-The feed publishes `color: FF8000` for **all three** routes, so the reference's per-line colours
-are not the operator's. Distinct colours may be assigned as ours, never presented as the
-operator's, and never the only way a line is identified.
-
-### Carried forward from WEB-UI-01
-
-**A weekend capture is not a density review.** Three e2e tests failed during WEB-UI-01 purely
-because it was a Saturday outside service hours and **0 of 18 trains were reporting a
-position**. They were rewritten to assert their rules in both conditions — the reduced-motion
-test now compares the two motion modes against each other instead of asserting `listed > 0`.
-WEB-UI-03 and WEB-UI-05 judge density and markers, so **they must capture on a weekday**.
-
-The fixed mobile navigation is `position: fixed` and the footer reserves 15 px of clearance
-below it. Anything else that pins itself to the bottom of the viewport — a sheet in WEB-UI-04 or
-WEB-UI-05 — must clear the bar too, and must not cover the map's OpenStreetMap attribution,
-which is a licensing obligation.
-
-`--shadow-raised` exists and is used by nothing. It is one token for surfaces that lift off the
-page, never a depth scale and never the thing that distinguishes a state.
-
-### The visual north star
-
-A reference mockup was named as the design north star on 2026-10-03, but **the image itself was
-never received** — only its written description. The direction is being followed from those
-words, and reviews judge calmness, density and hierarchy against them. No review may claim
-visual equivalence to an image nobody in this repository has seen. If the image arrives, the
-WEB-UI reviews can be re-judged against it.
+**Backend proposals**, unchanged and still not authorization:
+[BACKEND-UI-06](BACKEND_GAPS.md) for route progress on the trains list, which would let the
+system map transition along the alignment as the focused train already does, and
+BACKEND-UI-02's movement summary. Neither may be worked around in the browser.
 
 ### Standing constraints
 
-Deployment remains **out of this milestone** — the roadmap puts AWS in phase 3. The backend is
-not modified from this repository. The outstanding data work is still
-[BACKEND-UI-06](BACKEND_GAPS.md) and BACKEND-UI-02's movement summary, and neither may be
-worked around in the browser.
+Deployment remains **out of scope** — the roadmap puts AWS in phase 3, and nothing in this
+repository is a deployment plan. The backend is not modified from here.
+
+A Playwright run occasionally flakes on a map spec under contention: more specs now load maps,
+and four workers compete for the backend's four-connection pool and for tiles. It passes on a
+clean rerun; it is an observed flake, not a known failure.

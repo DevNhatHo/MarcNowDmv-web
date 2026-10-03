@@ -67,6 +67,9 @@ test("Pulse summarises the service date and links into the filtered list", async
   expect(await lines.locator("> li").count()).toBeGreaterThan(0);
   // The scope is always stated, and no claim is made about trains running now.
   await expect(page.getByText(/^Based on \d+ scheduled trains? for/)).toBeVisible();
+  // Behind the "Why?" disclosure since WEB-UI-06: attached, not deleted.
+  await expect(page.getByText(/do not say how many trains are running now/)).toBeAttached();
+  await page.getByText("Why?").click();
   await expect(page.getByText(/do not say how many trains are running now/)).toBeVisible();
 
   const first = lines.locator("a").first();

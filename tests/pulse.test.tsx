@@ -1,4 +1,5 @@
 import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import PulseScreen from "../components/PulseScreen";
 import {
@@ -128,9 +129,12 @@ describe("pulse screen", () => {
     expect(await screen.findByText(/Based on 3 scheduled trains for/)).toBeVisible();
     // The capture has a cursor, so the view is partial and says so.
     expect(screen.getByText(/this is a partial view/)).toBeVisible();
-    expect(
-      screen.getByText(/do not say how many trains are running now/),
-    ).toBeVisible();
+    // The explanation moved behind a "Why?" disclosure in WEB-UI-06. It is present and one
+    // click away, not deleted or softened.
+    const why = screen.getByText(/do not say how many trains are running now/);
+    expect(why).toBeInTheDocument();
+    await userEvent.click(screen.getByText("Why?"));
+    expect(why).toBeVisible();
   });
 
   it("reads the list once and never fans out into detail", async () => {

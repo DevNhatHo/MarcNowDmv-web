@@ -93,3 +93,23 @@
   color: var(--color-text-secondary);
   font-size: var(--text-small);
 }
+
+/*
+ * The uncertainty explanation, behind a disclosure. It is not deleted and not softened: it is
+ * what makes the figures above trustworthy. At equal prominence it competed with them.
+ */
+.why {
+  margin-block-start: var(--space-2);
+}
+
+.whySummary {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--target-min);
+  color: var(--color-information);
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+}

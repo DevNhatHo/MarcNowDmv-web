@@ -1,6 +1,6 @@
 # WEB-UI-06 — Pulse hierarchy and cross-device review
 
-Status: NOT_STARTED
+Status: **DONE** (2026-10-03)
 
 ## Goal
 
@@ -103,3 +103,41 @@ the ones not acted on.
 Acceptance criteria and all required checks actually pass, with the review recorded and any
 deferred findings written up. Update DESIGN.md, ROADMAP.md, the ticket index and
 CURRENT_STATE.md. One completed-ticket commit with a WEB-UI-06 subject.
+
+## Outcome
+
+Pulse's uncertainty explanation moved behind a `Why?` disclosure, and the whole milestone was
+reviewed across three widths and every state.
+
+### Checks actually executed
+
+`npm run lint` clean, `npm run typecheck` clean, `npx vitest run` **340 tests in 23 files, 0
+failures**, `npm run build` succeeded, `npx playwright test` **84 passed, 4 skipped, 0 failed**.
+26 captures in `docs/reviews/WEB-UI-06/`.
+
+Measured on every screen at 360, 768 and 1280: **0 horizontal overflow, exactly one `h1`, 0
+overflow at 200% text, no page errors.**
+
+### A regression the review caught
+
+`/trains` overflowed by **155 px at 200% text** on a 360 px viewport — a WCAG 1.4.10 reflow
+failure. A date input carries an intrinsic width that doubles with the text size, and the filter
+row measured 505 px inside a 360 px screen. The existing zoom test checks `/` only, so it never
+saw it. Fields now shrink and the Now/Today control wraps; the figure is 0 at all three widths.
+
+### Pulse
+
+The explanation is behind `Why?`, not deleted and not softened. Two tests were updated to assert
+it is present and visible once opened, rather than visible by default.
+
+### What is still open
+
+**PENDING LIVE WEEKDAY DENSITY VERIFICATION**, carried from WEB-UI-03. Every capture in this
+milestone is a Saturday with 18 trains against a weekday's 97. Density at weekday volume is
+verified from a labelled SYNTHETIC fixture; legibility at 97 real rows is not. Correctness does
+not depend on it. Also open: a fresh-position capture of the quick look and map sheet, and an
+overnight capture of the real service-ended state.
+
+These are recorded as follow-up design checks, not as defects.
+
+The UI refinement milestone is complete: WEB-UI-01 to WEB-UI-08 are all DONE.

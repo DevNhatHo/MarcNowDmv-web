@@ -31,7 +31,18 @@
   border-block-end: var(--border-thin) solid var(--color-border);
 }
 
-.field { display: grid; gap: var(--space-1); }
+/*
+ * A date input carries an intrinsic width that doubles with the text size. Without these the
+ * filter row was 505px wide inside a 360px viewport at 200% font, which is the reflow failure
+ * WCAG 1.4.10 is about.
+ */
+.field {
+  display: grid;
+  gap: var(--space-1);
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  flex: 1 1 12rem;
+}
 
 .label {
   color: var(--color-text-secondary);
@@ -40,6 +51,8 @@
 }
 
 .control {
+  inline-size: 100%;
+  max-inline-size: 100%;
   min-block-size: var(--target-min);
   padding: 0 var(--space-2);
   border: var(--border-thin) solid var(--color-border);
@@ -83,7 +96,9 @@
  */
 .when {
   display: inline-flex;
+  flex-wrap: wrap;
   gap: var(--space-1);
+  max-inline-size: 100%;
   margin-block-end: var(--space-3);
   padding: var(--space-1);
   border: var(--border-thin) solid var(--color-border);
@@ -95,6 +110,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: 1 1 auto;
   min-inline-size: 5rem;
   min-block-size: var(--target-min);
   padding-inline: var(--space-3);

@@ -143,11 +143,19 @@ export default function PulseScreen() {
                 ))}
               </ul>
             )}
-            <p className={styles.note}>
-              These figures count scheduled trains and the operator&rsquo;s own reports.
-              They do not say how many trains are running now, which this service cannot
-              determine.
-            </p>
+            {/*
+              * Behind a disclosure, not deleted. The explanation is what makes the figures
+              * above trustworthy, but at equal prominence it competed with them; a reader
+              * who wants to know why asks, and the answer is unchanged and one click away.
+              */}
+            <details className={styles.why}>
+              <summary className={styles.whySummary}>Why?</summary>
+              <p className={styles.note}>
+                These figures count scheduled trains and the operator&rsquo;s own reports.
+                They do not say how many trains are running now, which this service cannot
+                determine.
+              </p>
+            </details>
           </section>
 
           <section className={styles.section}>
