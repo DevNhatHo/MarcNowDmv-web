@@ -1,7 +1,6 @@
 "use client";
 
 import { describeReport } from "../lib/presentation/time";
-import { ActionButton } from "./Feedback";
 import styles from "./Freshness.module.css";
 
 /**
@@ -58,9 +57,24 @@ export default function Freshness({
           Received {received.replace(/^Reported /, "")}.
         </span>
       )}
-      <ActionButton onClick={onRefresh} disabled={loading}>
-        {loading ? "Refreshing…" : "Refresh"}
-      </ActionButton>
+      {/*
+        * A quiet inline control rather than a bordered button. It keeps a full 44px target and
+        * an accessible name that says what it refreshes, so compacting it costs nothing a
+        * keyboard or screen-reader user relied on. The glyph is decorative; the name is not.
+        */}
+      <button
+        type="button"
+        className={styles.refresh}
+        onClick={onRefresh}
+        disabled={loading}
+      >
+        <span className={styles.refreshLabel}>
+          {loading ? "Refreshing…" : "Refresh"}
+        </span>
+        <span aria-hidden="true" className={styles.glyph}>
+          ↻
+        </span>
+      </button>
       </p>
     </>
   );

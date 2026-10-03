@@ -21,21 +21,45 @@
   --leading-body: 1.5;
   --leading-heading: 1.2;
 
-  --color-canvas: #f7f8f9;
+  /*
+   * Palette, retuned for the 2026-10-03 visual direction. Every value was contrast-checked
+   * against both #ffffff and the canvas before adoption and clears WCAG AA for normal text.
+   *
+   * It is uniformly *lower* contrast than the palette it replaced — the accent falls from
+   * 7.85 to 5.41 — so this is a deliberate softening that still clears AA, not an improvement
+   * in legibility. `--color-text-secondary` at 4.55 on the canvas is the tightest value in the
+   * set: darkening the canvas breaks it, so re-run the figures if it ever changes.
+   *
+   * Token names are unchanged, so no component was edited to adopt any of this.
+   */
+  --color-canvas: #f8fafc;
   --color-surface: #ffffff;
-  --color-text: #18212b;
-  --color-text-secondary: #52606d;
-  --color-border: #d8dee5;
-  --color-positive: #17633b;
-  --color-information: #174ea6;
-  --color-warning: #805600;
-  --color-critical: #a52424;
-  --color-unknown: #52606d;
-  --color-focus: #174ea6;
+  --color-text: #0f172a;
+  --color-text-secondary: #475569;
+  --color-border: #e2e8f0;
+  --color-positive: #15803d;
+  --color-information: #155eef;
+  --color-information-strong: #0f4ccb;
+  --color-warning: #b45309;
+  --color-critical: #b42318;
+  /*
+   * Deliberately the same value as a muted secondary tone. An unknown or stale state is
+   * therefore never distinguishable by colour alone, which is why every one of them says so
+   * in words.
+   */
+  --color-unknown: #64748b;
+  --color-focus: #155eef;
 
   --border-thin: 1px;
   --radius-small: 0.25rem;
   --radius-medium: 0.5rem;
+  --radius-large: 0.75rem;
+  /*
+   * One shadow, for surfaces that genuinely lift off the page. Not a depth scale, and never
+   * the thing that distinguishes a state: a shadow survives neither greyscale nor a
+   * forced-colours mode. Supersedes the original "no shadow by default" rule.
+   */
+  --shadow-raised: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.06);
   --focus-width: 3px;
   --focus-offset: 3px;
   --target-min: 2.75rem;

@@ -22,7 +22,10 @@ the system map, drawing this train on its own alignment, and the journey round-t
 with filters intact. The embedded map is additive — an e2e test blocks its geometry request and
 asserts the screen stays complete. A **UI refinement milestone** was planned on 2026-10-03 — WEB-UI-01 to WEB-UI-06, the visual
 direction "less, but better" in [DESIGN.md](DESIGN.md). It refines the shipped UI and restarts
-nothing. **Recommended next: [WEB-UI-01](tickets/WEB-UI-01.md).** A **live movement addendum** on
+nothing. **[WEB-UI-01](tickets/WEB-UI-01.md) is DONE**: the palette, shape tokens, a quiet refresh line
+and a mobile bottom navigation are in place, with no component edited to adopt the palette
+because only token *values* changed. **Recommended next: [WEB-UI-02](tickets/WEB-UI-02.md)** —
+alerts, the measured largest win. A **live movement addendum** on
 2026-10-02 extended the map plan with marker-update and animation semantics, folded the
 in-place update rules into WEB-MAP-3 and the follow rules into WEB-MAP-4, and added
 [WEB-MAP-7](tickets/WEB-MAP-7.md) for smooth transitions between observed positions; it opened
@@ -335,37 +338,36 @@ then swapped the renderer by changing those same two files and nothing else.
 ## Next session
 
 Read AGENTS.md, this file, [DESIGN.md](DESIGN.md) and
-[WEB-UI-01](tickets/WEB-UI-01.md), and inspect `git status` in both repositories.
+[WEB-UI-02](tickets/WEB-UI-02.md), and inspect `git status` in both repositories.
 
-**Start WEB-UI-01 — visual foundation.** It is unblocked and every other UI ticket depends on
-it: it re-tunes token *values* and three shared components, so it must land before any screen
-changes.
+**Start WEB-UI-02 — alerts: progressive disclosure.** It is the measured largest win in the app
+and is contained to two components: `/alerts` is 5,823 px for 11 advisories because the
+operator's `descriptionText` (1,059 chars on the Odenton advisory) renders inline against an
+80-char title.
 
-### What the planning pass measured, which the tickets rest on
+### Carried forward from WEB-UI-01
 
-| Screen, 360×800 | Measured 2026-10-03 |
-|---|---|
-| Alerts | **5,823 px for 11 advisories** — 1,051 px each, because `descriptionText` (1,059 chars on the Odenton advisory) renders inline against an 80-char title |
-| Trains | **3,122 px, 113 px per row**, and that is a Saturday's 18 trains; a weekday is 97 |
-| Pulse | 1,224 px, 3 bordered boxes — already the calmest screen |
+**A weekend capture is not a density review.** Three e2e tests failed during WEB-UI-01 purely
+because it was a Saturday outside service hours and **0 of 18 trains were reporting a
+position**. They were rewritten to assert their rules in both conditions — the reduced-motion
+test now compares the two motion modes against each other instead of asserting `listed > 0`.
+WEB-UI-03 and WEB-UI-05 judge density and markers, so **they must capture on a weekday**.
 
-The proposed palette was contrast-checked before being accepted: all values clear AA, but it is
-**uniformly lower contrast than the current one**, and `muted` at 4.55 on the background is the
-tightest value in the set.
+The fixed mobile navigation is `position: fixed` and the footer reserves 15 px of clearance
+below it. Anything else that pins itself to the bottom of the viewport — a sheet in WEB-UI-04 or
+WEB-UI-05 — must clear the bar too, and must not cover the map's OpenStreetMap attribution,
+which is a licensing obligation.
 
-### Three findings that constrain the design
+`--shadow-raised` exists and is used by nothing. It is one token for surfaces that lift off the
+page, never a depth scale and never the thing that distinguishes a state.
 
-1. **Never render a route name as a journey.** On 2026-10-03 the live feed carried 18 trains on
-   `PENN - WASHINGTON`, of which **9 were headed to BALTIMORE or BALTIMORE AND MARTIN AIR**.
-   "Penn → Washington" would mislabel half the list. Line and destination are separate facts:
-   the line is `longName`, the destination is `scheduled.headsign`. `shortName` is `"MARC"` on
-   all three routes and is useless as a label.
-2. **"Now" is definable without inventing anything**, as `scheduledActive OR positionFresh` —
-   both halves needed, because MARC-508 observed a train running late with `positionFresh: true`
-   and `scheduledActive: false`. The rule must be stated on screen, and `Today` stays the default.
-3. **Quick Look needs a detail read**, because `calculated` is not on the trains list. That is
-   acceptable only as one request per deliberately opened train, reusing WEB-MAP-4's
-   mounted-while-selected pattern. Never prefetched, never per row, never per marker.
+### The visual north star
+
+A reference mockup was named as the design north star on 2026-10-03, but **the image itself was
+never received** — only its written description. The direction is being followed from those
+words, and reviews judge calmness, density and hierarchy against them. No review may claim
+visual equivalence to an image nobody in this repository has seen. If the image arrives, the
+WEB-UI reviews can be re-judged against it.
 
 ### Standing constraints
 

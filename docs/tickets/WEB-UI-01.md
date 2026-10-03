@@ -1,6 +1,6 @@
 # WEB-UI-01 — Visual foundation
 
-Status: NOT_STARTED
+Status: **DONE** (2026-10-03)
 
 ## Goal
 
@@ -26,6 +26,17 @@ None. Every other WEB-UI ticket depends on this one.
 
 Token values, the `Freshness` component, `SiteNavigation`, and tabular numerals for times and
 delays. No screen's information changes.
+
+### Shape tokens, and a reversed decision
+
+The [visual north star](../DESIGN.md) asks for moderate rounded corners and **very light
+shadows**. DESIGN.md previously recorded "no shadow by default", so this ticket reverses that
+deliberately rather than drifting past it.
+
+Add a `--radius-large` for lifted surfaces and **one** `--shadow-raised` token. One, not a
+scale: it is for surfaces that genuinely lift off the page — sheets, popovers, the
+selected-train panel — and it never carries meaning. A shadow must never be the thing that
+distinguishes a state, because it survives neither greyscale nor a forced-colours mode.
 
 ## Out of Scope
 
@@ -100,7 +111,8 @@ this is not a type-scale rewrite.
 
 ## Acceptance Criteria
 
-Every token resolves to the new value with no component edited to adopt it. Contrast is
+Every token resolves to the new value with no component edited to adopt it. The shadow token
+exists, is used by nothing in this ticket, and carries no state. Contrast is
 measured and recorded, not assumed. The refresh control is visibly lighter and loses no
 behaviour. Mobile shows a bottom navigation with the current destination announced, desktop is
 unchanged, and neither covers content or attribution. No screen says anything new or different.
@@ -128,3 +140,74 @@ confirming no state now depends on colour. Apply the [DESIGN.md](../DESIGN.md) c
 Acceptance criteria and all required checks actually pass, with the contrast table recorded.
 Update DESIGN.md, the ticket index and CURRENT_STATE.md. One completed-ticket commit with a
 WEB-UI-01 subject.
+
+## Outcome
+
+The palette, shape tokens, refresh treatment and navigation are in place. **No component was
+edited to adopt the palette**, because the token names did not change — the values did.
+
+### Checks actually executed
+
+`npm run lint` clean, `npm run typecheck` clean, `npx vitest run` **285 tests in 19 files, 0
+failures**, `npm run build` succeeded, `npx playwright test` **80 passed, 4 skipped, 0 failed**.
+Rendered review in `docs/reviews/WEB-UI-01/`.
+
+### Measured
+
+| | Mobile | Desktop |
+|---|---|---|
+| Primary navigation landmarks | 1 | 1 |
+| Navigation position | `fixed`, bottom | `static`, in header |
+| Refresh control target | 86 × 44 | 86 × 44 |
+| Accent | `#155eef` | `#155eef` |
+| Horizontal overflow | 0 | 0 |
+
+### A defect the rendered review caught
+
+The fixed bottom bar **covered the independence notice** at the end of every mobile page — the
+wording the design plan requires verbatim and visible. `main` had clearance; the footer, which
+follows it, had none. The first fix left a 1 px overlap, because the bar is 45 px with its
+border and exact-fit clearance is fragile. Measured 15 px now, on `/`, `/trains` and `/map`.
+
+The map's OSM attribution was checked separately and is **not** covered. An automated reading
+said it was, but that was measuring it while below the fold — worth recording, because the
+wrong fix there would have been to move a licensing obligation.
+
+### Two tests that were asserting the weather
+
+Three e2e tests failed, and none of them was a regression: at the hour of this run **0 of 18
+trains were reporting a position**, because it is a Saturday outside service hours. The tests
+had been written on a weekday and assumed a busy feed.
+
+They now assert the rule in both conditions. `reduced motion loses no information` was the worst
+offender — it asserted `listed > 0`, which is a proxy for its real claim; it now reads the
+screen in both motion modes and compares them, so it holds at rush hour and at 2 am. The others
+skip with a stated reason rather than failing as though focus were broken.
+
+This is a standing hazard for every remaining UI ticket: **a weekend capture is not a density
+review.** WEB-UI-03 and WEB-UI-05 must capture on a weekday.
+
+### A small defect found while fixing those tests
+
+An empty `<ul aria-label="Trains with reported positions">` was still rendered when no train had
+a position, and was announced as a list with zero items. The list is now absent in that case;
+the caption above it already accounts for every train.
+
+### Tokens
+
+The palette is **uniformly lower contrast than the one it replaced** — the accent falls from
+7.85 to 5.41 — and `--color-text-secondary` at 4.55 on the canvas is the tightest value in the
+set. All clear AA. `--color-unknown` is deliberately the same value as the muted secondary
+tone, which is why unknown and stale states say so in words.
+
+`--shadow-raised` was added as **one** token and is used by nothing yet: sheets and popovers
+arrive in WEB-UI-04 and WEB-UI-05. It supersedes the "no shadow by default" rule DESIGN.md
+recorded, which is reversed deliberately rather than drifted past.
+
+### Not done
+
+Tabular numerals needed almost nothing: clock times, map statistics and detail coordinates
+already had them. A global utility class was written, found to be dead code, and deleted; only
+the train row's delay figures gained the property.
+
+No blockers. Next: [WEB-UI-02](WEB-UI-02.md) — alerts, the measured largest win.

@@ -64,6 +64,12 @@ export default function TrainMarkerList({
 
   return (
     <>
+    {/*
+      * Only rendered when something is actually drawn. Outside service hours every train can
+      * be positionless, and a labelled list with no items is announced as an empty list for
+      * no reason; the caption above already says how many report a position.
+      */}
+    {drawn.length === 0 ? null : (
     <ul className={styles.list} aria-label="Trains with reported positions">
       {drawn.map((train) => {
         const status = trainStatusLabel(train.status);
@@ -123,6 +129,7 @@ export default function TrainMarkerList({
         );
       })}
     </ul>
+    )}
 
     {unreported.length === 0 ? null : (
       <details className={styles.disclosure}>

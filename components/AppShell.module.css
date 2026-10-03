@@ -62,24 +62,43 @@
   text-decoration: underline;
 }
 
+/*
+ * One navigation landmark, placed differently by width rather than duplicated. A second
+ * <nav> would mean two "Primary" landmarks announcing the same four destinations.
+ *
+ * Mobile: a thumb-reachable bar fixed to the bottom. Desktop: inline in the header, as before.
+ */
 .nav {
-  margin-inline-start: auto;
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: 10;
+  border-block-start: var(--border-thin) solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+  /* Clears the home indicator on phones that have one. */
+  padding-block-end: env(safe-area-inset-bottom, 0px);
 }
 
 .navList {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0 var(--space-4);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
+.navList > li {
+  flex: 1 1 0;
+}
+
 /* The tap target is the full minimum height; the label itself stays compact. */
 .navLink {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  inline-size: 100%;
   min-block-size: var(--target-min);
+  padding-block: var(--space-2);
   color: var(--color-text-secondary);
   font-weight: var(--weight-medium);
   text-decoration: none;
@@ -109,12 +128,20 @@
 
 .main {
   flex: 1;
-  padding-block: var(--space-8) var(--space-12);
+  padding-block: var(--space-6) var(--space-8);
 }
 
 .footer {
   border-block-start: var(--border-thin) solid var(--color-border);
   background: var(--color-surface);
+  /*
+   * The bottom bar is fixed and the footer is the last thing on the page, so the footer
+   * reserves room for it. Without this the independence notice -- which the design plan
+   * requires verbatim and visible -- sits underneath the bar at the end of every page.
+   */
+  padding-block-end: calc(
+    var(--target-min) + var(--space-4) + env(safe-area-inset-bottom, 0px)
+  );
 }
 
 .independence {
@@ -127,8 +154,47 @@
   font-size: var(--text-small);
 }
 
+.independence {
+  padding-block-end: var(--space-6);
+}
+
 @media (min-width: 48rem) {
   .headerInner {
     padding-block: var(--space-4);
+  }
+
+  /* Back into the header, with no fixed positioning and nothing to clear. */
+  .nav {
+    position: static;
+    z-index: auto;
+    margin-inline-start: auto;
+    border-block-start: none;
+    background: none;
+    box-shadow: none;
+    padding-block-end: 0;
+  }
+
+  .navList {
+    flex-wrap: wrap;
+    gap: 0 var(--space-4);
+  }
+
+  .navList > li {
+    flex: 0 0 auto;
+  }
+
+  .navLink {
+    display: inline-flex;
+    inline-size: auto;
+    padding-block: 0;
+  }
+
+  .main {
+    padding-block: var(--space-8) var(--space-12);
+  }
+
+  /* Nothing is overlaying the page at this width, so nothing needs clearing. */
+  .footer {
+    padding-block-end: 0;
   }
 }

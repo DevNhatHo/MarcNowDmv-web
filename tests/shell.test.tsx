@@ -73,6 +73,14 @@ describe("application shell", () => {
   });
 });
 
+describe("primary navigation", () => {
+  it("is exactly one landmark, placed by width rather than duplicated", () => {
+    render(<AppShell>{null}</AppShell>);
+    // Two <nav aria-label="Primary"> would announce the same four destinations twice.
+    expect(screen.getAllByRole("navigation", { name: "Primary" })).toHaveLength(1);
+  });
+});
+
 describe("current destination", () => {
   it("marks only the active destination", () => {
     pathname.value = "/trains";

@@ -107,11 +107,22 @@ test("no screen without a map requests a basemap", async ({ page }) => {
 
 test("the train list offers every position as text", async ({ page }) => {
   await drawn(page, "/map");
-  const list = page.locator('[aria-label="Trains with reported positions"]');
-  await expect(list).toBeVisible();
+  /*
+   * MARC runs 97 trains on a weekday and 18 on a Saturday, and outside service hours none of
+   * them reports a position at all. This asserts the rule in both cases rather than assuming
+   * the feed is busy: whatever is drawn is also said in words, and when nothing is drawn the
+   * screen says that instead of showing an empty list.
+   */
+  const rows = page.locator('[aria-label="Trains with reported positions"] li');
+  if ((await rows.count()) === 0) {
+    // The caption still accounts for every train, and the list is absent rather than empty.
+    await expect(
+      page.getByText(/report a current position|No train positions are published/),
+    ).toBeVisible();
+    return;
+  }
   // Each entry says what its marker means, in words rather than by colour.
-  const first = list.locator("li").first();
-  await expect(first).toContainText(
+  await expect(rows.first()).toContainText(
     /Current position|Last known position|No position reported/,
   );
 });
@@ -149,6 +160,9 @@ test("focusing a train from the list is a shareable link, and Back leaves focus"
 }) => {
   await drawn(page, "/map");
   const first = page.locator('[aria-label="Trains with reported positions"] li a').first();
+  // MARC reports no positions at all outside service hours, and this test needs a train to
+  // focus. Skipping says so rather than failing as though focus were broken.
+  if ((await first.count()) === 0) test.skip(true, "no train is reporting a position right now");
   const name = (await first.innerText()).trim();
   await first.click();
   await page.waitForURL(/trainId=/, { timeout: 30_000 });
@@ -177,7 +191,11 @@ test("exiting focus restores the system view and keeps the line filter", async (
 
 test("focus states everything the emphasised marker shows, in text", async ({ page }) => {
   await drawn(page, "/map");
-  await page.locator('[aria-label="Trains with reported positions"] li a').first().click();
+  const first = page.locator('[aria-label="Trains with reported positions"] li a').first();
+  // MARC reports no positions at all outside service hours, and this test needs a train to
+  // focus. Skipping says so rather than failing as though focus were broken.
+  if ((await first.count()) === 0) test.skip(true, "no train is reporting a position right now");
+  await first.click();
   await page.waitForURL(/trainId=/, { timeout: 30_000 });
   const panel = page.getByRole("region", { name: /Focused train/ });
   // Nothing is available only on the canvas.
@@ -207,17 +225,35 @@ test("a marker never drifts past its newest observation", async ({ page }) => {
   expect(second).toBe(first);
 });
 
-test("reduced motion still shows every train", async ({ browser }) => {
-  const context = await browser.newContext({ reducedMotion: "reduce" });
-  const page = await context.newPage();
-  await page.goto("/map", { timeout: 60_000 });
-  await page.locator("canvas.maplibregl-canvas").waitFor({ timeout: 60_000 });
-  await page.waitForTimeout(5000);
-  // Nothing is conveyed by the animation alone: the same trains are listed and drawn.
-  const listed = await page.locator('[aria-label="Trains with reported positions"] li').count();
-  expect(listed).toBeGreaterThan(0);
-  expect(await page.locator("canvas.maplibregl-canvas").count()).toBe(1);
-  await context.close();
+test("reduced motion loses no information", async ({ browser }) => {
+  /*
+   * The claim is that the transition conveys nothing the text does not, so the two modes are
+   * compared against each other rather than against a hardcoded expectation. That holds at
+   * rush hour and at 2am, when MARC reports no positions at all.
+   */
+  const read = async (reduce: boolean) => {
+    const context = await browser.newContext({
+      reducedMotion: reduce ? "reduce" : "no-preference",
+    });
+    const page = await context.newPage();
+    await page.goto("/map", { timeout: 60_000 });
+    await page.locator("canvas.maplibregl-canvas").waitFor({ timeout: 60_000 });
+    await page.waitForTimeout(5000);
+    const result = {
+      canvases: await page.locator("canvas.maplibregl-canvas").count(),
+      listed: await page.locator('[aria-label="Trains with reported positions"] li').count(),
+      caption: await page.getByText(/report a current position|No train positions/).count(),
+    };
+    await context.close();
+    return result;
+  };
+
+  const normal = await read(false);
+  const reduced = await read(true);
+  expect(reduced.canvases).toBe(1);
+  expect(reduced.canvases).toBe(normal.canvases);
+  expect(reduced.listed).toBe(normal.listed);
+  expect(reduced.caption).toBe(normal.caption);
 });
 
 test("system map to focus to detail and back, keeping the line filter", async ({ page }) => {

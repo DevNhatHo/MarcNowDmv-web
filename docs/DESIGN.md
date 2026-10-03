@@ -69,7 +69,7 @@ Do not treat movement as severity of official service, or infer cause from stati
 | Type | System sans; 14px metadata minimum, 16px body, 20px section, 28px title, up to 40px dominant status. Weights 400/500/600; body line-height 1.5; tabular numerals for times/delays. |
 | Neutral | Canvas #f7f8f9, surface #ffffff, primary text #18212b, secondary text #52606d, border #d8dee5. |
 | Semantic | Positive #17633b, information/focus #174ea6, warning #805600, critical #a52424, unknown #52606d. Text labels always accompany accents. |
-| Shape | 4px and 8px radii, 1px subtle border, no shadow by default. |
+| Shape | 4px, 8px and 12px radii, 1px subtle border, and **one very light shadow** for surfaces that lift off the page (sheets, popovers, the selected-train panel). Superseded the original "no shadow by default" on 2026-10-03; the shadow is a single restrained token, never a depth scale, and never used to carry meaning. |
 | Width | Main content max 960px; detail reading column around 720px. |
 | Motion | No decorative motion; short disclosure/loading transitions only; disable nonessential transitions under reduced motion. The one substantive exception is a train marker's transition between two **observed** positions ([map plan](MAP_PLAN.md) live movement addendum): bounded at both ends by real data, stopped by stale data, and absent entirely under reduced motion. Motion never implies more certainty than the observation behind it. |
 
@@ -236,6 +236,28 @@ status it qualifies.
 | Alerts | 5,823 px / 11 advisories | 1,051 px each; the operator's full notice renders inline |
 | Trains | 3,122 px / 18 rows | 113 px per row, and 18 is a **Saturday**; a weekday is 97 |
 | Pulse | 1,224 px | already the calmest screen; 3 bordered boxes |
+
+### The visual north star, 2026-10-03
+
+A reference mockup was given as the design north star: **modern commuter product, not
+engineering dashboard**. Its qualities, as described: bright off-white background, a strong
+wordmark, deep blue as the single accent, restrained amber/red/green semantics, generous
+whitespace, subtle borders, very light shadows, moderate rounded corners, compact
+high-information layouts, and the map as a major visual element.
+
+**The reference image itself was not received** — only its written description — so spacing,
+shadow depth, corner radii and visual balance are being inferred from words rather than matched
+to pixels. Reviews can judge calmness, density and hierarchy against the written qualities;
+they cannot claim visual equivalence to an image nobody in this repository has seen. If the
+image arrives later, the reviews can be re-judged against it.
+
+Anything in the reference is a **visual** instruction only. Every train, delay, station, route
+count, marker, status, time and advisory it shows is assumed synthetic and must never be read
+as backend data or reproduced as a value.
+
+Density is the quality most easily lost. "Less, but better" means a small number of
+well-composed elements carrying high-value information — not giant empty space, enormous cards,
+oversized headings, or commuter information hidden to make a screen look calm.
 
 ### What refinement may not do
 
