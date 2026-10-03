@@ -239,25 +239,43 @@ status it qualifies.
 
 ### The visual north star, 2026-10-03
 
-A reference mockup was given as the design north star: **modern commuter product, not
-engineering dashboard**. Its qualities, as described: bright off-white background, a strong
-wordmark, deep blue as the single accent, restrained amber/red/green semantics, generous
-whitespace, subtle borders, very light shadows, moderate rounded corners, compact
-high-information layouts, and the map as a major visual element.
+The reference mockups are in [`design-reference/`](design-reference/):
+`screens-desktop-and-mobile.png` (all four screens plus six mobile views),
+`desktop-composition.png` (the three-pane desktop home) and
+`pulse-by-time-of-day.png` (Pulse at 1:43 AM, 8:12 AM and 4:26 PM).
 
-**The reference image itself was not received** — only its written description — so spacing,
-shadow depth, corner radii and visual balance are being inferred from words rather than matched
-to pixels. Reviews can judge calmness, density and hierarchy against the written qualities;
-they cannot claim visual equivalence to an image nobody in this repository has seen. If the
-image arrives later, the reviews can be re-judged against it.
+**Everything in them is synthetic.** Train 413, +8 min, BWI Airport, 4.2 mi, "Near Odenton, MD",
+the advisory wording, the line colours and every count are mockup values. None is backend data
+and none may be reproduced as a value.
 
-Anything in the reference is a **visual** instruction only. Every train, delay, station, route
-count, marker, status, time and advisory it shows is assumed synthetic and must never be read
-as backend data or reproduced as a value.
+What they establish: a bright off-white canvas, one deep blue accent, restrained amber/red/green
+semantics, generous whitespace, subtle borders, light shadows, moderate rounded corners, compact
+rows separated by rules rather than wrapped in cards, a dominant map, and bottom sheets on
+mobile. They are visually calm **without being sparse** — every row carries real information.
 
-Density is the quality most easily lost. "Less, but better" means a small number of
-well-composed elements carrying high-value information — not giant empty space, enormous cards,
-oversized headings, or commuter information hidden to make a screen look calm.
+#### Where the reference and the real data disagree
+
+These are not criticisms of the mockups, which are visual documents. They are the points where
+following them literally would make the product lie.
+
+| Reference shows | Reality | What we do |
+|---|---|---|
+| `Penn → Washington` on every row | 9 of 18 Penn trains on 2026-10-03 were headed to **Baltimore** | Line and destination stay separate: line from `longName`, destination from `scheduled.headsign` |
+| `+8 min` · `Official (MTA)` prominently | MDOT publishes **no trip-level delay or status** on this feed | The badge is the exception; rows are designed for "Realtime status unavailable" first |
+| `5 trains active (now or recently)` | MARC-508 deliberately refused to publish an `active` boolean | Say which fact is being counted, never "active" |
+| `1 reported delayed` | Requires an official delay, usually absent | Only shown when the operator published one |
+| `Current location: Near Odenton, MD` | The backend publishes coordinates, not place names | **Not implemented.** Reverse geocoding is inference the backend does not make |
+| Penn blue, Camden purple, Brunswick orange | The feed publishes `color: FF8000` for **all three** routes, and `FF8000` on white is ~2.2 contrast | Distinct line colours may be assigned as **ours**, never presented as the operator's, never the only way a line is identified, and never used for text at that contrast |
+| `BWI Airport · 4.2 mi` | Distances are metres behind a `units` guard | Convert for display only when `units` says `meters` |
+
+#### Service-state awareness, the reference's best idea
+
+`pulse-by-time-of-day.png` shows Pulse in three states: service ended for the night with the
+next departure, between trains with a countdown, and in service with live counts. This is a
+genuine product improvement and not merely visual — at 01:40 on 2026-10-03 the real app showed
+"0 of 18 trains report a current position", which reads as a broken app rather than as a
+sleeping railway. Both the state and the next scheduled departure are honest: they come from the
+timetable, not from inference. [WEB-UI-08](tickets/WEB-UI-08.md) owns it.
 
 ### What refinement may not do
 

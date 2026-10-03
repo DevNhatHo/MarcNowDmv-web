@@ -47,7 +47,7 @@ A preferred visual direction — **less, but better** — was set after the map 
 It refines the existing UI; it does not restart it. No completed ticket is reopened, no backend
 semantics change, and every data-trust rule stays authoritative.
 
-Order is WEB-UI-01 → **WEB-UI-02** → WEB-UI-03 → WEB-UI-04 → WEB-UI-05 → **WEB-UI-07** → WEB-UI-06. A [visual north star](../DESIGN.md) was added on 2026-10-03 and folded into the tickets; its reference image was never received, so the direction is being followed from its written description.
+Order is WEB-UI-01 → **WEB-UI-02** → WEB-UI-03 → WEB-UI-04 → WEB-UI-05 → **WEB-UI-07** → **WEB-UI-08** → WEB-UI-06. The [reference mockups](../design-reference/) arrived on 2026-10-03 and are recorded in [DESIGN.md](../DESIGN.md) with the seven points where following them literally would make the product lie.
 **Alerts was moved ahead of the train and map work** because it is the measured largest win in
 the app and is contained to two components: `/alerts` is 5,823 px for 11 advisories, an average
 of 1,051 px each, because the operator's full notice renders inline.
@@ -60,7 +60,8 @@ of 1,051 px each, because the operator's full notice renders inline.
 | [WEB-UI-04](WEB-UI-04.md) | Train Quick Look | WEB-UI-03 | NOT_STARTED |
 | [WEB-UI-05](WEB-UI-05.md) | Map layout and selected-train sheet | WEB-UI-01 | NOT_STARTED |
 | [WEB-UI-07](WEB-UI-07.md) | Desktop glanceable composition | WEB-UI-02, 03, 05 | NOT_STARTED |
-| [WEB-UI-06](WEB-UI-06.md) | Pulse hierarchy and cross-device review | WEB-UI-01…05, 07 | NOT_STARTED |
+| [WEB-UI-08](WEB-UI-08.md) | Pulse service-state awareness | WEB-UI-01 (done) | NOT_STARTED |
+| [WEB-UI-06](WEB-UI-06.md) | Pulse hierarchy and cross-device review | WEB-UI-01…05, 07, 08 | NOT_STARTED |
 
 These are presentation tickets. None of them may add a backend request per row or per marker,
 weaken a provenance distinction, or make a stale value read as current.
