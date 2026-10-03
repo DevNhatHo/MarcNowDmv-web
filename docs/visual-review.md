@@ -94,3 +94,8 @@ review.
 | WEB-014 | [reviews/WEB-014](reviews/WEB-014/README.md) |
 | WEB-015 | [reviews/WEB-015](reviews/WEB-015/README.md) |
 | WEB-MAP-2 | [reviews/WEB-MAP-2](reviews/WEB-MAP-2/README.md) |
+| WEB-MAP-6 | [reviews/WEB-MAP-6](reviews/WEB-MAP-6/README.md) |
+| WEB-MAP-3 | [reviews/WEB-MAP-3](reviews/WEB-MAP-3/README.md) |
+| WEB-MAP-4 | [reviews/WEB-MAP-4](reviews/WEB-MAP-4/README.md) |
+| WEB-MAP-7 | [reviews/WEB-MAP-7](reviews/WEB-MAP-7/README.md) — contains clearly labelled **SYNTHETIC** frames |
+| WEB-MAP-5 | [reviews/WEB-MAP-5](reviews/WEB-MAP-5/README.md) |

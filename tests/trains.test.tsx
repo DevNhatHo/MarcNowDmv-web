@@ -223,6 +223,8 @@ describe("train detail", () => {
       [/\/api\/v1\/trains\//, detail],
       [/\/api\/v1\/stops/, capturedBody("stops")],
       [/\/api\/v1\/routes/, capturedBody("routes")],
+      // The embedded focused map reads this train's own alignment, on the catalog cadence.
+      [/\/api\/v1\/shapes/, capturedBody("shapes")],
     ] as Array<[RegExp, unknown, number?]>;
 
   it("keeps scheduled times and official estimates separately labelled", async () => {

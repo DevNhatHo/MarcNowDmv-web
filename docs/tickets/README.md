@@ -1,6 +1,6 @@
 # Frontend ticket index
 
-**The core local milestone is complete**: WEB-001 through WEB-012 are DONE (WEB-006 was merged into WEB-005), and WEB-013 through WEB-015 followed from findings made by running the app against the real backend. [WEB-MAP-1](WEB-MAP-1.md), [WEB-MAP-2](WEB-MAP-2.md), [WEB-MAP-6](WEB-MAP-6.md), [WEB-MAP-3](WEB-MAP-3.md), [WEB-MAP-4](WEB-MAP-4.md) and [WEB-MAP-7](WEB-MAP-7.md) are DONE. **The backend delivered both map gates on 2026-09-30** — see [backend proposals](../BACKEND_GAPS.md) — so WEB-MAP-3 through WEB-MAP-5 are unblocked, and a [live movement addendum](../MAP_PLAN.md) on 2026-10-02 added WEB-MAP-7. The renderer is now MapLibre GL JS, so the marker work is written once. Recommended next: **[WEB-MAP-5](WEB-MAP-5.md)** — map and train-detail integration, the last map ticket. Resume IN_PROGRESS work before choosing a new ticket. Work is committed here and pushed to `origin/main`.
+**The core local milestone is complete**: WEB-001 through WEB-012 are DONE (WEB-006 was merged into WEB-005), and WEB-013 through WEB-015 followed from findings made by running the app against the real backend. [WEB-MAP-1](WEB-MAP-1.md), [WEB-MAP-2](WEB-MAP-2.md), [WEB-MAP-6](WEB-MAP-6.md), [WEB-MAP-3](WEB-MAP-3.md), [WEB-MAP-4](WEB-MAP-4.md) and [WEB-MAP-7](WEB-MAP-7.md) are DONE. **The backend delivered both map gates on 2026-09-30** — see [backend proposals](../BACKEND_GAPS.md) — so WEB-MAP-3 through WEB-MAP-5 are unblocked, and a [live movement addendum](../MAP_PLAN.md) on 2026-10-02 added WEB-MAP-7. The renderer is now MapLibre GL JS, so the marker work is written once. **The map milestone is complete**: WEB-MAP-1 through WEB-MAP-7 are all DONE. No ticket is open. Remaining work is recorded as [backend proposals](../BACKEND_GAPS.md), not as frontend tickets. Resume IN_PROGRESS work before choosing a new ticket. Work is committed here and pushed to `origin/main`.
 
 | Ticket | Title | Dependencies | Status |
 |---|---|---|---|
@@ -39,6 +39,6 @@ Map order is WEB-MAP-1 → WEB-MAP-2 → **WEB-MAP-6** → WEB-MAP-3 → WEB-MAP
 | [WEB-MAP-3](WEB-MAP-3.md) | Active train markers with position trust | WEB-MAP-6 (done) + BACKEND-UI-02 (delivered) | DONE |
 | [WEB-MAP-4](WEB-MAP-4.md) | Train focus and observation-based follow | WEB-MAP-3 (done) | DONE |
 | [WEB-MAP-7](WEB-MAP-7.md) | **Smooth transitions between observed positions** — ran after WEB-MAP-4, before WEB-MAP-5 | WEB-MAP-4 (done) | DONE |
-| [WEB-MAP-5](WEB-MAP-5.md) | Map and train-detail integration | WEB-MAP-7 (done) | **NEXT** |
+| [WEB-MAP-5](WEB-MAP-5.md) | Map and train-detail integration | WEB-MAP-7 (done) | DONE |
 
 Backend proposal delivery is a gate, not permission to modify the backend. BACKEND-UI-02 and BACKEND-UI-03 were **delivered on 2026-09-30** and verified live; see [backend proposals](../BACKEND_GAPS.md).

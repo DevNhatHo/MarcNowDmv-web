@@ -16,7 +16,11 @@ at once. **[WEB-MAP-7](tickets/WEB-MAP-7.md) is DONE**: markers transition betwe
 positions and stop, never extrapolating past the newest one. Stale places rather than
 animates, repeated and out-of-order reports move nothing, reduced motion disables the
 transition, and the focused train follows its published alignment between two measured
-fractions. Recommended next: **[WEB-MAP-5](tickets/WEB-MAP-5.md)**, the last map ticket. A **live movement addendum** on
+fractions. **[WEB-MAP-5](tickets/WEB-MAP-5.md) is DONE**, and with it the whole map milestone:
+WEB-MAP-1 through WEB-MAP-7 are complete. Train detail embeds the same renderer and markers as
+the system map, drawing this train on its own alignment, and the journey round-trips both ways
+with filters intact. The embedded map is additive — an e2e test blocks its geometry request and
+asserts the screen stays complete. **No frontend ticket is open.** A **live movement addendum** on
 2026-10-02 extended the map plan with marker-update and animation semantics, folded the
 in-place update rules into WEB-MAP-3 and the follow rules into WEB-MAP-4, and added
 [WEB-MAP-7](tickets/WEB-MAP-7.md) for smooth transitions between observed positions; it opened
@@ -328,47 +332,22 @@ then swapped the renderer by changing those same two files and nothing else.
 
 ## Next session
 
-Read AGENTS.md, this file, [MAP_PLAN.md](MAP_PLAN.md) and
-[WEB-MAP-3](tickets/WEB-MAP-3.md), and inspect `git status` in both repositories.
+Read AGENTS.md, this file and [MAP_PLAN.md](MAP_PLAN.md), and inspect `git status` in both
+repositories.
 
-**Start WEB-MAP-3** — active train markers with position trust. It is unblocked: the renderer
-is now MapLibre, so markers are written once; MARC-507 put `scheduled.shapeId`, `directionId`
-and `headsign` on every train; and MARC-508 put the three `membership` facts there. It also
-owes the **station markers** WEB-MAP-2 deferred.
+**No frontend ticket is open.** The four-screen core (WEB-001–WEB-015) and the map milestone
+(WEB-MAP-1–WEB-MAP-7) are both complete, verified against the live backend.
 
-Two rules from the map plan bind it hardest. A stale position is drawn as a last-known marker,
-distinct by **shape and label, never by colour alone**, and is never animated, never moved and
-never counted as a live train. And nothing may be available only on the map — every marker's
-identity, status, position age and movement state must also appear in ordinary markup beside
-it.
+What is genuinely outstanding is **backend** work, recorded as proposals rather than
+authorization in [BACKEND_GAPS.md](BACKEND_GAPS.md):
 
-Do not collapse the three membership facts into one "active" flag; the backend separated them
-precisely because they disagree, and MARC-508 observed all three disagreement cases live.
+* **BACKEND-UI-06** — route progress on the trains list, which would let the system map
+  transition along the alignment as the focused train already does.
+* **BACKEND-UI-02's movement summary** — until it exists the system map omits movement rather
+  than approximating it, which is correct behaviour, not a shortfall.
 
-### Carried forward from WEB-MAP-3 (2026-10-02)
+Neither blocks anything shipped. Do not work around either in the browser: computing progress
+or movement from coordinates is the map matching the backend owns.
 
-The frontend types and parser now carry `membership` and `scheduled.shapeId`/`directionId`/
-`headsign`, and the **contract samples were re-captured** against the running backend because
-MARC-507/508 shipped after they were taken. Only the four samples whose bodies changed were
-rewritten; `no-geometry-endpoint` keeps its historical 404 on purpose.
-
-Tests must read the capture's own service date rather than a literal — two did not, and
-re-capturing broke them. If a sample is re-captured again, check for the same pattern.
-
-### Carried forward from the live movement addendum (2026-10-02)
-
-WEB-MAP-3 now owns the in-place marker-update rules and WEB-MAP-4 the follow refinements, both
-folded in rather than fragmented into new tickets. Markers are keyed by the backend's train
-identity, never array order, and move only for a newer `position.sourceTimestamp`.
-
-Movement state is **not available on the system map** — `calculated` is deliberately absent
-from the trains list — so WEB-MAP-3 omits the claim rather than approximating it. That is the
-correct behaviour, not a shortfall.
-
-### Carried forward from WEB-MAP-6
-
-The map must not be rebuilt by a data change. Markers belong in their own source and layer
-added once, updated with `setData` on the polling cadence — adding or removing a layer per
-train would undo what WEB-MAP-6 measured. Marker controls inherit the 44 px floor, and a
-rendered review at both viewports is required: WEB-MAP-6's three real defects were all found
-by looking at the screen, not by a passing test.
+Deployment remains **out of this milestone** — the roadmap puts AWS in phase 3, and nothing in
+this repository is a deployment plan.

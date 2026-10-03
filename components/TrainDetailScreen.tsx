@@ -28,6 +28,7 @@ import {
 } from "../lib/presentation/time";
 import { ActionButton, LoadingRows, Notice, describeFailure } from "./Feedback";
 import { DelayTrend, MovementStatus, NextStopStatus } from "./Calculated";
+import DetailMap from "./map/DetailMap";
 import { trendScopeLabel } from "../lib/presentation/movement";
 import { useSharedResource } from "./useSharedResource";
 import Freshness from "./Freshness";
@@ -111,10 +112,30 @@ export default function TrainDetailScreen({ id }: { id: string }) {
   const loaded = resource.data;
   const detail = loaded?.detail;
 
-  const backHref = useMemo(() => {
-    const query = params.toString();
-    return query.length > 0 ? `/trains?${query}` : "/trains";
-  }, [params]);
+  /*
+   * Where "back" goes, and what it keeps.
+   *
+   * A reader who arrived from the map returns to the map, still focused on this train and
+   * still on the line they filtered to; one who arrived from the list returns to the list
+   * with its filters. The `from` marker is a navigation hint and is stripped from the
+   * destination rather than carried into it.
+   */
+  const { backHref, backLabel } = useMemo(() => {
+    const query = new URLSearchParams(params.toString());
+    const from = query.get("from");
+    query.delete("from");
+    if (from === "map") {
+      query.set("trainId", id);
+      // The service date is a list filter and means nothing to the map.
+      query.delete("serviceDate");
+      return { backHref: `/map?${query.toString()}`, backLabel: "← Back to map" };
+    }
+    const rest = query.toString();
+    return {
+      backHref: rest.length > 0 ? `/trains?${rest}` : "/trains",
+      backLabel: "← Back to trains",
+    };
+  }, [params, id]);
 
   /**
    * Stop names come from the catalog only when it shares the train's schedule version.
@@ -143,7 +164,7 @@ export default function TrainDetailScreen({ id }: { id: string }) {
   return (
     <div className={styles.screen}>
       <p className={styles.back}>
-        <Link href={backHref} className="standalone-link">← Back to trains</Link>
+        <Link href={backHref} className="standalone-link">{backLabel}</Link>
       </p>
 
       {resource.loading && !detail ? (
@@ -169,6 +190,9 @@ export default function TrainDetailScreen({ id }: { id: string }) {
           lineName={lineName}
           stopNames={stopNames}
           loadedAt={resource.loadedAt ?? new Date(detail.evaluatedAt)}
+          routes={loaded?.routes ?? []}
+          stops={loaded?.stops ?? []}
+          catalogVersion={loaded?.catalogVersion ?? null}
         />
       ) : null}
     </div>
@@ -204,12 +228,18 @@ function DetailBody({
   lineName,
   stopNames,
   loadedAt,
+  routes,
+  stops,
+  catalogVersion,
 }: {
   detail: TrainDetail;
   headsign: string | null;
   lineName: string | null;
   stopNames: Map<string, string>;
   loadedAt: Date;
+  routes: readonly Route[];
+  stops: readonly Stop[];
+  catalogVersion: string | null;
 }) {
   const train = detail.data;
   const official = train.official;
@@ -298,6 +328,24 @@ function DetailBody({
             No position has been reported for this train.
           </p>
         )}
+
+        {/*
+          * The map is additive. Everything it draws is already stated above, so this screen
+          * is complete whether or not it loads, and no train information is available only
+          * on a canvas.
+          */}
+        <DetailMap
+          train={train}
+          routes={routes}
+          stops={stops}
+          catalogVersion={catalogVersion}
+          evaluatedAt={detail.evaluatedAt}
+        />
+        <p className={styles.meta}>
+          <Link href={`/map?trainId=${encodeURIComponent(train.id)}`} className="standalone-link">
+            See this train on the system map
+          </Link>
+        </p>
       </section>
 
       {detail.calculated ? (

@@ -130,8 +130,9 @@ test("train detail separates scheduled, official and calculated information", as
     page.getByText(/An official estimate is shown only where the operator/),
   ).toBeVisible();
 
-  // Diagnostics stay closed and hold the raw vocabulary.
-  const diagnostics = page.locator("details");
+  // Diagnostics stay closed and hold the raw vocabulary. Named by its own content rather
+  // than by tag: the embedded focused map's attribution control is a <details> too.
+  const diagnostics = page.locator("details").filter({ hasText: "Data status" });
   await expect(diagnostics).toHaveAttribute("open", /^$/, { timeout: 1 }).catch(() => {});
   expect(await diagnostics.evaluate((node: HTMLDetailsElement) => node.open)).toBe(false);
 });

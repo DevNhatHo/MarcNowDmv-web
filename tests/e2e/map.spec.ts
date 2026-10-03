@@ -219,3 +219,49 @@ test("reduced motion still shows every train", async ({ browser }) => {
   expect(await page.locator("canvas.maplibregl-canvas").count()).toBe(1);
   await context.close();
 });
+
+test("system map to focus to detail and back, keeping the line filter", async ({ page }) => {
+  await drawn(page, "/map?routeId=11704");
+  const first = page.locator('[aria-label="Trains with reported positions"] li a').first();
+  if ((await first.count()) === 0) test.skip(true, "no drawn trains on this line right now");
+  await first.click();
+  await page.waitForURL(/trainId=/, { timeout: 30_000 });
+
+  await page.getByRole("link", { name: "Open full detail" }).click();
+  await page.waitForURL(/\/trains\//, { timeout: 30_000 });
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+
+  await page.getByRole("link", { name: "← Back to map" }).click();
+  await page.waitForURL(/\/map\?/, { timeout: 30_000 });
+  expect(page.url()).toContain("routeId=11704");
+  expect(page.url()).toContain("trainId=");
+  await expect(page.getByRole("region", { name: /Focused train/ })).toBeVisible();
+});
+
+test("the train list leads to detail and on to the system map", async ({ page }) => {
+  await page.goto("/trains", { timeout: 60_000 });
+  await page.locator("main ul li a").first().waitFor({ timeout: 30_000 });
+  await page.locator("main ul li a").first().click();
+  await page.waitForURL(/\/trains\/.+/, { timeout: 30_000 });
+
+  const toMap = page.getByRole("link", { name: /See this train on the system map/ });
+  await expect(toMap).toBeVisible();
+  await toMap.click();
+  await page.waitForURL(/\/map\?trainId=/, { timeout: 30_000 });
+  await page.locator("canvas.maplibregl-canvas").waitFor({ timeout: 60_000 });
+});
+
+test("train detail stays complete and says everything without its map", async ({ page }) => {
+  // The map on detail is additive. Block the geometry it needs and the screen must lose
+  // nothing a reader relies on.
+  await page.route("**/api/backend/api/v1/shapes*", (route) => route.abort());
+  await page.goto("/trains", { timeout: 60_000 });
+  await page.locator("main ul li a").first().waitFor({ timeout: 30_000 });
+  await page.locator("main ul li a").first().click();
+  await page.waitForURL(/\/trains\/.+/, { timeout: 30_000 });
+  await page.waitForTimeout(2500);
+
+  await expect(page.getByRole("heading", { level: 2, name: "Movement and location" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  expect(await page.locator("canvas.maplibregl-canvas").count()).toBe(0);
+});

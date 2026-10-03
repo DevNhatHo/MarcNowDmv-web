@@ -208,6 +208,13 @@ export default function MapScreen() {
     return search === "" ? "/map" : `/map?${search}`;
   };
 
+  /** Full detail, carrying the context needed to come back to this focused map. */
+  const detailHref = (trainId: string) => {
+    const query = new URLSearchParams({ from: "map" });
+    if (routeId !== undefined) query.set("routeId", routeId);
+    return `/trains/${encodeURIComponent(trainId)}?${query.toString()}`;
+  };
+
   const setRoute = (value: string) => {
     router.replace(value === "" ? "/map" : `/map?routeId=${encodeURIComponent(value)}`);
   };
@@ -317,7 +324,7 @@ export default function MapScreen() {
           }}
           followPaused={followPaused}
           exitHref={mapHref(null)}
-          detailHref={`/trains/${encodeURIComponent(selectedId)}`}
+          detailHref={detailHref(selectedId)}
         />
       ) : null}
 
