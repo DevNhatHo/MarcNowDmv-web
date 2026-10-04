@@ -107,3 +107,4 @@ review.
 | WEB-UI-07 | [reviews/WEB-UI-07](reviews/WEB-UI-07/README.md) |
 | WEB-UI-08 | [reviews/WEB-UI-08](reviews/WEB-UI-08/README.md) — contains clearly labelled **SYNTHETIC** state fixtures |
 | WEB-UI-06 | [reviews/WEB-UI-06](reviews/WEB-UI-06/README.md) — the cross-device review closing the milestone |
+| RELEASE-VERIFY-001 | [reviews/RELEASE-VERIFY-001](reviews/RELEASE-VERIFY-001/README.md) — live release-readiness evidence |

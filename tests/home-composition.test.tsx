@@ -153,3 +153,16 @@ describe("the desktop composition", () => {
     expect(screen.getByRole("region", { name: "Trains relevant now" })).toBeVisible();
   });
 });
+
+describe("one name per line, across the product", () => {
+  it("names a line the same way on Pulse as the list and the map do", async () => {
+    serve();
+    render(<PulseScreen />);
+    await screen.findByTestId("map");
+    // Release verification found "PENN - WASHINGTON" on Pulse while the list, the map markers
+    // and the quick look all said "Penn Line" -- two names for one line, on one screen.
+    const body = document.body.textContent ?? "";
+    expect(body).toMatch(/Penn Line/);
+    expect(body).not.toMatch(/PENN - WASHINGTON/);
+  });
+});

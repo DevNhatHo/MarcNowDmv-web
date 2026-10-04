@@ -14,6 +14,7 @@ import {
 } from "../lib/presentation/pulse";
 import { formatServiceDate } from "../lib/presentation/time";
 import { ActionButton, LoadingRows, Notice, describeFailure } from "./Feedback";
+import { lineLabel } from "../lib/presentation/trains";
 import { useSharedResource } from "./useSharedResource";
 import { useWideViewport } from "./useWideViewport";
 import HomeMap from "./home/HomeMap";
@@ -59,8 +60,11 @@ export default function PulseScreen() {
     // Names are joined only when the catalog matches the page's schedule version.
     if (data && data.trains.scheduleVersion.id) {
       for (const route of data.routes) {
-        const name = route.longName ?? route.shortName;
-        if (name !== null) map.set(route.id, name);
+        // The same `lineLabel` the train list, the map markers and the quick look use. A
+        // line named "Penn Line" on one screen and "PENN - WASHINGTON" on another is the
+        // drift the shared presentation exists to prevent, and release verification found
+        // both spellings on this screen at desktop width.
+        map.set(route.id, lineLabel(route, route.id));
       }
     }
     return map;

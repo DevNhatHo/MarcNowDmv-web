@@ -42,7 +42,13 @@ width, each resource read exactly once, and renders nothing extra below 64rem.
 ended, from the timetable and `membership`. No "active" count exists; each tile names its own
 fact. **[WEB-UI-06](tickets/WEB-UI-06.md) is DONE**, and with it **the whole UI refinement
 milestone**: WEB-UI-01 to WEB-UI-08. Measured across three widths: 0 horizontal overflow,
-exactly one `h1`, and 0 overflow at 200% text on every screen. **No frontend ticket is open.** A **live movement addendum** on
+exactly one `h1`, and 0 overflow at 200% text on every screen.
+
+**Release verification** (`docs/reviews/RELEASE-VERIFY-001/`) ran on Saturday 2026-10-03 at
+21:00 EDT against live conditions and concluded **LOCAL MVP READY FOR DEPLOYMENT PLANNING**. It
+found and fixed one defect — Pulse named a line "PENN - WASHINGTON" while every other screen
+said "Penn Line" — and opened the minor [WEB-UI-09](tickets/WEB-UI-09.md) for two remaining raw
+names. A **live movement addendum** on
 2026-10-02 extended the map plan with marker-update and animation semantics, folded the
 in-place update rules into WEB-MAP-3 and the follow rules into WEB-MAP-4, and added
 [WEB-MAP-7](tickets/WEB-MAP-7.md) for smooth transitions between observed positions; it opened
@@ -361,20 +367,21 @@ repositories.
 backend: the four-screen core (WEB-001–WEB-015), the map (WEB-MAP-1–WEB-MAP-7) and the UI
 refinement (WEB-UI-01–WEB-UI-08).
 
-### Open follow-ups, recorded rather than ticketed
+### Open follow-ups: three live captures, none blocking
 
-**PENDING LIVE WEEKDAY DENSITY VERIFICATION.** Every UI capture was taken on Saturday
-2026-10-03, with 18 scheduled trains against a weekday's 97 and almost nothing reporting a
-fresh position. Density at weekday volume is verified from a clearly labelled SYNTHETIC fixture
-in `docs/reviews/WEB-UI-03/`; legibility at 97 **real** rows is not. **Correctness does not
-depend on it** — every data-trust rule is covered by deterministic tests. Also outstanding: a
-fresh-position capture of the quick look and map sheet, and an overnight capture of the real
-service-ended state.
+Release verification could not exercise three states, because the conditions had not occurred.
+They are **state-coverage gaps, not correctness gaps** — each is handled by the implementation
+and covered by deterministic tests.
+
+| Pending | Window needed |
+|---|---|
+| Weekday row density at ~97 trains | A weekday during published service, 06:00–09:00 or 15:00–19:00 EDT |
+| A fresh live position | Any time MDOT's Vehicle Positions feed is non-empty; it returned a 15-byte empty payload throughout the evening of 2026-10-03 |
+| Real service-ended state | After the last run's window closes, roughly 23:30–00:30 EDT, or any overnight hour |
 
 **Backend proposals**, unchanged and still not authorization:
-[BACKEND-UI-06](BACKEND_GAPS.md) for route progress on the trains list, which would let the
-system map transition along the alignment as the focused train already does, and
-BACKEND-UI-02's movement summary. Neither may be worked around in the browser.
+[BACKEND-UI-06](BACKEND_GAPS.md) for route progress on the trains list, and BACKEND-UI-02's
+movement summary. Neither may be worked around in the browser.
 
 ### Standing constraints
 
